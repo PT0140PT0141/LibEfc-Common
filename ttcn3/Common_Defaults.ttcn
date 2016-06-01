@@ -1,0 +1,55 @@
+/**
+ * @author  FSCOM 
+ * @desc    This module provides:
+ * - default behavior on received messages 
+ * - timeouts support
+ * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 2: Communication and connections to the lower layers
+ * @version $id$
+ */
+module Common_Defaults {
+    import from Common_Interfaces all;
+    import from Common_Templates all;
+    import from Common_LibUpperTester all;
+
+    group DefaultMessages {
+        /**
+         * @desc        ADU filtering for received messages on FrontEndComp
+         * @verdict     Unchanged on success, fail otherwise and the component is stopped if PX_ProcessUnexpectedADUAsError is set to true
+         */
+        altstep a_defaults() runs on EutComp {
+            [] pco.receive(mw_Iso17575_3InformationContent_unsecured) {
+                repeat; // Ignore ADU
+            }
+            [] pco.receive {
+                log ("Unexpected message received");
+                setverdict(fail);
+                stop;
+            }
+            [] t_ac.timeout {
+                log ("Timeout occurs on received message operation");
+                setverdict(fail);
+                stop;
+            } // End of t_ac.timeout
+            [] any timer.timeout {
+                log ("Unexpected timeout occured");
+                setverdict(inconc);
+                stop;
+            } // End of any timer.timeout
+        } // End of altstep a_ADU_filter
+    } // End of group DefaultMessages
+
+    group DefaultUpperTester {
+        altstep a_upperTester() runs on EutComp {
+            [] eaPort.receive(mw_EO_Response(?)) {
+                t_wait.stop;
+                log ("DUT action failed");
+                setverdict(fail);
+            }
+            [] t_wait.timeout {
+                log ("DUT action lifetime has expired");
+                setverdict(inconc);
+                stop;
+            } // End of t_wait.timeout
+        } // End of altstep a_upperTester
+    } // End of DefaultUpperTester
+} // End of module Common_Defaults

@@ -1,0 +1,75 @@
+EfcLac {iso(1) standard(0) 13141 version2(2)}
+
+DEFINITIONS AUTOMATIC TAGS
+::= BEGIN
+IMPORTS 
+
+-- Imports data attributes and elements from EFC which are used for LAC
+EFC-ContextMark, Provider
+FROM EfcDsrcApplication {iso(1) standard(0) 14906 application(0) version5(5)}
+ 
+-- imports data attributes and elements from CCC
+Longitude, Latitude, Altitude 
+FROM EfcCcc {iso(1) standard(0) 12813 version2(2)}
+
+-- Imports the L7 DSRCData module data from the EFC Application Interface Definition
+ActionType, AttributeIdList,
+BeaconID, Dsrc-EID, DSRCApplicationEntityID, EventType, ObeConfiguration, Profile, ReturnStatus, Time
+FROM EfcDsrcGeneric {iso(1) standard(0) 14906 generic(1) version5(5)};
+
+-- NOTE: The following are the definitions of the LAC attributes
+
+LAC-ContextMark ::= EFC-ContextMark
+
+LACData ::= SEQUENCE {
+    lacOperator         Provider,
+    rseId               INT2,   
+    latitude            Latitude,
+    longitude           Longitude,
+    altitude            Altitude,
+    tollCharger         TollCharger,
+    chargeObject        ChargeObjectId,
+    distanceToObject    INT2Signed,
+    lacTime             Time,
+    macTc               MAC-TC,
+    mac2                OCTET STRING (SIZE (8))
+    }
+
+-- NOTE: The following are the definitions of the LAC (sub) data elements
+
+ChargeObjectId ::= SEQUENCE{
+    regimeId                 INT2, 
+    chargeObjectDesignation  INT4
+    } 
+
+TollCharger ::= SEQUENCE {
+    tollContext                 Provider,
+    chargeReportFinalRecipient  Provider
+    }
+    
+MAC-TC ::= SEQUENCE {
+    keyRef      INT1,
+    algorithmId MAC-TC-Algorithm,
+    mac         OCTET STRING (SIZE (4)),
+    nonce       OCTET STRING (SIZE (2))
+    }
+
+MAC-TC-Algorithm ::= INTEGER {
+    cbcDes64bitKey        (0),
+    cmacAes128bitKey      (1)
+    -- (2..255) are reserved for future use
+    } (0..255)
+    
+INT1 ::= INTEGER(0..255)    
+INT2 ::= INTEGER(0..65535)
+INT4 ::= INTEGER(0..4294967295)
+
+INT2Signed ::= INTEGER (-32768..32767)
+
+ApplicationContextMark::= SEQUENCE {
+    lacContextMark      LAC-ContextMark,
+    ac-cr-reference     OCTET STRING (SIZE (2)),
+    rndOBE              OCTET STRING (SIZE (4))
+}
+
+END

@@ -1,0 +1,73 @@
+/*
+ * @author     STF 370
+ * @version    $Id$
+ * @desc        xxx
+ */
+module Common_LibUpperTester {
+
+    /**
+     * @desc    Common_LibUpperTester types and values definitions
+     */
+    group equipmentOperationTypes {
+
+        /**
+         * @desc    Acknwoladge description
+         * @member  code Satus code
+         * @member  reason Status label
+         */
+        type record Status {
+            integer code,
+            charstring reason optional
+        }
+
+        /**
+         * @desc    Parameters list for the action to execute on DUT part
+         */
+        type record of charstring ParameterList;
+
+        /**
+         * @desc    Action to execute on DUT part
+         * @member  status Satus code
+         */
+        type charstring EquipmentCommand;
+
+        /**
+         * @desc    Request to execute an action on DUT part
+         * @param   cmd Action to execute on DUT part
+         * @param   params Parameters list for the action
+         */
+        type record EquipmentOperationReq {
+            EquipmentCommand cmd, ParameterList params optional
+        }
+
+        /**
+         * @desc    Acknwoladge on EquipmentOperationReq operation
+         * @member  status Satus code
+         */
+        type record EquipmentOperationRsp {
+            Status status
+        }
+    } // End of group equipmentOperationTypes
+
+    /**
+     * @desc    Common_LibUpperTester templates definitions
+     */
+    group equipmentOperationTemplates {
+
+        /**
+         * @desc    Request to execute an action on DUT part
+         */
+        template EquipmentOperationReq
+        m_EQ_Request(in EquipmentCommand p_cmd, ParameterList p_params) := {
+            cmd := p_cmd, params := p_params
+        } // End of template m_EQ_Request
+
+        /**
+         * @desc    Response on an action execution request
+         */
+        template EquipmentOperationRsp
+        mw_EO_Response(in template integer p_code) := {
+            status := {code := p_code, reason := *}
+        } // End of template mw_EO_Response
+    } // End of group equipmentOperationTemplates
+} // End of module Common_LibUpperTester

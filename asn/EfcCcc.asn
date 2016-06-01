@@ -1,0 +1,136 @@
+EfcCcc {iso(1) standard(0) 12813 version2(2)} 
+
+DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+IMPORTS 
+
+EquipmentOBUId, PaymentMeans, LPN, VehicleAxles, VehicleSpecificCharacteristics, EFC-ContextMark, Provider, VehicleCurrentMaxTrainWeight 
+FROM EfcDsrcApplication {iso(1) standard(0) 14906 application(0) version5(5)}
+
+ActionType, AttributeIdList, BeaconID, Dsrc-EID, DSRCApplicationEntityID, EventType, Get-Request, ObeConfiguration, Profile, ReturnStatus, Time 
+FROM EfcDsrcGeneric {iso(1) standard(0) 14906 generic(1) version5(5)}
+
+LocalVehicleClassId
+FROM EfcAutonomousContextData {iso(1) standard(0) 17575 part3(3) version2(2)};
+
+-- NOTE: The following are the definitions of the CCC attributes:
+
+ActiveContexts ::= SEQUENCE OF SEQUENCE{
+    tollContext    Provider,
+    contextVersion INT1        
+    }
+
+CCC-ContextMark ::= EFC-ContextMark
+
+CommunicationStatus ::= SEQUENCE {
+    timeOfLastTransmission Time,
+    pendingSince           Time    -- pending since when
+    }
+
+DistanceRecordingStatus ::= SEQUENCE {
+    distRecordingStatus          DistRecordingStatus,
+    accumulatedTravelledDistance INT4,      -- in meter modulo max
+    deviationFromGnss            INT1Signed 
+    }
+    
+GnssStatus ::= SEQUENCE {
+    lastGnssFixLon  Longitude,
+    lastGnssFixLat  Latitude,
+    lastGnssFixAlt  Altitude,
+    lastGnssFixTime Time,
+    currentHDOP     CurrentHDOP,
+    lastLAC         LastLAC
+    }
+
+OBEStatusHistory ::= SEQUENCE {
+    statusIndicator     StatusIndicator,
+    timeWhenChanged     Time,
+    timeWhenActived     Time,
+    timeWhenObePowered  Time
+    }
+
+ExtendedOBEStatusHistory ::= SEQUENCE {
+    statusIndicator             StatusIndicator,
+    timeWhenChanged             Time,
+    previousStatusIndicator     StatusIndicator,
+    timeWhenChangedToPrevious   Time,
+    timeWhenActived             Time,
+    timeWhenObePowered          Time
+    }
+
+VehicleAxlesHistory ::= SEQUENCE {
+    timeWhenChanged         Time,
+    previousVehicleAxles    VehicleAxles
+    }
+
+ExtendedVehicleAxlesHistory ::= SEQUENCE {
+    timeWhenChanged             Time,
+    previousVehicleAxles        VehicleAxles,
+    timeWhenChangedToPrevious   Time
+    }
+
+
+VehicleWeightHistory ::= SEQUENCE {
+    timeWhenChangedToCurrentValue   Time,
+    previousVehicleWeight           VehicleCurrentMaxTrainWeight,
+    previousLocalVehicleClassID     LocalVehicleClassId,
+    timeWhenChangedToPrevious       Time
+    }
+
+StatusIndicator ::= INTEGER {
+    noGo                    (0),
+    go                      (1),
+    noGoContractual         (2),
+    noGoUserSwitchedOff     (3)
+    -- (4..255) are reserved for future use
+    } (0..255)
+
+VehicleLicensePlateNumber ::= LPN
+
+AttributeUpdateInterval ::=  INT1 
+
+
+-- NOTE: The following are the definitions of data elements in the CCC attributes:
+
+CurrentHDOP ::= SEQUENCE {
+    hDOP                        INT1,       -- HDOP value, keep max
+    numberOfUsedSatellites      INT1        -- Number of satellites from which a GNSS signal 
+                                            -- is received
+    }
+
+INT1 ::=        INTEGER(0..255)
+INT1Signed::=   INTEGER(-128..127)
+INT2 ::=        INTEGER(0..65535)
+INT2Signed ::=  INTEGER (-32768..32767)
+INT4 ::=        INTEGER(0..4294967295)
+INT4Signed ::=  INTEGER(-2147483648..2147483647)
+
+LastLAC ::= SEQUENCE {
+    timeOfLAC   Time, 
+    lACOperator Provider,
+    rSEId       INT2
+    }
+
+Latitude ::= INT4Signed
+
+Longitude ::= INT4Signed
+
+Altitude ::= INT2Signed
+
+DistRecordingStatus ::= INTEGER {
+    notPresent              (1),
+    presentAndActive        (2),
+    presentAndInactive      (3),
+    reservedForFutureUse    (4)
+} (0..255)
+
+
+--Note: the following is the extension of the Layer 7 module
+
+ApplicationContextMark ::= SEQUENCE {
+    cccContextMark  CCC-ContextMark,
+    ac-cr-reference OCTET STRING (SIZE (2)),
+    rndOBE          OCTET STRING (SIZE (4))
+}
+
+END

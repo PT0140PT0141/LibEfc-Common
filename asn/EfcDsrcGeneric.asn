@@ -1,0 +1,143 @@
+EfcDsrcGeneric {iso(1) standard(0) 14906 generic(1) version5(5)}
+DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+IMPORTS
+
+ContractVehicle,ContractAuthenticator,ICC-Id,
+ReceiptServicePart,SessionClass,SignedValue,ReceiptServiceSerialNumber,
+ReceiptFinancialPart,ReceiptContract,ReceiptOBUId,ReceiptICC-Id,
+ReceiptText,ReceiptAuthenticator,ReceiptDistance,LPN,VehicleClass,
+VehicleDimensions,VehicleAxles,VehicleWeightLimits,
+VehicleWeightLaden,VehicleSpecificCharacteristics,
+VehicleAuthenticator,EquipmentOBUId,
+EquipmentStatus,DriverCharacteristics,
+PaymentMeans,PaymentMeansBalance,PaymentMeansUnit,
+PaymentSecurityData,PersonalAccountNumber,ReceiptData1,
+ReceiptData2,SessionLocation,ValidityOfContract, AxleWeightLimits, PassengerCapacity, Engine, SoundLevel, ExhaustEmissionValues, DieselEmissionValues, CO2EmissionValue, VehicleTotalDistance, TrailerLicencePlateNumber, TrailerCharacteristics, ActualNumberOfPassengers
+FROM EfcDsrcApplication {iso(1) standard(0) 14906 application(0) version5(5)};
+
+-- defined in ISO 14816 --
+ActionType ::= INTEGER (0..127,...)
+-- 0 : getStamped
+-- 1 : setStamped
+-- 2 : getSecure
+-- 3 : setSecure
+-- 4 : getInstance
+-- 5 : setInstance
+-- 6 : getNonce
+-- 7 : setNonce
+-- 8 : transferChannel
+-- 9 : copy
+-- 10 : setMMI
+-- 11 : substract
+-- 12 : add
+-- 13 : debit
+-- 14 : credit
+-- 15 : echo
+-- (16..118) Reserved for ISO/CEN use
+-- (119-127) Reserved for private use
+
+AttributeIdList ::= SEQUENCE (SIZE(0.. 127,...)) OF INTEGER(0..127,...)
+
+BeaconID::= SEQUENCE{
+	manufacturerid INTEGER(0.. 65535),
+	individualid INTEGER(0..134217727)
+} -- for registration of manufacturerid see www.nni.nl/cen278
+
+BroadcastPool ::= SEQUENCE{
+	directoryvalue Directory,
+	content SEQUENCE (SIZE(0..127,...)) OF File
+}
+
+FileType ::= NULL -- not defined
+Directory::= SEQUENCE (SIZE(0..127,...)) OF FileName
+Dsrc-EID::= INTEGER(0..127, ...)
+DSRCApplicationEntityID::= INTEGER {
+system (0),
+electronic-fee-collection (1),
+freight-fleet-management (2),
+public-transport (3),
+traffic-traveller-information (4),
+traffic-control (5),
+parking-management (6),
+geographic-road-database (7),
+medium-range-preinformation (8),
+man-machine-interface (9),
+intersystem-interface (10),
+automatic-vehicle-identification (11),
+emergency-warning (12),
+private (13),
+multi-purpose-payment (14),
+dsrc-resource-manager (15),
+after-theft-systems (16),
+ccc (20),
+lac (21)
+-- (17..28) are reserved for ISO/CEN DSRC applications
+-- (29..30) are reserved for private use
+-- 31 is reserved for ISO/CEN-DSRC-applications
+}(0..31,...)
+-- For the latest standard use of application definition, refer
+-- to www.nni.nl/cen278
+-- As an example, the application "electronic-fee-collection (1)"
+-- is standardised by EN/ISO 14906
+
+Event-Report-Response::= SEQUENCE{
+fill BIT STRING (SIZE(2)),
+eid Dsrc-EID,
+iid Dsrc-EID OPTIONAL,
+ret ReturnStatus OPTIONAL
+}
+EventType::= INTEGER{
+release (0)
+-- (1..118) are reserved for ISO/CEN use
+-- (119..127) are reserved for private use
+}(0..127,...)
+File::=SEQUENCE(SIZE(0..127,...)) OF Record
+FileName::= SEQUENCE{
+aseID Dsrc-EID,
+fileID INTEGER(0..127,...)
+}
+Get-Request::= SEQUENCE{
+fill BIT STRING (SIZE(1)),
+eid Dsrc-EID,
+accessCredentials OCTET STRING (SIZE(0..127,...)) OPTIONAL,
+iid Dsrc-EID OPTIONAL,
+attrIdList AttributeIdList OPTIONAL
+}
+ObeConfiguration::= SEQUENCE{
+equipmentClass INTEGER(0..32767),
+manufacturerID INTEGER(0..65535),
+obeStatus INTEGER(0..65535) OPTIONAL
+-- obeStatus shall always be present. Bit nr 5 of the first octet may indicate the
+-- status of the battery: 0 indicates OK, 1 indicates low (xxxB xxxx'H)
+}
+Profile::= INTEGER {
+profile0 (0), -- DSRC Profile 0 as defined in EN 13372
+profile1 (1) -- DSRC Profile 1 as defined in EN 13372
+-- (2..118) are reserved for ISO/CEN use,
+-- (119..127) are reserved for private use
+}(0..127,...)
+Record::= CHOICE
+{simple VisibleString,
+...
+}
+ReturnStatus::= INTEGER {
+noError (0),
+accessDenied (1),
+argumentError (2),
+complexityLimitation (3),
+processingFailure (4),
+processing (5),
+chainingError (6)
+-- (7..127) are reserved for future CEN use
+}(0..127,...)
+Set-Response::= SEQUENCE{
+fill BIT STRING (SIZE(2)),
+eid Dsrc-EID,
+iid Dsrc-EID OPTIONAL,
+ret ReturnStatus OPTIONAL
+}
+Time::= INTEGER(0..4294967295)
+-- �UNIX time�: number of seconds since midnight at the
+-- start of 1st January 1970
+
+END

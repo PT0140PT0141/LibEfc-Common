@@ -1,0 +1,63 @@
+/**
+ * @author	FSCOM 
+ * @desc 	This module describes common types and values for both FE and BE TTCN-3 components
+ * @version	$id$
+ */
+module Common_TypesAndValues {
+    
+    /**
+     * @desc    Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 1: Charging
+     * @see     Annex A (normative) EFC data type specifications
+     */
+    import from EfcAutonomousCharging language "ASN.1:1997" all;
+
+    /**
+     * @desc Identifier of the version of the ASN.1 data specification (version of ISO 17575) that is used in the application data units
+     * @see  clause ISO 17575-3:2016(E) 6.3.1 Protocol versioning & Table 1 — Data elements of the ADU Header
+     */
+    const AidIdentifier c_Iso17575_3AduHeader_protocolVersion := 0;
+    
+    /**
+     * @desc    Error code for communication external functions
+     * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 2: Communication and connections to the lower layers
+     * @see     Annex D: Exemple of definitions for appropiate languages - D.2. API Definition in C
+     */
+    type enumerated CommunicationErrorCodes { // TODO: To be adjusted with real implemantation
+        e_ERNoError                             (0),
+        e_ERNoInstance                         (-1),
+        e_ERInterfacePreviouslyInitialised     (-2),
+        e_ERInsufficentPrivledge               (-3),
+        e_ERSessionFailed                      (-4),
+        e_ERInProgress                         (-5),
+        e_ERUnknownStack                       (-6),
+        e_ERNotActive                          (-7),
+        e_ERInSession                          (-8),
+        e_ERUnknownInstance                    (-9),
+        e_ERUnknownEndpoint                   (-10),
+        e_ERNoSession                         (-11),
+        e_EREndinProgress                     (-12),
+        e_ERHold                              (-13),
+        e_ERDropInProgress                    (-14),
+        e_ERMemoryError                       (-15),
+        e_ERBadState                          (-16),
+        e_ERNotSet                            (-17),
+        e_ERUnknownError                      (-18)
+    } // End of enumerated CommunicationErrorCodes
+
+    /**
+     * @desc    Just a reminder, not used in ATS
+     */
+    group AttributeIdentifiers {
+        const integer c_attr_TollContextOverview := 11;// TollContextOverview
+        const integer c_attr_TariffTable := 21; // TariffTable
+        const integer c_attr_TariffClassDefinition := 22; // TariffClassDefinition
+        const integer c_attr_LocalVehicleClassDefinition := 23; // LocalVehicleClassDefinition
+        const integer c_attr_TimeClassDefinition := 24; // TimeClassDefinition
+        const integer c_attr_UserClassDefinition := 25; // UserClassDefinition
+        const integer c_attr_TollContextLayout := 31; // TollContextLayout
+        const integer c_attr_ChargeReportingEvent := 41; // ChargeReportingEvent
+        const integer c_attr_ChargeReportConfiguration := 42; // ChargeReportConfiguration
+        const integer c_attr_Roaming := 43; // FIXME: What is the attribut identifier of the roaming element in Container CHOICE data structure?
+    } // End of group AttributeIdentifiers
+
+} // End of module Common_TypesAndValues

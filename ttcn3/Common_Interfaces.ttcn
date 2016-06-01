@@ -1,0 +1,90 @@
+/**
+ * @author	FSCOM 
+ * @desc 	This module describes the TTCN-3 components and SUT interfaces
+ * @version	$id$
+ */
+module Common_Interfaces {
+    /**
+     * @desc    Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 1: Charging
+     * @see     Annex A (normative) EFC data type specifications
+     */
+    import from EfcAutonomousCharging language "ASN.1:1997" all;
+    /**
+     * @desc    Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 3: Context data
+     * @see     A.2 Data specifications
+     */
+    import from EfcAutonomousContextData language "ASN.1:1997" all;
+    /**
+     * @desc    TTCN-3 does not support ASN.1 parameterization (ETSI ES 201 873-7 V4.5.1 Clause 10)
+     *          Common_Parameterised_Asn1_Data TTCN-3 module is a workaround
+     */
+    import from Common_Parameterised_Asn1_Data all;
+    import from Common_LibUpperTester all;
+    import from Common_Pixits all;
+
+    group PortDefinitions {
+        /**
+         * @desc Defines a message based port which allows to exchange ISO TS 17575 messages with the EUT
+         */
+         type port EutPort message {
+            inout
+                Iso17575_3InformationContent,
+                ChargeReport<integer>, // TODO Add used type
+                ChargeReportResponse;
+        } // End of port EutPort
+
+        /**
+         * @desc Defines a configuration message based port used to trigger, simulate, configure... DUT
+         */
+        type port EquipmentAccessPort message {
+            in EquipmentOperationRsp;
+            out EquipmentOperationReq;
+        } // End of port EquipmentAccessPort
+    } // End of group PortDefinitions
+
+    /**
+     * @desc   This component type shall be used to create the MTC in order to test the EUT
+     */
+    type component EutComp {
+        /**
+         * TTCN-3 port declaration
+         */
+        port EutPort pco;
+        /**
+         * This port is used to trigger, stimualte, configure etc any
+         */
+        port EquipmentAccessPort eaPort; 
+
+        /**
+         * Timer to control receive message timeouts
+         */
+        timer t_ac := PX_TAC;
+        /**
+         * Timer to control timeouts
+         */
+        //timer t_noac := PX_TNOAC; 
+        /**
+         * Timer to control user actions timeouts
+         */
+        timer t_wait := PX_WAIT; 
+        /**
+         * Timer to control TC timeouts
+         */
+        //timer t_guard := PX_GUARD;
+    } // End of component EutComp
+
+    /**
+     * @desc   This component type shall be used to define the physical interface with the EUT
+     */
+    type component TestAdapter {
+        /**
+         * Port used to send received ISO TS 17575 messages with the Front End equipment as EUT
+         */
+        port EutPort ta_pco;
+        /**
+         * This port is used to trigger, stimualte, configure etc any
+         */
+        port EquipmentAccessPort ta_eaPort;
+    } // End of component TestAdapter
+    
+} // End of module Common_Interfaces

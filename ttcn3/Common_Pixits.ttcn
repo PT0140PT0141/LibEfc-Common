@@ -1,0 +1,148 @@
+/**
+ * @author    FSCOM 
+ * @desc     This module describes the common parameters for TCs execution (Charging and ContextData)
+ * @version    $id$
+ */
+module Common_Pixits {
+
+    /**
+     * @desc    Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 1: Charging
+     * @see     Annex A (normative) EFC data type specifications
+     */
+    import from EfcAutonomousCharging language "ASN.1:1997" all;
+    /**
+     * @desc    Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 3: Context data
+     * @see     A.2 Data specifications
+     */
+    import from EfcAutonomousContextData language "ASN.1:1997" all; 
+    /**
+     * @desc    Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 4: Roaming
+     */
+    import from EfcDsrcApplication language "ASN.1:1997" all; 
+    /**
+     * @desc    Road transport and traffic telematics — Electronic fee collection — Application interface definition for electronic fee collection (EFC) based on Global Navigation Satellite Systems and Cellular Network (GNSS/CN)
+     * @see     Annex A (normative) EFC data type specifications
+     */
+    import from AVIAEINumberingAndDataStructures language "ASN.1:1997" all;
+    
+        /**
+         * @desc    Used to evaluate expression x -> n- or x -> n+
+         * @see     A.1.1 TP symbols conventions - Table 4 
+         */
+        modulepar float PX_EPSILON := 0.1; 
+        /**
+         * @desc    Timer to control receive message timeouts
+         */
+        modulepar float PX_TAC := 3.0;
+        /**
+         * @desc    Timer to control timeouts
+         */
+        modulepar float PX_TNOAC := 1.0;
+        /**
+         * @desc    Timer to control user actions timeouts
+         */
+        modulepar float PX_WAIT := 20.0;
+        /**
+         * @desc    Timer to control TC timeouts
+         */
+        modulepar float PX_GUARD := 10.0;
+
+        /**
+         * @desc    Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 1: Charging
+         * @see     6.3.2 Context data versioning
+         */
+        modulepar VersionId PX_VERSION_ID := { 
+            basicVersionId := '00000100'O 
+        }; // Version 0.0.1.0
+        /**
+         * @desc    Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 1: Charging
+         * @see     6.3.2 Context data versioning
+         */
+        modulepar GeneralizedTime PX_VALID_FROM := "20100101000001"
+//        {
+//            timeDate := {
+//                year := 2010,
+//                month := 1,
+//                day := 1
+//            },
+//            timeCompact := {
+//                hours := 0,
+//                mins := 0,
+//                double_secs := 1
+//            }
+//        }
+        ; // 2010/01/01 00:00:01 GMT +0 - The 16 bit zero value {hours 0, mins 0, double-secs 0} denotes "no time"
+        
+        /**
+         * @desc    Describe a default provider for ContextID
+         * @see     Annex C.1.1: General structure of Context Data - Table C.6
+         */
+        modulepar CountryCode PX_CONTEXT_ID_OPERATOR := '0011000011'B; // See EN ISO 3166-1 - Fehler! Kein Text mit angegebener Formatvorlage im Dokument./TC Fehler! Kein Text mit angegebener Formatvorlage im Dokument. - ClauseB.4.2.4 Initialisation response (VST)
+        /**
+         * @desc    Describe a default issuer provider for ContextID
+         * @see     Annex C.1.1: General structure of Context Data - Table C.6
+         */
+        modulepar IssuerIdentifier PX_CONTEXT_ID_IDENTIFIER := 2; // See EN ISO 3166-1 - Fehler! Kein Text mit angegebener Formatvorlage im Dokument./TC Fehler! Kein Text mit angegebener Formatvorlage im Dokument. - ClauseB.4.2.4 Initialisation response (VST)
+        /**
+         * @desc    Describe a default provider for informationOriginator
+         * @see     Annex C.1.1: General structure of Context Data - Table C.6
+         */
+        modulepar CountryCode PX_ORIGINATOR_EFC_OPERATOR := '0011000011'B; // See EN ISO 3166-1 - Fehler! Kein Text mit angegebener Formatvorlage im Dokument./TC Fehler! Kein Text mit angegebener Formatvorlage im Dokument. - ClauseB.4.2.4 Initialisation response (VST)
+        /**
+         * @desc    Describe a default issuer provider for informationOriginator
+         * @see     Annex C.1.1: General structure of Context Data - Table C.6
+         */
+        modulepar IssuerIdentifier PX_ORIGINATOR_RECIPIENT := 2; // See EN ISO 3166-1 - Fehler! Kein Text mit angegebener Formatvorlage im Dokument./TC Fehler! Kein Text mit angegebener Formatvorlage im Dokument. - ClauseB.4.2.4 Initialisation response (VST)
+        /**
+         * @desc    Describe a default provider for informationSender
+         * @see     Annex C.1.1: General structure of Context Data - Table C.6
+         */
+        modulepar CountryCode PX_SENDER_EFC_OPERATOR := '0011111010'B; // See EN ISO 3166-1 - Fehler! Kein Text mit angegebener Formatvorlage im Dokument./TC Fehler! Kein Text mit angegebener Formatvorlage im Dokument. - ClauseB.4.2.4 Initialisation response (VST)
+        /**
+         * @desc    Describe a default issuer provider for informationSender
+         * @see     Annex C.1.1: General structure of Context Data - Table C.6
+         */
+        modulepar IssuerIdentifier PX_SENDER_RECIPIENT := 3;
+        /**
+         * @desc    Describe a default provider for tollCharger
+         * @see     Annex C.1.1: General structure of Context Data - Table C.6
+         */
+        modulepar CountryCode PX_TOLLCHARGER_EFC_OPERATOR := '0011111010'B; // See EN ISO 3166-1 - Fehler! Kein Text mit angegebener Formatvorlage im Dokument./TC Fehler! Kein Text mit angegebener Formatvorlage im Dokument. - ClauseB.4.2.4 Initialisation response (VST)
+        /**
+         * @desc    Describe a default issuer provider for tollCharger
+         * @see     Annex C.1.1: General structure of Context Data - Table C.6
+         */
+        modulepar IssuerIdentifier PX_TOLLCHARGER_RECIPIENT := 4;
+        /**
+         * @desc    Describe a default provider for recipient
+         * @see     Annex C.1.1: General structure of Context Data - Table C.6
+         */
+        modulepar CountryCode PX_RECIPIENT_EFC_OPERATOR := '0011111010'B; // See EN ISO 3166-1 - Fehler! Kein Text mit angegebener Formatvorlage im Dokument./TC Fehler! Kein Text mit angegebener Formatvorlage im Dokument. - ClauseB.4.2.4 Initialisation response (VST)
+        /**
+         * @desc    Describe a default issuer provider for recipient
+         * @see     Annex C.1.1: General structure of Context Data - Table C.6
+         */
+        modulepar IssuerIdentifier PX_RECIPIENT_RECIPIENT := 5;
+        /**
+         * @desc    Describe a an 'any' provider value
+         * @see     Annex C.1.1: General structure of Context Data - Table C.6
+         */
+        modulepar CountryCode PX_ANY_EFC_OPERATOR := '0011111010'B; // See EN ISO 3166-1 - Fehler! Kein Text mit angegebener Formatvorlage im Dokument./TC Fehler! Kein Text mit angegebener Formatvorlage im Dokument. - ClauseB.4.2.4 Initialisation response (VST)
+        /**
+         * @desc    Describe a an 'any' issuer provider value
+         * @see     Annex C.1.1: General structure of Context Data - Table C.6
+         */
+        modulepar IssuerIdentifier PX_ANY_RECIPIENT := 6;
+
+        /**
+         * @desc    Describe a default provider for contextId
+         * @see     Annex C.1.1: General structure of Context Data - Table C.6
+         */
+        modulepar ContextId PX_CONTEXT_ID := 0;
+        /**
+         * @desc    Describe a default provider for aduSequenceNumber
+         * @see     Annex C.1.1: General structure of Context Data - Table C.6
+         */
+        modulepar EfcAutonomousContextData.Int4 PX_ADU_SEQ_NUMBER := 125684;
+    
+} // End of module Common_Pixits
