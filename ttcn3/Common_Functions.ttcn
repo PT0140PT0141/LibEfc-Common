@@ -149,9 +149,9 @@ module Common_Functions {
                                                              in template (value) AuthenticatedChargeReport p_authenticatedChargeReport, 
                                                              out ChargeReport <Container> p_chargeReportValue
         ) runs on EutComp return boolean {
-        	if (fx_verify_packet(bit2oct(p_authenticatedChargeReport.chargeReportPer), p_authenticatedChargeReport.messageAuthenticator) == true) {
-        		decvalue(p_authenticatedChargeReport.chargeReportPer, p_chargeReportValue);
-        		return true;
+            if (fx_verify_packet(bit2oct(p_authenticatedChargeReport.chargeReportPer), p_authenticatedChargeReport.messageAuthenticator) == true) {
+                decvalue(p_authenticatedChargeReport.chargeReportPer, p_chargeReportValue);
+                return true;
             }
             
             return false;
@@ -161,7 +161,7 @@ module Common_Functions {
                                                 in template (value) AuthenticatedChargeReportResponse p_authenticatedChargeReportResponse, 
                                                 out ChargeReportResponse p_chargeReportResponseValue
         ) runs on EutComp return boolean {
-        	if (fx_verify_packet(bit2oct(p_authenticatedChargeReportResponse.chargeReportResponsePer), p_authenticatedChargeReportResponse.messageAuthenticator) == true) {
+            if (fx_verify_packet(bit2oct(p_authenticatedChargeReportResponse.chargeReportResponsePer), p_authenticatedChargeReportResponse.messageAuthenticator) == true) {
                 decvalue(p_authenticatedChargeReportResponse.chargeReportResponsePer, p_chargeReportResponseValue);
                 return true;
             }
@@ -282,8 +282,8 @@ module Common_Functions {
          * @verdict unchanged
          */
         function f_check_regimeID <in type Container> (
-                                                       in ChargeReport.usageStatementList <Container> p_usageStatementList, 
-                                                       in UsageStatement.usageStatementId p_usageStatementId
+                                                       in UsageStatementList p_usageStatementList, 
+                                                       in integer p_usageStatementId
         ) runs on EutComp return boolean {
             // p_usageStatementList shall not be omit
 
@@ -312,8 +312,8 @@ module Common_Functions {
         return boolean {
             if (
                 (ispresent(p_tariffClass.locationClasses) == false) or
-                (ispresent(p_tariffClass.timeClassId) == false) or
-                (ispresent(p_tariffClass.userClassId) == false)) {
+                (ispresent(p_tariffClass.timeClasses) == false) or
+                (ispresent(p_tariffClass.userClasses) == false)) {
                 return false; // One of the 3 conditions doesn't match'
             }
 

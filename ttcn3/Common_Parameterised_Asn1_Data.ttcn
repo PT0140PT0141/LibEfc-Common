@@ -275,7 +275,7 @@ module Common_Parameterised_Asn1_Data {
     type set of GetInstanceRs_<integer> GetInstanceRs; // SEQUENCE (SIZE (0..127,...)) OF SEQUENCE
     
     type record GetStampedRs <in type Container> {
-        AttributeList<Container>               attributeList,
+        AttributeList<Container>    attributeList,
         octetstring                 authenticator
     }
     
@@ -316,6 +316,8 @@ module Common_Parameterised_Asn1_Data {
         AuthenticatedUsageStatement authenticatedUsageStatement
     }
     
+    type set of UsageStatement_<integer> UsageStatementList; 
+    
     /**
      * @desc 
      * @see     ISO 17575-1:2016 Clause 6.3 Charge report
@@ -331,7 +333,7 @@ module Common_Parameterised_Asn1_Data {
         GeneralizedTime                     timeOfReport optional,
         Period                              reportPeriod optional,
         VersionId                           versionInfo optional,
-        set of UsageStatement_ <Container>  usageStatementList,
+        UsageStatementList                  usageStatementList,
         PaymentFee                          sumVatForThisSession optional,
         AccountStatus                       accountStatus optional,
         EfcAutonomousContextData.Int4       chargeReportCounter optional,

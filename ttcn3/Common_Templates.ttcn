@@ -127,7 +127,7 @@ module Common_Templates {
                 },
                 versionInfo := omit,
                 usageStatementList := {
-                    m_usageStatement_default
+                    usageStatement := m_usageStatement_default
                 },
                 vatForThisSession := omit,
                 accountStatus := omit,
@@ -389,7 +389,7 @@ module Common_Templates {
              * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 3: Context data - Clause 8.3.5.2.1 Data type ChargeReport
              * @remark  Use PICS to initialize properly this template. These values are assigned according to Electronic fee collection (EFC) — Conformity evaluation of Front End and Back End equipment to ISO 17575-3 — Part 1: Test suite structure and test purpose - Table C.8: ContextData1
              */
-            template (value) ChargeReport m_chargeReportContent_default := {
+            template (value) ChargeReportContent m_chargeReportContent_default := {
                 obeId := true,
                 paymentMeans := false,
                 tollCharger := true,
@@ -424,18 +424,18 @@ module Common_Templates {
              * @desc    This is the minimal form of awaited UsageStatement message
              * @see     ISO 17575-3:2016 Clause 7.6.2 UsageStatement
              */
-            template (value) UsageStatement m_usageStatement_default := {
-                usageStatementID := omit,
-                regimeID := omit,
+            template (omit) UsageStatement m_usageStatement_default <in type Container> := {
+                usageStatementId := omit,
+                tollContext := omit,
+                chargeReportFinalRecipient := omit,
                 aggregatedFee := omit,
-                vat := omit,
+                sumVat := omit,
                 aggregatedSingleTariffClassSession := omit,
                 listOfChargeObjects := omit,
-                listOfDSRCUsageData := omit,
+                listOfDsrcUsageData := omit,
                 listOfRawUsageData := omit,
                 noUsage := omit,
-                additionalUsageInformation := omit,
-                usageAuthenticator := omit
+                additionalUsageInformation := omit
             } // End of template m_usageStatement_default
             /**
              * @desc    This is the minimal form of awaited AggregatedSingleTariffClassSessionContent message
