@@ -1,5 +1,5 @@
 /**
- * @author  FSCOM 
+ * @author  PT28/PT0141 
  * @desc    This module provides:
  * - default behavior on received messages 
  * - timeouts support
@@ -27,8 +27,7 @@ module Common_Defaults {
             }
             [] t_ac.timeout {
                 log ("Timeout occurs on received message operation");
-                setverdict(fail);
-                stop;
+                setverdict(inconc);
             } // End of t_ac.timeout
             [] any timer.timeout {
                 log ("Unexpected timeout occured");

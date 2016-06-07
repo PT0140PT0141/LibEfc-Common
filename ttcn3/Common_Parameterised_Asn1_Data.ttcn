@@ -1,4 +1,12 @@
-module Common_Parameterised_Asn1_Data {
+/**
+ * @author  PT28/PT0141 
+ * @desc    This module provides work-around to implement ASN.1 parametrization capability extensively used in ASN.1 files
+ * @see     Electronic fee collection (EFC) — Conformity evaluation of Front End and Back End equipment to ISO 17575-3 — Part 1: Test suite structure and test purpose
+ * @see     Electronic fee collection (EFC) — Evaluation of equipment for conformity to CEN ISO/TS 17575-3 — Part 1: Test suite structure and test purpose
+ * @remark  See Annex A - EFC data type specifications
+ * @version $id$
+ */
+module Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Parameterization" {
     
     import from EfcDsrcGeneric language "ASN.1:1997" all;
     import from EfcDsrcApplication language "ASN.1:1997" all;

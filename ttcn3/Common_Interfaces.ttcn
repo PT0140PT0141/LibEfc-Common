@@ -1,9 +1,9 @@
 /**
- * @author	FSCOM 
+ * @author	PT28/PT0141 
  * @desc 	This module describes the TTCN-3 components and SUT interfaces
  * @version	$id$
  */
-module Common_Interfaces {
+module Common_Interfaces language "TTCN-3:2010 Advanced Parameterization" {
     /**
      * @desc    Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 1: Charging
      * @see     Annex A (normative) EFC data type specifications

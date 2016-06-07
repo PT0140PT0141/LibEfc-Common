@@ -1,12 +1,12 @@
 /**
- * @author  FSCOM 
+ * @author  PT28/PT0141 
  * @desc    This module provides common templates for both Charging and ContextData TCs. Most of these templates shall be used to modify the new ones.
  * @see     Electronic fee collection (EFC) — Conformity evaluation of Front End and Back End equipment to ISO 17575-1 — Part 1: Test suite structure and test purpose
  * @see     Electronic fee collection (EFC) — Conformity evaluation of Front End and Back End equipment to ISO 17575-3 — Part 1: Test suite structure and test purpose
  * @remark  See Annex C - Data structures
  * @version $id$
  */
-module Common_Templates {
+module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
     /**
      * @desc    Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 1: Charging
      * @see     Annex A (normative) EFC data type specifications
@@ -92,71 +92,49 @@ module Common_Templates {
              * @remark  All other ChargeReport template shall modify this one
              * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 3: Context data
              */
-            template (value) ChargeReport m_chargeReport_default := {
+            template (value) ChargeReport<Container> m_chargeReport_default<Container> := {
+                protocolVersion := c_Iso17575_3AduHeader_protocolVersion,
                 obeId := omit, 
                 vehicleLPNr := omit,
                 paymentMeans := omit,
                 serviceProviderContract := m_serviceProviderContract_default,
-                tollCharger := omit,
-                timeOfReport := omit,
+                tollContext := omit,
+                timeOfReport := fx_getMessageDate(),
                 reportPeriod := {
-                    beginOfPeriod := {
-                        timeDate := {
-                            year := 2010,
-                            month := 1,
-                            day := 1
-                        },
-                        timeCompact := {
-                            hours := 0,
-                            mins := 0,
-                            double_secs := 1
-                        }
-                    }, // 2010/01/01 00:00:01 - The 16 bit zero value {hours 0, mins 0, double-secs 0} denotes "no time"
-                    endOfPeriod := {
-                        timeDate := {
-                            year := 2010,
-                            month := 2,
-                            day := 1
-                        },
-                        timeCompact := {
-                            hours := 0,
-                            mins := 0,
-                            double_secs := 1
-                        }
-                    } // 2010/02/01 00:00:01 - The 16 bit zero value {hours 0, mins 0, double-secs 0} denotes "no time"
+                    beginOfPeriod := fx_getMessageDate(-3600), 
+                    endOfPeriod := fx_getMessageDate(+3600)
                 },
                 versionInfo := omit,
                 usageStatementList := {
-                    usageStatement := m_usageStatement_default
+                    { usageStatement := m_usageStatement_default }
                 },
-                vatForThisSession := omit,
+                sumVatForThisSession := omit,
                 accountStatus := omit,
-                transactionCounter := omit,
+                chargeReportCounter := omit,
                 mileage := omit,
-                listOfCCCAttributes := omit,
-                authenticator := omit
+                listOfCccAttributes := omit
             } // End of template m_chargeReport_default
 
             /**
              * @desc    This is the minimal form of awaited ChargeReport message, all optional fields are ignored
              * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 3: Context data
              */
-            template ChargeReport mw_chargeReport_any := {
+            template ChargeReport<Container> mw_chargeReport_any<Container> := {
+                protocolVersion := c_Iso17575_3AduHeader_protocolVersion,
                 obeId := *, 
                 vehicleLPNr := *,
                 paymentMeans := *,
                 serviceProviderContract := ?,
-                tollCharger := *,
+                tollContext := *,
                 timeOfReport := *,
                 reportPeriod := ?,
                 versionInfo := *,
                 usageStatementList := ?,
-                vatForThisSession := *,
+                sumVatForThisSession := *,
                 accountStatus := *,
-                transactionCounter := *,
+                chargeReportCounter := *,
                 mileage := *,
-                listOfCCCAttributes := *,
-                authenticator := *
+                listOfCccAttributes := *
             } // End of template mw_chargeReport_any
             /**
              * @desc    This is the default form of awaited ChargeReport message. 
@@ -164,8 +142,8 @@ module Common_Templates {
              * @see     Electronic fee collection (EFC) — Conformity evaluation of Front End and Back End equipment to ISO 17575-1 — Part 1: Test suite structure and test purpose
              * @see     mandatory fields: TP/CR/FE/BV/01, TP/CR/FE/BV/02
              */
-            template ChargeReport mw_chargeReport_default 
-            modifies mw_chargeReport_any := {
+            template ChargeReport<Container> mw_chargeReport_default<Container> 
+            modifies mw_chargeReport_any<Container> := {
                 obeId := ?, // Because of m_chargeReportContent_default.obeId is true
                 tollCharger := ? // Because of m_chargeReportContent_default.tollCharger is true
             } // End of template mw_chargeReport_default
@@ -182,12 +160,11 @@ module Common_Templates {
              * @remark  All other ChargeReportResponse template shall modify this one
              */
             template (value) ChargeReportResponse m_chargeReportResponse_default := {
-                reportRecipientId := omit,
+                chargeReportRespSender := omit,
                 dataReceived := omit,
                 versionsResponse := omit,
-                obeStatusForDriver := SetMMIRq.ok,
-                accountUpdate := omit,
-                responseAuthenticator := omit
+                obeStatusForDriver := SetMMIRq_ok_,
+                accountUpdate := omit
             } // End of template m_chargeReportResponse_default
         } // End of group Common_Charging_ChargeReportResponse
 
@@ -306,7 +283,7 @@ module Common_Templates {
                     tollContextLayout               := *,
                     chargeReportingEvents           := *,
                     chargeReportConfiguration       := *,
-                    tollContextVersion              := *
+                    tollContextVersion              := ?
                 }
             } // End of template mw_Iso17575_3Adu
             
@@ -343,25 +320,24 @@ module Common_Templates {
                 protocolVersion         := c_Iso17575_3AduHeader_protocolVersion,
                 informationSender       := ?,
                 informationOriginator   := ?,
-                tollCharger             := ?,
-                contextId               := ?,
+                tollContext             := ?,
                 aduSequenceNumber       := ?,
-                aduAuthenticator        := *
+                messageDate             := ?
             } // End of template mw_aduHeader_any
             
             /**
              * @desc    Main receive template for any ADU header
-             * @param   p_tollCharger TollCharger value to match
+             * @param   p_tollContext TollContext value to match
              * @param   p_contextId ContextId value to match
              * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 3: Context data - Clause 7.2 ADU Header - Table 1: Data elements of the ADU Header
              * @remark  All receive templates shall modify this one
              */
-            template (present) Iso17575_3AduHeader mw_aduHeader_TollCharger_ContextId(
-                                                                                      in template (present) Provider p_tollCharger := ?, 
+            template (present) Iso17575_3AduHeader mw_aduHeader_TollCharger_ContextId( // FIXME To be renamed
+                                                                                      in template (present) Provider p_tollContext := ?, 
                                                                                       in template (present) ContextId p_contextId := ?
-            ) modifies mw_aduHeader_any := { // FIXME: Test for tooCharger/contextId matching
-                tollCharger := p_tollCharger,
-                contextId := p_contextId
+            ) modifies mw_aduHeader_any := { 
+                tollContext := p_tollContext,
+                contextId := p_contextId // FIXME To be removed
             } // End of template mw_aduHeader_TollCharger_ContextId
             
             /**
@@ -373,8 +349,7 @@ module Common_Templates {
                 protocolVersion         := c_Iso17575_3AduHeader_protocolVersion,
                 informationSender       := m_informationSender,
                 informationOriginator   := m_informationOriginator,
-                tollCharger             := m_tollCharger,
-                contextId               := PX_CONTEXT_ID,
+                tollContext             := m_tollCharger,
                 aduSequenceNumber       := PX_ADU_SEQ_NUMBER,
                 messageDate             := fx_getMessageDate()
             } // End of template m_aduHeader
@@ -390,16 +365,20 @@ module Common_Templates {
              * @remark  Use PICS to initialize properly this template. These values are assigned according to Electronic fee collection (EFC) — Conformity evaluation of Front End and Back End equipment to ISO 17575-3 — Part 1: Test suite structure and test purpose - Table C.8: ContextData1
              */
             template (value) ChargeReportContent m_chargeReportContent_default := {
-                obeId := true,
-                paymentMeans := false,
-                tollCharger := true,
-                versionInfo := false,
-                vatForThisSession := false,
-                accountStatus := false,
-                transactionCounter := false,
-                mileage := false,
-                listOfCCCAttributes := false,
-                authenticator := false
+                useOfCrAuthentication       := false,
+                obeId                       := true,
+                vehicleLPNr                 := false,
+                paymentMeans                := false,
+                tollContext                 := true,
+                chargeReportFinalRecipient  := false,
+                timeOfReport                := false,
+                reportPeriod                := false,
+                versionInfo                 := false,
+                sumVatForThisSession        := false,
+                accountStatus               := false,
+                chargeReportCounter         := false,
+                mileage                     := false,
+                listOfCCCAttributes         := false
             } // End of template m_chargeReportContent_default
             /**
              * @desc    UsageStatementContent default template
@@ -418,13 +397,13 @@ module Common_Templates {
                 listOfDSRCUsageData                 := false,
                 listOfRawUsageData                  := false,
                 noUsage                             := false,
-                usageAuthenticator                  := false
+                additionalUsageInformation          := false
             } // End of template m_usageStatementContent_default
             /**
              * @desc    This is the minimal form of awaited UsageStatement message
              * @see     ISO 17575-3:2016 Clause 7.6.2 UsageStatement
              */
-            template (omit) UsageStatement m_usageStatement_default <in type Container> := {
+            template (omit) UsageStatement<Container> m_usageStatement_default <in type Container> := {
                 usageStatementId := omit,
                 tollContext := omit,
                 chargeReportFinalRecipient := omit,
@@ -442,22 +421,26 @@ module Common_Templates {
              * @remark  All other UsageStatement template shall modify this one
              */
             template (value) AggregatedSingleTariffClassSessionContent m_aggregatedSingleTariffClassSessionContent_default := {
-                timePeriodCovered := false,
-                vehicleDescription := false,
-                tariffClass := false,
-                totalDistanceCovered := false,
-                numberOfDetectedEvents := false,
-                obeStatus := false,
-                feeExclVat := false,
-                vat := false
+                timePeriodCovered               := false,
+                currentTariffClass              := false,
+                tariffClassDescriptionContent   := false,
+                vehicleDescription              := false,
+                vehicleDescriptionContent       := false,
+                totalDistanceCovered            := false,
+                numberOfDetectedEvents          := false,
+                obeStatus                       := false,
+                feeExclVat                      := false,
+                sumVat                          := false
             } // End of template m_aggregatedSingleTariffClassSessionContent_default
             /**
              * @desc    This is the minimal form of awaited ListOfRawUsageDataContent_default message
              * @remark  All other UsageStatement template shall modify this one
              */
             template (value) ListOfRawUsageDataContent m_listOfRawUsageDataContent_default := {
-                vehicleDescription := false,
-                tariffClass := false
+                currentTariffClass              := false,
+                tariffClassDescriptionContent   := omit,
+                vehicleDescription              := false,
+                vehicleDescriptionContent       := omit
             } // End of template m_listOfRawUsageDataContent_default
 
             /**
@@ -476,15 +459,18 @@ module Common_Templates {
              * @remark  All other ChargeReportConfiguration template shall modify this one
              */
             template (value) ChargeReportConfiguration m_chargeReportConfiguration_default := {
+                applicablePartitions := { 1 },
                 chargeReportContent := m_chargeReportContent_default,
                 usageStatementContent := m_usageStatementContent_default,
                 cccAttributesContent := omit,
                 aggregatedSingleTariffClassSessionContent := omit,
                 detectedChargeObjectContent := omit,
                 listOfRawUsageDataContent := omit,
-                vehicleDescriptionContent := omit,
-                chargeReportConfigurationVersion := m_chargeReportConfigurationVersion_default,
-                chargeReportConfigurationAuthenticator := omit
+                listOfDsrcUsageDateContent := omit,
+                aggregatedFeeContent := omit,
+                measuredRawDataContent := omit,
+                nmeaDataContent := omit,
+                chargeReportConfigurationVersion := m_chargeReportConfigurationVersion_default
             } // End of template m_ChargeReportConfiguration_default
             
             /**
@@ -523,7 +509,7 @@ module Common_Templates {
                                                                                                  in template (value) TollContextPartitionId         p_tollContextPartitionId,
                                                                                                  in template (value) TollSchemeType                 p_tollContextPartitionType := TollSchemeType_roadSectionPricing_,
                                                                                                  in template (value) OperationalStatus              p_operationalStatus := m_operationalStatus_default,
-                                                                                                 in template (value) TollContextPartitionOverview   p_timeZone := 0
+                                                                                                 in template (value) integer                        p_timeZone := 0
             ) := {
                 tollContextPartitionId              := p_tollContextPartitionId,
                 tollContextPartitionName            := omit,
@@ -534,6 +520,40 @@ module Common_Templates {
                 tollContextPartitionBoundingPolygon := omit,
                 sendChargeReportIfEntering          := omit,
                 precedenceLevel                     := omit,
+                chargeReportFinalRecipient          := omit,
+                tollContextPartitionOverviewVersion := {
+                    version     := PX_VERSION_ID,
+                    validFrom   := PX_VALID_FROM
+                }
+            } // End of template m_tollContextPartitionOverview_default
+            
+            /**
+             * @desc    Main template for TollContextOverview data element
+             * @param   p_tollContextPartitionId The identifier of the respective toll context partition for which the overview information is provided
+             * @param   p_tollContextPartitionType A designation for the toll context partition
+             * @param   p_operationalStatus Information regarding the period of operation of the toll context partition
+             * @param   p_timeZone The time zone applicable for the toll context partition in relation to Coordinated Universal Time (UTC)
+             * @param   p_precedenceLevel Specify priorities for overlapping toll context partitions
+             * @remark  All other TollContextPartitionOverview template shall modify this one
+             * @see     ISO 17575-3:2016 Clause 8.5.2.3 Toll context partition overview
+             * @see     ISO 17575-3:2016 Table 4 — EFC attribute TollContextPartitionOverview (informative)
+             */
+            template (value) TollContextPartitionOverview m_tollContextPartitionOverview_precedenceLevel(
+                                                                                                         in template (value) TollContextPartitionId         p_tollContextPartitionId,
+                                                                                                         in template (value) TollSchemeType                 p_tollContextPartitionType := TollSchemeType_roadSectionPricing_,
+                                                                                                         in template (value) OperationalStatus              p_operationalStatus := m_operationalStatus_default,
+                                                                                                         in template (value) _0TollContextPartitionOverview p_timeZone := 0,
+                                                                                                         in template (value) EfcAutonomousContextData.Int1  p_precedenceLevel := 0
+            ) := {
+                tollContextPartitionId              := p_tollContextPartitionId,
+                tollContextPartitionName            := omit,
+                tollContextPartitionType            := p_tollContextPartitionType,
+                operationalStatus                   := p_operationalStatus,
+                timeZone                            := p_timeZone,
+                dstOffset                           := omit,
+                tollContextPartitionBoundingPolygon := omit,
+                sendChargeReportIfEntering          := omit,
+                precedenceLevel                     := p_precedenceLevel,
                 chargeReportFinalRecipient          := omit,
                 tollContextPartitionOverviewVersion := {
                     version     := PX_VERSION_ID,
@@ -579,7 +599,7 @@ module Common_Templates {
                 roundingRuleForChargeUnitsUsed  := RoundingRule_no_,
                 basicFeePerChargeUnit           := 0,
                 roundingRuleForFee              := RoundingRule_no_,
-                basicFeePerChargeUnit           := 7.0,
+                basicFeePerChargeUnit           := 0,
                 vat                             := omit,
                 roundingRuleForVAT              := omit,
                 intervalScaleParameters         := omit,
@@ -603,7 +623,7 @@ module Common_Templates {
                         conversionRate        := 0
                     },
                     {
-                        alternativeCurrency   := 0,
+                        alternativeCurrency   := 1,
                         conversionRate        := 0
                     }
                 },
@@ -690,7 +710,7 @@ module Common_Templates {
                             vehicleClasses := {
                                 3 //acc. to EN 15509
                             },
-                            vehicleAxlesNumbers := omit,
+                            vehicleTrainAxlesNumbers := omit,
                             euroValues := omit
                         },
                         ordinalElements := {
@@ -698,19 +718,18 @@ module Common_Templates {
                             vehicleHeightOverall := omit,
                             vehicleWidthOverall := omit,
                             vehicleFirstAxleHeight := omit,
-                            vehicleAxlesNumber := omit,
+                            vehicleTractorAxlesNumber := omit,
+                            vehicleTrailerAxlesNumber := omit,
                             vehicleMaxLadenWeight := omit,
                             vehicleTrainMaximumWeight := omit,
                             vehicleWeightUnladen := omit,
                             vehicleWeightLaden := omit,
-                            euroValue := {
-                                {
-                                    lowerRange := noEntry,
-                                    upperRange := euro_2
-                                }
-                            },
+                            euroValue := omit,
                             copValue := omit,
-                            vehicleClass := omit
+                            vehicleClass := omit,
+                            co2EmissionValue := omit,
+                            dieselEmissionValue := omit,
+                            exhaustEmissionValue := omit
                         },
                         priorityValue := 0
                     },
@@ -720,7 +739,7 @@ module Common_Templates {
                             vehicleClasses := {
                                 3 //acc. to EN 15509
                             },
-                            vehicleAxlesNumbers := omit,
+                            vehicleTrainAxlesNumbers := omit,
                             euroValues := {
                                 euro_3
                             }
@@ -730,14 +749,18 @@ module Common_Templates {
                             vehicleHeightOverall := omit,
                             vehicleWidthOverall := omit,
                             vehicleFirstAxleHeight := omit,
-                            vehicleAxlesNumber := omit,
+                            vehicleTractorAxlesNumber := omit,
+                            vehicleTrailerAxlesNumber := omit,
                             vehicleMaxLadenWeight := omit,
                             vehicleTrainMaximumWeight := omit,
                             vehicleWeightUnladen := omit,
                             vehicleWeightLaden := omit,
                             euroValue := omit,
                             copValue := omit,
-                            vehicleClass := omit
+                            vehicleClass := omit,
+                            co2EmissionValue := omit,
+                            dieselEmissionValue := omit,
+                            exhaustEmissionValue := omit
                         },
                         priorityValue := omit
                     }
@@ -763,8 +786,8 @@ module Common_Templates {
                         ordinalElements := {
                             weekdays := {
                                 {
-                                    startDay := Weekday.monday,
-                                    endDay := Weekday.friday
+                                    startDay := Weekday_monday_,
+                                    endDay := Weekday_friday_
                                 }
                             },
                             absoluteTimeOfDay := {
@@ -910,13 +933,13 @@ module Common_Templates {
              * @see     Clause 8.3.5.1 EFC attribute ChargeReportingEvents
              */
             template (value) ChargeReportingEvents m_chargeReportingEvents_default := {
-                 applicablePartitions           := { 0 }, 
-                 absoluteTimeEvents := omit,
-                 relativeTimeEvents := omit,
-                 traveledDistanceEvents := omit,
-                 locationEvents := omit,
-                 feeLimitEvents := omit,
-                 chargeReportingEventsVersion := {
+                 applicablePartitions           := { 1 }, 
+                 absoluteTimeEvents             := omit,
+                 relativeTimeEvents             := omit,
+                 travelledDistanceEvents        := omit,
+                 locationEvents                 := omit,
+                 feeLimitEvents                 := omit,
+                 chargeReportingEventsVersion   := {
                     version := PX_VERSION_ID,
                     validFrom := PX_VALID_FROM
                  }
@@ -936,18 +959,18 @@ module Common_Templates {
              * @desc    This is the minimal form of awaited UsageStatement message
              * @see     ISO 17575-3:2016 Clause 7.6.2 UsageStatement
              */
-            template UsageStatement mw_usageStatement_default := {
+            template UsageStatement<Container> mw_usageStatement_default<Container> := {
                 usageStatementId                    := *,
-                regimeID                            := *,
+                tollContext                         := *,
+                chargeReportFinalRecipient          := *,
                 aggregatedFee                       := *,
-                vat                                 := *,
+                sumVat                              := *,
                 aggregatedSingleTariffClassSession  := *,
                 listOfChargeObjects                 := *,
-                listOfDSRCUsageData                 := *,
+                listOfDsrcUsageData                 := *,
                 listOfRawUsageData                  := *,
                 noUsage                             := *,
-                additionalUsageInformation          := *,
-                usageAuthenticator                  := *
+                additionalUsageInformation          := *
             } // End of template mw_usageStatement_default
             
         } // End of group Default_Contents
@@ -982,7 +1005,7 @@ module Common_Templates {
 
     group SecurityTemplates {
         
-        template (value) Optionally_Signed m_optionally_Signed_Unsecured <in type Payload> (
+        template (value) Optionally_Signed<Payload> m_optionally_Signed_Unsecured <in type Payload> (
                                                                                             in template (value) Payload p_unsigned_data
         ) := {
             unsigned_data := p_unsigned_data
