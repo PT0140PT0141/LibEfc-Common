@@ -144,8 +144,8 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              */
             template ChargeReport<Container> mw_chargeReport_default<Container> 
             modifies mw_chargeReport_any<Container> := {
-                obeId := ?, // Because of m_chargeReportContent_default.obeId is true
-                tollCharger := ? // Because of m_chargeReportContent_default.tollCharger is true
+                obeId       := ?, // Because of m_chargeReportContent_default.obeId is true
+                tollContext := ? // Because of m_chargeReportContent_default.tollCharger is true
             } // End of template mw_chargeReport_default
         } // End of group Common_Charging_ChargeReport
 
@@ -960,7 +960,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * @see     ISO 17575-3:2016 Clause 7.6.2 UsageStatement
              */
             template UsageStatement<Container> mw_usageStatement_default<Container> := {
-                usageStatementId                    := *,
+                usageStatementId                    := ?,
                 tollContext                         := *,
                 chargeReportFinalRecipient          := *,
                 aggregatedFee                       := *,
@@ -971,6 +971,16 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
                 listOfRawUsageData                  := *,
                 noUsage                             := *,
                 additionalUsageInformation          := *
+            } // End of template mw_usageStatement_default
+            
+            /**
+             * @desc    This is the minimal form of awaited UsageStatement message
+             * @see     ISO 17575-3:2016 Clause 7.6.2 UsageStatement
+             */
+            template UsageStatement<Container> mw_usageStatement_tollContext<Container> (
+                                                                                         in template (present) Provider p_tollContext := ?
+            ) modifies mw_usageStatement_default := {
+                tollContext                         := p_tollContext
             } // End of template mw_usageStatement_default
             
         } // End of group Default_Contents

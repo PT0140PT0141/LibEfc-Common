@@ -14,8 +14,9 @@ module Common_TypesAndValues {
     /**
      * @desc Identifier of the version of the ASN.1 data specification (version of ISO 17575) that is used in the application data units
      * @see  clause ISO 17575-3:2016(E) 6.3.1 Protocol versioning & Table 1 — Data elements of the ADU Header
+     * @see  clause ISO 17575-3:2016(E) Table 1 — Data elements of the ADU Header
      */
-    const AidIdentifier c_Iso17575_3AduHeader_protocolVersion := 0;
+    const AidIdentifier c_Iso17575_3AduHeader_protocolVersion := 1;
     
     /**
      * @desc    Error code for communication external functions

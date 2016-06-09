@@ -320,7 +320,7 @@ module Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Parameteriz
     }
     
     type union UsageStatement_ <in type Container> {
-        UsageStatement <Container>  usageStatement,
+        UsageStatement<Container>   usageStatement,
         AuthenticatedUsageStatement authenticatedUsageStatement
     }
     
