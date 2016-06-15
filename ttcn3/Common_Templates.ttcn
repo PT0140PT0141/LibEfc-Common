@@ -272,7 +272,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             template Iso17575_3Adu mw_Iso17575_3Adu 
             modifies mw_Iso17575_3Adu_default := {
                 aduBody := {
-                    tollContextOverview             := *,
+                    tollContextOverview             := ?,
                     tollContextPartitionOverview    := *,
                     tariffTable                     := *,
                     currencyConversionTable         := *,
@@ -292,24 +292,21 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 3: Context data - Clause 7 ISO 17575-3 ADU and Annex C.1.1: General structure of Context Data - Table C.6
              * @remark  All receive templates shall modify this one
              */
-            template (present) Iso17575_3Adu mw_Iso17575_3Adu_TollCharger_ContextId_default(
-                                                                                            in template (present) Provider p_tollCharger := ?, 
-                                                                                            in template (present) ContextId p_contextId := ?
+            template (present) Iso17575_3Adu mw_Iso17575_3Adu_TollContext_default(
+                                                                                  in template (present) Provider p_tollContext := ?
             ) modifies mw_Iso17575_3Adu := {
-                aduHeader := mw_aduHeader_TollCharger_ContextId(p_tollCharger, p_contextId)      // See clause 7.2 ADU header
-            } // End of template mw_Iso17575_3Adu_TollCharger_ContextId_default
+                aduHeader := mw_aduHeader_TollContext(p_tollContext)      // See clause 7.2 ADU header
+            } // End of template mw_Iso17575_3Adu_TollContext_default
             
             /**
              * @desc    Verify structure of sent Iso17575-3Adu(s),and allowed values of all data elements according to Table C.6: General Structure of Context Data
              * @param   p_tollCharger Provider value to match
-             * @param   p_contextId Contect ID to match
              * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 3: Context data - Clause 7 ISO 17575-3 ADU and Annex C.1.1: General structure of Context Data - Table C.6
              * @remark  All receive templates shall modify this one
              */
-            template (present) Iso17575_3Adu mw_Iso17575_3Adu_TollCharger_ContextId(
-                                                                                            in template (present) Provider p_tollCharger := ?, 
-                                                                                            in template (present) ContextId p_contextId := ?
-            ) := mw_Iso17575_3Adu_TollCharger_ContextId_default(p_tollCharger, p_contextId); // End of template mw_Iso17575_3Adu_TollCharger_ContextId
+            template (present) Iso17575_3Adu mw_Iso17575_3Adu_TollContext(
+                                                                          in template (present) Provider p_tollContext := ?
+            ) := mw_Iso17575_3Adu_TollContext_default(p_tollContext); // End of template mw_Iso17575_3Adu_TollContext
            
             /**
              * @desc    Main receive template for any ADU header
@@ -332,13 +329,11 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 3: Context data - Clause 7.2 ADU Header - Table 1: Data elements of the ADU Header
              * @remark  All receive templates shall modify this one
              */
-            template (present) Iso17575_3AduHeader mw_aduHeader_TollCharger_ContextId( // FIXME To be renamed
-                                                                                      in template (present) Provider p_tollContext := ?, 
-                                                                                      in template (present) ContextId p_contextId := ?
+            template (present) Iso17575_3AduHeader mw_aduHeader_TollContext( 
+                                                                            in template (present) Provider p_tollContext := ?
             ) modifies mw_aduHeader_any := { 
-                tollContext := p_tollContext,
-                contextId := p_contextId // FIXME To be removed
-            } // End of template mw_aduHeader_TollCharger_ContextId
+                tollContext := p_tollContext
+            } // End of template mw_aduHeader_TollContext
             
             /**
              * @desc    Default template for ADU header
@@ -1005,7 +1000,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
                 timeClassDefinition             := m_optionally_Signed_Unsecured(m_timeClassDefinition_default),
                 userClassDefinition             := m_optionally_Signed_Unsecured(m_userClassDefinition_default),
                 tollContextLayout               := m_optionally_Signed_Unsecured(m_tollContextPartitionLayout_default),
-                chargeReportingEvents           := m_optionally_Signed_Unsecured(m_tollContextPartitionLayout_default),
+                chargeReportingEvents           := m_optionally_Signed_Unsecured(m_chargeReportingEvents_default),
                 chargeReportConfiguration       := m_optionally_Signed_Unsecured(m_chargeReportConfiguration_default)
             } // End of template m_ContextData_default
             
@@ -1015,8 +1010,14 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
 
     group SecurityTemplates {
         
-        template (value) Optionally_Signed<Payload> m_optionally_Signed_Unsecured <in type Payload> (
-                                                                                            in template (value) Payload p_unsigned_data
+        template (value) Optionally_Signed<Payload> m_optionally_Signed_Unsecured<in type Payload> (
+                                                                                                    in template (value) Payload p_unsigned_data
+        ) := {
+            unsigned_data := p_unsigned_data
+        } // End of template m_optionally_Signed_Unsecured
+        
+        template (present) Optionally_Signed<Payload> mw_optionally_Signed_Unsecured<in type Payload> (
+                                                                                                       template (present) Payload p_unsigned_data := ?
         ) := {
             unsigned_data := p_unsigned_data
         } // End of template m_optionally_Signed_Unsecured

@@ -146,6 +146,18 @@ module Common_Functions language "TTCN-3:2010 Advanced Parameterization" {
             return fx_secured_packet(p_Iso17575_3Adu, p_AuthenticatedIso17575_3Adu); // FIXME To be refined
         }
         
+        function f_extract_Iso17575(
+                                    in template (value) AuthenticatedIso17575_3Adu p_authenticatedIso17575_3Adu, 
+                                    out Iso17575_3Adu p_iso17575_3AduValue
+        ) runs on EutComp return boolean {
+            if (fx_verify_packet(bit2oct(p_authenticatedIso17575_3Adu.iso17575_3AduPer), p_authenticatedIso17575_3Adu.messageAuthenticator) == true) {
+                decvalue(p_authenticatedIso17575_3Adu.iso17575_3AduPer, p_iso17575_3AduValue);
+                return true;
+            }
+            
+            return false;
+        }
+        
         function f_extract_ChargeReport <in type Container> (
                                                              in template (value) AuthenticatedChargeReport p_authenticatedChargeReport, 
                                                              out ChargeReport <Container> p_chargeReportValue
@@ -430,19 +442,6 @@ module Common_Functions language "TTCN-3:2010 Advanced Parameterization" {
              */
             const charstring cmdTrigger := "Raise";
         } // End of group Commands
-        
-        /**
-         * @desc    Defines UpperTester commands
-         */
-        group Arguments {
-            /**
-             * @desc    Check the Communication System [TS 17575-2]
-             */
-            const ParameterList checkCommunicationSystem := {
-                "CommunicationSystem", "[TS 17575-2]",    // { Params=value }
-                "", ""
-            };
-        } // End of group Arguments
         
         group UserActions {
             /**
