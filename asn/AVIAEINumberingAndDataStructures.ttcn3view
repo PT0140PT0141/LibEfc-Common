@@ -4,8 +4,8 @@
  *  PLEASE DO NOT EDIT! The file will be overwritten when the input file changes.
  *
  *  Source:    AVIAEINumberingAndDataStructures.asn
- *  Generator: TTworkbench ASN.1 Parser 1.1.13.201605251730
- *  Date:      15/06/16 10:57
+ *  Generator: TTworkbench ASN.1 Parser 1.1.14.201606151123
+ *  Date:      12/07/16 10:57
  *
  * ----------------------------------------------------------------------------
  *  The ASN.1 to TTCN-3 is a proprietary mapping based on the ES 201 873-7 ETSI standard.
@@ -60,53 +60,29 @@ module AVIAEINumberingAndDataStructures language "ASN.1:1997" {
 
   type record CS5 {
     ASNAUX.VisibleString vin,
-    _0CS5 fill
+    bitstring fill length (9)
   }
-
-  type bitstring _0CS5 length (9); 
 
   type FreightContainerData CS7; 
 
   type record FreightContainerData {
-    _0FreightContainerData ownerCode,
-    _0FreightContainerData0 serialNumber,
-    _0FreightContainerData1 checkDigit,
-    _0FreightContainerData2 length_,
-    _0FreightContainerData3 height,
-    _0FreightContainerData4 width,
-    _0FreightContainerData5 containerTypeCode,
-    _0FreightContainerData6 maximumGrossMass,
-    _0FreightContainerData7 tareMass,
-    _0FreightContainerData8 fill
+    bitstring ownerCode length (19),
+    integer serialNumber (0 .. 1000000),
+    integer checkDigit (0 .. 10),
+    integer length_ (1 .. 2000),
+    integer height (1 .. 500),
+    integer width (200 .. 300),
+    integer containerTypeCode (0 .. 127),
+    integer maximumGrossMass (19 .. 500),
+    integer tareMass (0 .. 99),
+    bitstring fill length (3)
   }
-
-  type integer _0FreightContainerData0 (0 .. 1000000); 
-
-  type integer _0FreightContainerData7 (0 .. 99); 
-
-  type bitstring _0FreightContainerData length (19); 
-
-  type bitstring _0FreightContainerData8 length (3); 
-
-  type integer _0FreightContainerData5 (0 .. 127); 
-
-  type integer _0FreightContainerData6 (19 .. 500); 
-
-  type integer _0FreightContainerData3 (1 .. 500); 
-
-  type integer _0FreightContainerData4 (200 .. 300); 
-
-  type integer _0FreightContainerData1 (0 .. 10); 
-
-  type integer _0FreightContainerData2 (1 .. 2000); 
 
   type record CS8 {
     CountryCode countryCode,
     TaxCode taxCode,
-    _0CS8 fill
+    bitstring fill length (6)
   }
-
-  type bitstring _0CS8 length (6); 
 
   type bitstring CountryCode length (10); 
 
@@ -122,29 +98,29 @@ module AVIAEINumberingAndDataStructures language "ASN.1:1997" {
 
   type integer AlphabetIndicator (0 .. 63); 
 
-  const AlphabetIndicator AlphabetIndicator_latinGreekAlphabet_ := 6; 
+  const integer AlphabetIndicator_latinAlphabetNo1_ := 0; 
 
-  const AlphabetIndicator AlphabetIndicator_latinHebrewAlphabet_ := 7; 
+  const integer AlphabetIndicator_latinAlphabetNo2_ := 1; 
 
-  const AlphabetIndicator AlphabetIndicator_latinArabicAlphabet_ := 5; 
+  const integer AlphabetIndicator_latinAlphabetNo3_ := 2; 
 
-  const AlphabetIndicator AlphabetIndicator_latinAlphabetNo6_ := 9; 
+  const integer AlphabetIndicator_latinAlphabetNo4_ := 3; 
 
-  const AlphabetIndicator AlphabetIndicator_latinAlphabetNo5_ := 8; 
+  const integer AlphabetIndicator_latinCyrillicAlphabet_ := 4; 
 
-  const AlphabetIndicator AlphabetIndicator_latinAlphabetNo4_ := 3; 
+  const integer AlphabetIndicator_latinArabicAlphabet_ := 5; 
 
-  const AlphabetIndicator AlphabetIndicator_latinAlphabetNo3_ := 2; 
+  const integer AlphabetIndicator_latinGreekAlphabet_ := 6; 
 
-  const AlphabetIndicator AlphabetIndicator_latinAlphabetNo2_ := 1; 
+  const integer AlphabetIndicator_latinHebrewAlphabet_ := 7; 
 
-  const AlphabetIndicator AlphabetIndicator_latinAlphabetNo1_ := 0; 
+  const integer AlphabetIndicator_latinAlphabetNo5_ := 8; 
 
-  const AlphabetIndicator AlphabetIndicator_twoOctetBMP_ := 10; 
+  const integer AlphabetIndicator_latinAlphabetNo6_ := 9; 
 
-  const AlphabetIndicator AlphabetIndicator_latinCyrillicAlphabet_ := 4; 
+  const integer AlphabetIndicator_twoOctetBMP_ := 10; 
 
-  const AlphabetIndicator AlphabetIndicator_fourOctetCanonical_ := 11; 
+  const integer AlphabetIndicator_fourOctetCanonical_ := 11; 
 
   type octetstring AviEriDateTime length (10); 
 
@@ -154,37 +130,37 @@ module AVIAEINumberingAndDataStructures language "ASN.1:1997" {
 
   type bitstring GeoGraphicalLimit length (8); 
 
-  const GeoGraphicalLimit GeoGraphicalLimit_district_ := '00010000'B; 
+  const bitstring GeoGraphicalLimit_globalRestriction_ := '10000000'B; 
 
-  const GeoGraphicalLimit GeoGraphicalLimit_nationalRestriction_ := '00100000'B; 
+  const bitstring GeoGraphicalLimit_regionalRestriction_ := '01000000'B; 
 
-  const GeoGraphicalLimit GeoGraphicalLimit_reservedForCEN1_ := '00000100'B; 
+  const bitstring GeoGraphicalLimit_nationalRestriction_ := '00100000'B; 
 
-  const GeoGraphicalLimit GeoGraphicalLimit_reservedForCEN2_ := '00000010'B; 
+  const bitstring GeoGraphicalLimit_district_ := '00010000'B; 
 
-  const GeoGraphicalLimit GeoGraphicalLimit_globalRestriction_ := '10000000'B; 
+  const bitstring GeoGraphicalLimit_issuerCoverageRestriction_ := '00001000'B; 
 
-  const GeoGraphicalLimit GeoGraphicalLimit_regionalRestriction_ := '01000000'B; 
+  const bitstring GeoGraphicalLimit_reservedForCEN1_ := '00000100'B; 
 
-  const GeoGraphicalLimit GeoGraphicalLimit_issuerCoverageRestriction_ := '00001000'B; 
+  const bitstring GeoGraphicalLimit_reservedForCEN2_ := '00000010'B; 
 
-  const GeoGraphicalLimit GeoGraphicalLimit_issuerSpecificRestriction_ := '00000001'B; 
+  const bitstring GeoGraphicalLimit_issuerSpecificRestriction_ := '00000001'B; 
 
   type bitstring ServiceApplicationLimit length (8); 
 
-  const ServiceApplicationLimit ServiceApplicationLimit_issuerSpecificRestriction2_ := '00000100'B; 
+  const bitstring ServiceApplicationLimit_notForPostpayment_ := '10000000'B; 
 
-  const ServiceApplicationLimit ServiceApplicationLimit_issuerSpecificRestriction3_ := '00000010'B; 
+  const bitstring ServiceApplicationLimit_notForPrepayment_ := '01000000'B; 
 
-  const ServiceApplicationLimit ServiceApplicationLimit_issuerSpecificRestriction4_ := '00000001'B; 
+  const bitstring ServiceApplicationLimit_notForVehicleaccess_ := '00100000'B; 
 
-  const ServiceApplicationLimit ServiceApplicationLimit_notForPostpayment_ := '10000000'B; 
+  const bitstring ServiceApplicationLimit_notForFleetcontrol_ := '00010000'B; 
 
-  const ServiceApplicationLimit ServiceApplicationLimit_notForPrepayment_ := '01000000'B; 
+  const bitstring ServiceApplicationLimit_issuerSpecificRestriction1_ := '00001000'B; 
 
-  const ServiceApplicationLimit ServiceApplicationLimit_notForVehicleaccess_ := '00100000'B; 
+  const bitstring ServiceApplicationLimit_issuerSpecificRestriction2_ := '00000100'B; 
 
-  const ServiceApplicationLimit ServiceApplicationLimit_notForFleetcontrol_ := '00010000'B; 
+  const bitstring ServiceApplicationLimit_issuerSpecificRestriction3_ := '00000010'B; 
 
-  const ServiceApplicationLimit ServiceApplicationLimit_issuerSpecificRestriction1_ := '00001000'B; 
+  const bitstring ServiceApplicationLimit_issuerSpecificRestriction4_ := '00000001'B; 
 }

@@ -4,8 +4,8 @@
  *  PLEASE DO NOT EDIT! The file will be overwritten when the input file changes.
  *
  *  Source:    EfcDsrcGeneric.asn
- *  Generator: TTworkbench ASN.1 Parser 1.1.13.201605251730
- *  Date:      15/06/16 10:57
+ *  Generator: TTworkbench ASN.1 Parser 1.1.14.201606151123
+ *  Date:      12/07/16 10:57
  *
  * ----------------------------------------------------------------------------
  *  The ASN.1 to TTCN-3 is a proprietary mapping based on the ES 201 873-7 ETSI standard.
@@ -46,31 +46,20 @@ module EfcDsrcGeneric language "ASN.1:1997" {
   type record length (
     0 .. 127, 
     ?
-  ) of _0AttributeIdList AttributeIdList; 
-
-  type integer _0AttributeIdList (
-    0 .. 127, 
-    ?
-  ); 
+  ) of integer AttributeIdList; 
 
   type record BeaconID {
-    _0BeaconID manufacturerid,
-    _0BeaconID0 individualid
+    integer manufacturerid (0 .. 65535),
+    integer individualid (0 .. 134217727)
   }
-
-  type integer _0BeaconID (0 .. 65535); 
-
-  type integer _0BeaconID0 (0 .. 134217727); 
 
   type record BroadcastPool {
     Directory directoryvalue,
-    _0BroadcastPool content
+    record length (
+      0 .. 127, 
+      ?
+    ) of File content
   }
-
-  type record length (
-    0 .. 127, 
-    ?
-  ) of File _0BroadcastPool; 
 
   type ASNAUX.TYPENULL FileType; 
 
@@ -89,59 +78,57 @@ module EfcDsrcGeneric language "ASN.1:1997" {
     ?
   ); 
 
-  const DSRCApplicationEntityID DSRCApplicationEntityID_traffic_control_ := 5; 
+  const integer DSRCApplicationEntityID_system_ := 0; 
 
-  const DSRCApplicationEntityID DSRCApplicationEntityID_private_ := 13; 
+  const integer DSRCApplicationEntityID_electronic_fee_collection_ := 1; 
 
-  const DSRCApplicationEntityID DSRCApplicationEntityID_freight_fleet_management_ := 2; 
+  const integer DSRCApplicationEntityID_freight_fleet_management_ := 2; 
 
-  const DSRCApplicationEntityID DSRCApplicationEntityID_ccc_ := 20; 
+  const integer DSRCApplicationEntityID_public_transport_ := 3; 
 
-  const DSRCApplicationEntityID DSRCApplicationEntityID_system_ := 0; 
+  const integer DSRCApplicationEntityID_traffic_traveller_information_ := 4; 
 
-  const DSRCApplicationEntityID DSRCApplicationEntityID_electronic_fee_collection_ := 1; 
+  const integer DSRCApplicationEntityID_traffic_control_ := 5; 
 
-  const DSRCApplicationEntityID DSRCApplicationEntityID_after_theft_systems_ := 16; 
+  const integer DSRCApplicationEntityID_parking_management_ := 6; 
 
-  const DSRCApplicationEntityID DSRCApplicationEntityID_intersystem_interface_ := 10; 
+  const integer DSRCApplicationEntityID_geographic_road_database_ := 7; 
 
-  const DSRCApplicationEntityID DSRCApplicationEntityID_multi_purpose_payment_ := 14; 
+  const integer DSRCApplicationEntityID_medium_range_preinformation_ := 8; 
 
-  const DSRCApplicationEntityID DSRCApplicationEntityID_lac_ := 21; 
+  const integer DSRCApplicationEntityID_man_machine_interface_ := 9; 
 
-  const DSRCApplicationEntityID DSRCApplicationEntityID_parking_management_ := 6; 
+  const integer DSRCApplicationEntityID_intersystem_interface_ := 10; 
 
-  const DSRCApplicationEntityID DSRCApplicationEntityID_emergency_warning_ := 12; 
+  const integer DSRCApplicationEntityID_automatic_vehicle_identification_ := 11; 
 
-  const DSRCApplicationEntityID DSRCApplicationEntityID_public_transport_ := 3; 
+  const integer DSRCApplicationEntityID_emergency_warning_ := 12; 
 
-  const DSRCApplicationEntityID DSRCApplicationEntityID_medium_range_preinformation_ := 8; 
+  const integer DSRCApplicationEntityID_private_ := 13; 
 
-  const DSRCApplicationEntityID DSRCApplicationEntityID_traffic_traveller_information_ := 4; 
+  const integer DSRCApplicationEntityID_multi_purpose_payment_ := 14; 
 
-  const DSRCApplicationEntityID DSRCApplicationEntityID_dsrc_resource_manager_ := 15; 
+  const integer DSRCApplicationEntityID_dsrc_resource_manager_ := 15; 
 
-  const DSRCApplicationEntityID DSRCApplicationEntityID_man_machine_interface_ := 9; 
+  const integer DSRCApplicationEntityID_after_theft_systems_ := 16; 
 
-  const DSRCApplicationEntityID DSRCApplicationEntityID_geographic_road_database_ := 7; 
+  const integer DSRCApplicationEntityID_ccc_ := 20; 
 
-  const DSRCApplicationEntityID DSRCApplicationEntityID_automatic_vehicle_identification_ := 11; 
+  const integer DSRCApplicationEntityID_lac_ := 21; 
 
   type record Event_Report_Response {
-    _0Event_Report_Response fill,
+    bitstring fill length (2),
     Dsrc_EID eid,
     Dsrc_EID iid optional,
     ReturnStatus ret optional
   }
-
-  type bitstring _0Event_Report_Response length (2); 
 
   type integer EventType (
     0 .. 127, 
     ?
   ); 
 
-  const EventType EventType_release_ := 0; 
+  const integer EventType_release_ := 0; 
 
   type record length (
     0 .. 127, 
@@ -150,49 +137,37 @@ module EfcDsrcGeneric language "ASN.1:1997" {
 
   type record FileName {
     Dsrc_EID aseID,
-    _0FileName fileID
+    integer fileID (
+      0 .. 127, 
+      ?
+    )
   }
 
-  type integer _0FileName (
-    0 .. 127, 
-    ?
-  ); 
-
   type record Get_Request {
-    _0Get_Request fill,
+    bitstring fill length (1),
     Dsrc_EID eid,
-    _0Get_Request0 accessCredentials optional,
+    octetstring accessCredentials length (
+      0 .. 127, 
+      ?
+    ) optional,
     Dsrc_EID iid optional,
     AttributeIdList attrIdList optional
   }
 
-  type bitstring _0Get_Request length (1); 
-
-  type octetstring _0Get_Request0 length (
-    0 .. 127, 
-    ?
-  ); 
-
   type record ObeConfiguration {
-    _0ObeConfiguration equipmentClass,
-    _0ObeConfiguration0 manufacturerID,
-    _0ObeConfiguration1 obeStatus optional
+    integer equipmentClass (0 .. 32767),
+    integer manufacturerID (0 .. 65535),
+    integer obeStatus (0 .. 65535) optional
   }
-
-  type integer _0ObeConfiguration0 (0 .. 65535); 
-
-  type integer _0ObeConfiguration (0 .. 32767); 
-
-  type integer _0ObeConfiguration1 (0 .. 65535); 
 
   type integer Profile (
     0 .. 127, 
     ?
   ); 
 
-  const Profile Profile_profile1_ := 1; 
+  const integer Profile_profile0_ := 0; 
 
-  const Profile Profile_profile0_ := 0; 
+  const integer Profile_profile1_ := 1; 
 
   type union Record {
     ASNAUX.VisibleString simple
@@ -203,28 +178,26 @@ module EfcDsrcGeneric language "ASN.1:1997" {
     ?
   ); 
 
-  const ReturnStatus ReturnStatus_processingFailure_ := 4; 
+  const integer ReturnStatus_noError_ := 0; 
 
-  const ReturnStatus ReturnStatus_chainingError_ := 6; 
+  const integer ReturnStatus_accessDenied_ := 1; 
 
-  const ReturnStatus ReturnStatus_complexityLimitation_ := 3; 
+  const integer ReturnStatus_argumentError_ := 2; 
 
-  const ReturnStatus ReturnStatus_argumentError_ := 2; 
+  const integer ReturnStatus_complexityLimitation_ := 3; 
 
-  const ReturnStatus ReturnStatus_accessDenied_ := 1; 
+  const integer ReturnStatus_processingFailure_ := 4; 
 
-  const ReturnStatus ReturnStatus_noError_ := 0; 
+  const integer ReturnStatus_processing_ := 5; 
 
-  const ReturnStatus ReturnStatus_processing_ := 5; 
+  const integer ReturnStatus_chainingError_ := 6; 
 
   type record Set_Response {
-    _0Set_Response fill,
+    bitstring fill length (2),
     Dsrc_EID eid,
     Dsrc_EID iid optional,
     ReturnStatus ret optional
   }
-
-  type bitstring _0Set_Response length (2); 
 
   type integer Time (0 .. 4294967295); 
 }

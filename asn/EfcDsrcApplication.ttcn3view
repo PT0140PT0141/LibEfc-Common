@@ -4,8 +4,8 @@
  *  PLEASE DO NOT EDIT! The file will be overwritten when the input file changes.
  *
  *  Source:    EfcDsrcApplication.asn
- *  Generator: TTworkbench ASN.1 Parser 1.1.13.201605251730
- *  Date:      15/06/16 10:57
+ *  Generator: TTworkbench ASN.1 Parser 1.1.14.201606151123
+ *  Date:      12/07/16 10:57
  *
  * ----------------------------------------------------------------------------
  *  The ASN.1 to TTCN-3 is a proprietary mapping based on the ES 201 873-7 ETSI standard.
@@ -49,50 +49,48 @@ module EfcDsrcApplication language "ASN.1:1997" {
   }
 
   type record AddRq {
-    _0AddRq attributeId,
+    integer attributeId (
+      0 .. 127, 
+      ?
+    ),
     integer value_
   }
 
-  type integer _0AddRq (
-    0 .. 127, 
-    ?
-  ); 
-
   type integer ChannelId (0 .. 255); 
 
-  const ChannelId ChannelId_buzzer_ := 5; 
+  const integer ChannelId_obu_ := 0; 
 
-  const ChannelId ChannelId_tachograph_ := 10; 
+  const integer ChannelId_sam1_ := 1; 
 
-  const ChannelId ChannelId_icc_ := 3; 
+  const integer ChannelId_sam2_ := 2; 
 
-  const ChannelId ChannelId_gPS_ := 9; 
+  const integer ChannelId_icc_ := 3; 
 
-  const ChannelId ChannelId_privateUse3_ := 13; 
+  const integer ChannelId_display_ := 4; 
 
-  const ChannelId ChannelId_sam2_ := 2; 
+  const integer ChannelId_buzzer_ := 5; 
 
-  const ChannelId ChannelId_display_ := 4; 
+  const integer ChannelId_printer_ := 6; 
 
-  const ChannelId ChannelId_privateUse4_ := 14; 
+  const integer ChannelId_serialInterface_ := 7; 
 
-  const ChannelId ChannelId_privateUse1_ := 11; 
+  const integer ChannelId_parallelInterface_ := 8; 
 
-  const ChannelId ChannelId_privateUse2_ := 12; 
+  const integer ChannelId_gPS_ := 9; 
 
-  const ChannelId ChannelId_sam1_ := 1; 
+  const integer ChannelId_tachograph_ := 10; 
 
-  const ChannelId ChannelId_bluetooth_ := 16; 
+  const integer ChannelId_privateUse1_ := 11; 
 
-  const ChannelId ChannelId_printer_ := 6; 
+  const integer ChannelId_privateUse2_ := 12; 
 
-  const ChannelId ChannelId_privateUse5_ := 15; 
+  const integer ChannelId_privateUse3_ := 13; 
 
-  const ChannelId ChannelId_obu_ := 0; 
+  const integer ChannelId_privateUse4_ := 14; 
 
-  const ChannelId ChannelId_serialInterface_ := 7; 
+  const integer ChannelId_privateUse5_ := 15; 
 
-  const ChannelId ChannelId_parallelInterface_ := 8; 
+  const integer ChannelId_bluetooth_ := 16; 
 
   type record ChannelRq {
     ChannelId channelId,
@@ -105,22 +103,18 @@ module EfcDsrcApplication language "ASN.1:1997" {
   }
 
   type record CopyRq {
-    _0CopyRq destinationEID,
+    integer destinationEID (
+      0 .. 127, 
+      ?
+    ),
     EfcDsrcGeneric.AttributeIdList attributeIdList
   }
-
-  type integer _0CopyRq (
-    0 .. 127, 
-    ?
-  ); 
 
   type record CreditRq {
     PaymentFee refund,
     octetstring nonce,
-    _0CreditRq key
+    integer key (0 .. 255)
   }
-
-  type integer _0CreditRq (0 .. 255); 
 
   type record CreditRs {
     ResultFin creditResult,
@@ -130,10 +124,8 @@ module EfcDsrcApplication language "ASN.1:1997" {
   type record DebitRq {
     PaymentFee debitPaymentFee,
     octetstring nonce,
-    _0DebitRq keyRef
+    integer keyRef (0 .. 255)
   }
-
-  type integer _0DebitRq (0 .. 255); 
 
   type record DebitRs {
     ResultFin debitResult,
@@ -141,42 +133,34 @@ module EfcDsrcApplication language "ASN.1:1997" {
   }
 
   type record GetInstanceRq {
-    _0GetInstanceRq posOfFirstInstance,
-    _0GetInstanceRq0 posOfLastInstance,
+    integer posOfFirstInstance (0 .. 255),
+    integer posOfLastInstance (0 .. 255),
     EfcDsrcGeneric.AttributeIdList attributeIdList
   }
-
-  type integer _0GetInstanceRq (0 .. 255); 
-
-  type integer _0GetInstanceRq0 (0 .. 255); 
 
   type record GetStampedRq {
     EfcDsrcGeneric.AttributeIdList attributeIdList,
     octetstring nonce,
-    _0GetStampedRq keyRef
+    integer keyRef (0 .. 255)
   }
-
-  type integer _0GetStampedRq (0 .. 255); 
 
   type integer SetMMIRq (0 .. 255); 
 
-  const SetMMIRq SetMMIRq_ok_ := 0; 
+  const integer SetMMIRq_ok_ := 0; 
 
-  const SetMMIRq SetMMIRq_contactOperator_ := 2; 
+  const integer SetMMIRq_nok_ := 1; 
 
-  const SetMMIRq SetMMIRq_nok_ := 1; 
+  const integer SetMMIRq_contactOperator_ := 2; 
 
-  const SetMMIRq SetMMIRq_noSignalling_ := 255; 
+  const integer SetMMIRq_noSignalling_ := 255; 
 
   type record SubRq {
-    _0SubRq attributeId,
+    integer attributeId (
+      0 .. 127, 
+      ?
+    ),
     integer value_
   }
-
-  type integer _0SubRq (
-    0 .. 127, 
-    ?
-  ); 
 
   type Int2 CO2EmissionValue; 
 
@@ -185,141 +169,129 @@ module EfcDsrcApplication language "ASN.1:1997" {
   type octetstring ContractAuthenticator; 
 
   type record ContractValidity {
-    _0ContractValidity contractRestrictions,
+    octetstring contractRestrictions length (4),
     DateCompact contractExpiryDate
   }
-
-  type octetstring _0ContractValidity length (4); 
 
   type LPN ContractVehicle; 
 
   type record DateCompact {
-    _0DateCompact year,
-    _0DateCompact0 month,
-    _0DateCompact1 day
+    integer year (1990 .. 2117),
+    integer month (0 .. 12),
+    integer day (0 .. 31)
   }
-
-  type integer _0DateCompact0 (0 .. 12); 
-
-  type integer _0DateCompact1 (0 .. 31); 
-
-  type integer _0DateCompact (1990 .. 2117); 
 
   type integer DescriptiveCharacteristics (0 .. 255); 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape50_ := 50; 
+  const integer DescriptiveCharacteristics_noEntry_ := 0; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape30_ := 30; 
+  const integer DescriptiveCharacteristics_vehicleShape1_ := 1; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape10_ := 10; 
+  const integer DescriptiveCharacteristics_vehicleShape2_ := 2; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape42_ := 42; 
+  const integer DescriptiveCharacteristics_vehicleShape3_ := 3; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape34_ := 34; 
+  const integer DescriptiveCharacteristics_vehicleShape4_ := 4; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape22_ := 22; 
+  const integer DescriptiveCharacteristics_vehicleShape5_ := 5; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape14_ := 14; 
+  const integer DescriptiveCharacteristics_vehicleShape6_ := 6; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape46_ := 46; 
+  const integer DescriptiveCharacteristics_vehicleShape7_ := 7; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape38_ := 38; 
+  const integer DescriptiveCharacteristics_vehicleShape8_ := 8; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape26_ := 26; 
+  const integer DescriptiveCharacteristics_vehicleShape9_ := 9; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape18_ := 18; 
+  const integer DescriptiveCharacteristics_vehicleShape10_ := 10; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape3_ := 3; 
+  const integer DescriptiveCharacteristics_vehicleShape11_ := 11; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape7_ := 7; 
+  const integer DescriptiveCharacteristics_vehicleShape12_ := 12; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape43_ := 43; 
+  const integer DescriptiveCharacteristics_vehicleShape13_ := 13; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape31_ := 31; 
+  const integer DescriptiveCharacteristics_vehicleShape14_ := 14; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape23_ := 23; 
+  const integer DescriptiveCharacteristics_vehicleShape15_ := 15; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape11_ := 11; 
+  const integer DescriptiveCharacteristics_vehicleShape16_ := 16; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape8_ := 8; 
+  const integer DescriptiveCharacteristics_vehicleShape17_ := 17; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape47_ := 47; 
+  const integer DescriptiveCharacteristics_vehicleShape18_ := 18; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape35_ := 35; 
+  const integer DescriptiveCharacteristics_vehicleShape19_ := 19; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape27_ := 27; 
+  const integer DescriptiveCharacteristics_vehicleShape20_ := 20; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape15_ := 15; 
+  const integer DescriptiveCharacteristics_vehicleShape21_ := 21; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape39_ := 39; 
+  const integer DescriptiveCharacteristics_vehicleShape22_ := 22; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape19_ := 19; 
+  const integer DescriptiveCharacteristics_vehicleShape23_ := 23; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape4_ := 4; 
+  const integer DescriptiveCharacteristics_vehicleShape24_ := 24; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape40_ := 40; 
+  const integer DescriptiveCharacteristics_vehicleShape25_ := 25; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape32_ := 32; 
+  const integer DescriptiveCharacteristics_vehicleShape26_ := 26; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape20_ := 20; 
+  const integer DescriptiveCharacteristics_vehicleShape27_ := 27; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape12_ := 12; 
+  const integer DescriptiveCharacteristics_vehicleShape28_ := 28; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape44_ := 44; 
+  const integer DescriptiveCharacteristics_vehicleShape29_ := 29; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape36_ := 36; 
+  const integer DescriptiveCharacteristics_vehicleShape30_ := 30; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape9_ := 9; 
+  const integer DescriptiveCharacteristics_vehicleShape31_ := 31; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape24_ := 24; 
+  const integer DescriptiveCharacteristics_vehicleShape32_ := 32; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape16_ := 16; 
+  const integer DescriptiveCharacteristics_vehicleShape33_ := 33; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape48_ := 48; 
+  const integer DescriptiveCharacteristics_vehicleShape34_ := 34; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape28_ := 28; 
+  const integer DescriptiveCharacteristics_vehicleShape35_ := 35; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape1_ := 1; 
+  const integer DescriptiveCharacteristics_vehicleShape36_ := 36; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape5_ := 5; 
+  const integer DescriptiveCharacteristics_vehicleShape37_ := 37; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape41_ := 41; 
+  const integer DescriptiveCharacteristics_vehicleShape38_ := 38; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape21_ := 21; 
+  const integer DescriptiveCharacteristics_vehicleShape39_ := 39; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape45_ := 45; 
+  const integer DescriptiveCharacteristics_vehicleShape40_ := 40; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape33_ := 33; 
+  const integer DescriptiveCharacteristics_vehicleShape41_ := 41; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape25_ := 25; 
+  const integer DescriptiveCharacteristics_vehicleShape42_ := 42; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape13_ := 13; 
+  const integer DescriptiveCharacteristics_vehicleShape43_ := 43; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape49_ := 49; 
+  const integer DescriptiveCharacteristics_vehicleShape44_ := 44; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape37_ := 37; 
+  const integer DescriptiveCharacteristics_vehicleShape45_ := 45; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape29_ := 29; 
+  const integer DescriptiveCharacteristics_vehicleShape46_ := 46; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape17_ := 17; 
+  const integer DescriptiveCharacteristics_vehicleShape47_ := 47; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape2_ := 2; 
+  const integer DescriptiveCharacteristics_vehicleShape48_ := 48; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_vehicleShape6_ := 6; 
+  const integer DescriptiveCharacteristics_vehicleShape49_ := 49; 
 
-  const DescriptiveCharacteristics DescriptiveCharacteristics_noEntry_ := 0; 
+  const integer DescriptiveCharacteristics_vehicleShape50_ := 50; 
 
   type record DieselEmissionValues {
-    _0DieselEmissionValues particulate,
+    record {
+      UnitType unitType,
+      integer value_ (0 .. 32767)
+    } particulate,
     Int2 absorptionCoeff
   }
-
-  type record _0DieselEmissionValues {
-    UnitType unitType,
-    _0_0DieselEmissionValues value_
-  }
-
-  type integer _0_0DieselEmissionValues (0 .. 32767); 
 
   type record DriverCharacteristics {
     Int1 driverClass,
@@ -328,16 +300,12 @@ module EfcDsrcApplication language "ASN.1:1997" {
 
   type record EFC_ContextMark {
     Provider contractProvider,
-    _0EFC_ContextMark typeOfContract,
-    _0EFC_ContextMark0 contextVersion
+    octetstring typeOfContract length (2),
+    integer contextVersion (
+      0 .. 127, 
+      ?
+    )
   }
-
-  type octetstring _0EFC_ContextMark length (2); 
-
-  type integer _0EFC_ContextMark0 (
-    0 .. 127, 
-    ?
-  ); 
 
   type record EnvironmentalCharacteristics {
     EuroValue euroValue,
@@ -377,25 +345,25 @@ module EfcDsrcApplication language "ASN.1:1997" {
 
   type integer EngineCharacteristics (0 .. 255); 
 
-  const EngineCharacteristics EngineCharacteristics_noEngine_ := 1; 
+  const integer EngineCharacteristics_noEntry_ := 0; 
 
-  const EngineCharacteristics EngineCharacteristics_hydrogen_ := 9; 
+  const integer EngineCharacteristics_noEngine_ := 1; 
 
-  const EngineCharacteristics EngineCharacteristics_battery_ := 6; 
+  const integer EngineCharacteristics_petrolUnleaded_ := 2; 
 
-  const EngineCharacteristics EngineCharacteristics_noEntry_ := 0; 
+  const integer EngineCharacteristics_petrolLeaded_ := 3; 
 
-  const EngineCharacteristics EngineCharacteristics_petrolLeaded_ := 3; 
+  const integer EngineCharacteristics_diesel_ := 4; 
 
-  const EngineCharacteristics EngineCharacteristics_lPG_ := 5; 
+  const integer EngineCharacteristics_lPG_ := 5; 
 
-  const EngineCharacteristics EngineCharacteristics_hybrid_ := 8; 
+  const integer EngineCharacteristics_battery_ := 6; 
 
-  const EngineCharacteristics EngineCharacteristics_diesel_ := 4; 
+  const integer EngineCharacteristics_solar_ := 7; 
 
-  const EngineCharacteristics EngineCharacteristics_petrolUnleaded_ := 2; 
+  const integer EngineCharacteristics_hybrid_ := 8; 
 
-  const EngineCharacteristics EngineCharacteristics_solar_ := 7; 
+  const integer EngineCharacteristics_hydrogen_ := 9; 
 
   type record Engine {
     Int2 engineCapacity,
@@ -408,19 +376,17 @@ module EfcDsrcApplication language "ASN.1:1997" {
 
   type record ExhaustEmissionValues {
     UnitType unitType,
-    _0ExhaustEmissionValues emissionCO,
+    integer emissionCO (0 .. 32767),
     Int2 emissionHC,
     Int2 emissionNOX,
     Int2 emissionHCNOX
   }
 
-  type integer _0ExhaustEmissionValues (0 .. 32767); 
-
   type integer FutureCharacteristics (0 .. 255); 
 
-  const FutureCharacteristics FutureCharacteristics_airSuspension_ := 1; 
+  const integer FutureCharacteristics_noEntry_ := 0; 
 
-  const FutureCharacteristics FutureCharacteristics_noEntry_ := 0; 
+  const integer FutureCharacteristics_airSuspension_ := 1; 
 
   type octetstring ICC_Id; 
 
@@ -434,44 +400,42 @@ module EfcDsrcApplication language "ASN.1:1997" {
 
   type record LPN {
     AVIAEINumberingAndDataStructures.CountryCode countryCode,
-    _0LPN alphabetIndicator,
+    enumerated {
+      latinAlphabetNo1(1),
+      latinAlphabetNo2(2),
+      latinAlphabetNo3(3),
+      latinAlphabetNo4(4),
+      latinCyrillicAlphabet(5),
+      latinArabicAlphabet(6),
+      latinGreekAlphabet(7),
+      latinHebrewAlphabet(8),
+      latinAlphabetNo5(9),
+      latinAlphabetNo6(10),
+      twoOctetBMP(11),
+      fourOctetCanonical(12),
+      reservedForUse1(13),
+      reservedForUse2(14),
+      reservedForUse3(15),
+      reservedForUse4(16),
+      reservedForUse5(17),
+      reservedForUse6(18),
+      reservedForUse7(19),
+      reservedForUse8(20),
+      reservedForUse9(21),
+      reservedForUse10(22),
+      reservedForUse11(23),
+      reservedForUse12(24),
+      reservedForUse13(25),
+      reservedForUse14(26),
+      reservedForUse15(27),
+      reservedForUse16(28),
+      reservedForUse17(29),
+      reservedForUse18(30),
+      reservedForUse19(31),
+      reservedForUse20(32),
+      reservedForUse21(33)
+    } alphabetIndicator,
     octetstring licencePlateNumber
-  }
-
-  type enumerated _0LPN {
-    latinAlphabetNo1(1), 
-    latinAlphabetNo2(2), 
-    latinAlphabetNo3(3), 
-    latinAlphabetNo4(4), 
-    latinCyrillicAlphabet(5), 
-    latinArabicAlphabet(6), 
-    latinGreekAlphabet(7), 
-    latinHebrewAlphabet(8), 
-    latinAlphabetNo5(9), 
-    latinAlphabetNo6(10), 
-    twoOctetBMP(11), 
-    fourOctetCanonical(12), 
-    reservedForUse1(13), 
-    reservedForUse2(14), 
-    reservedForUse3(15), 
-    reservedForUse4(16), 
-    reservedForUse5(17), 
-    reservedForUse6(18), 
-    reservedForUse7(19), 
-    reservedForUse8(20), 
-    reservedForUse9(21), 
-    reservedForUse10(22), 
-    reservedForUse11(23), 
-    reservedForUse12(24), 
-    reservedForUse13(25), 
-    reservedForUse14(26), 
-    reservedForUse15(27), 
-    reservedForUse16(28), 
-    reservedForUse17(29), 
-    reservedForUse18(30), 
-    reservedForUse19(31), 
-    reservedForUse20(32), 
-    reservedForUse21(33)
   }
 
   type record PassengerCapacity {
@@ -487,21 +451,15 @@ module EfcDsrcApplication language "ASN.1:1997" {
   type record PaymentMeans {
     PersonalAccountNumber personalAccountNumber,
     DateCompact paymentMeansExpiryDate,
-    _0PaymentMeans pamentMeansUsageControl
+    octetstring pamentMeansUsageControl length (2)
   }
-
-  type octetstring _0PaymentMeans length (2); 
 
   type SignedValue PaymentMeansBalance; 
 
   type union SignedValue {
-    _0SignedValue positive,
-    _0SignedValue0 negative
+    integer positive (0 .. 8388607),
+    integer negative (-8388608 .. -1)
   }
-
-  type integer _0SignedValue (0 .. 8388607); 
-
-  type integer _0SignedValue0 (-8388608 .. -1); 
 
   type PayUnit PaymentMeansUnit; 
 
@@ -523,11 +481,9 @@ module EfcDsrcApplication language "ASN.1:1997" {
 
   type record ReceiptContract {
     Provider sessionContractProvider,
-    _0ReceiptContract sessionTypeOfContract,
+    octetstring sessionTypeOfContract length (2),
     Int4 sessionContractSerialNumber
   }
-
-  type octetstring _0ReceiptContract length (2); 
 
   type ReceiptData ReceiptData1; 
 
@@ -544,19 +500,13 @@ module EfcDsrcApplication language "ASN.1:1997" {
     Int1 sessionClaimedClass,
     PaymentFee sessionFee,
     Provider sessionContractProvider,
-    _0ReceiptData sessionTypeOfContract,
-    _0ReceiptData0 sessionContextVersion,
-    _0ReceiptData1 receiptDataAuthenticator
+    octetstring sessionTypeOfContract length (2),
+    integer sessionContextVersion (
+      0 .. 127, 
+      ?
+    ),
+    octetstring receiptDataAuthenticator length (4)
   }
-
-  type integer _0ReceiptData0 (
-    0 .. 127, 
-    ?
-  ); 
-
-  type octetstring _0ReceiptData length (2); 
-
-  type octetstring _0ReceiptData1 length (4); 
 
   type Int3 ReceiptDistance; 
 
@@ -574,16 +524,12 @@ module EfcDsrcApplication language "ASN.1:1997" {
   type record ReceiptServicePart {
     DateAndTime sessionTime,
     Provider sessionServiceProvider,
-    _0ReceiptServicePart stationLocation,
-    _0ReceiptServicePart0 sessionLocation,
+    integer stationLocation (0 .. 1048575),
+    bitstring sessionLocation length (8),
     StationType typeOfSession,
     ResultOp sessionResultOperational,
     ResultFin sessionResultFinancial
   }
-
-  type integer _0ReceiptServicePart (0 .. 1048575); 
-
-  type bitstring _0ReceiptServicePart0 length (8); 
 
   type Int3 ReceiptServiceSerialNumber; 
 
@@ -595,57 +541,57 @@ module EfcDsrcApplication language "ASN.1:1997" {
 
   type integer ResultOp (0 .. 255); 
 
-  const ResultOp ResultOp_vehicleClassAuthenticationFailed_ := 9; 
+  const integer ResultOp_correctTransaction_ := 0; 
 
-  const ResultOp ResultOp_entryReceiptNotValid_ := 12; 
+  const integer ResultOp_obeStatusNotAccepted_ := 1; 
 
-  const ResultOp ResultOp_contractAuthenticatorNotAccepted_ := 17; 
+  const integer ResultOp_equipmentStatusNotAccepted_ := 2; 
 
-  const ResultOp ResultOp_timeDifference_ := 15; 
+  const integer ResultOp_contractNotInWhiteList_ := 3; 
 
-  const ResultOp ResultOp_accessCredentialsNotAccepted_ := 16; 
+  const integer ResultOp_contractIdentifierInBlackList_ := 4; 
 
-  const ResultOp ResultOp_claimedVehicleCharacteristicsNotValid_ := 8; 
+  const integer ResultOp_contractIdentifierNotCorrect_ := 5; 
 
-  const ResultOp ResultOp_contractIdentifierInBlackList_ := 4; 
+  const integer ResultOp_expiredContract_ := 6; 
 
-  const ResultOp ResultOp_expiredContract_ := 6; 
+  const integer ResultOp_contractRestrictionsNotFulfilled_ := 7; 
 
-  const ResultOp ResultOp_claimedVehicleCharacteristicsMissing_ := 19; 
+  const integer ResultOp_claimedVehicleCharacteristicsNotValid_ := 8; 
 
-  const ResultOp ResultOp_entryVehicleClassDifferentFromExitVehicleClass_ := 10; 
+  const integer ResultOp_vehicleClassAuthenticationFailed_ := 9; 
 
-  const ResultOp ResultOp_contractIdentifierNotCorrect_ := 5; 
+  const integer ResultOp_entryVehicleClassDifferentFromExitVehicleClass_ := 10; 
 
-  const ResultOp ResultOp_expiredPaymentMeans_ := 24; 
+  const integer ResultOp_entryReceiptMissing_ := 11; 
 
-  const ResultOp ResultOp_paymentMeansRestrictionsNotFulfilled_ := 25; 
+  const integer ResultOp_entryReceiptNotValid_ := 12; 
 
-  const ResultOp ResultOp_equipmentStatusNotAccepted_ := 2; 
+  const integer ResultOp_entryTollStationNotValid_ := 13; 
 
-  const ResultOp ResultOp_entryTollStationNotValid_ := 13; 
+  const integer ResultOp_equipmentNotCertified_ := 14; 
 
-  const ResultOp ResultOp_paymentAuthenticatorNotAccepted_ := 21; 
+  const integer ResultOp_timeDifference_ := 15; 
 
-  const ResultOp ResultOp_receiptAuthenticatorNotAccepted_ := 18; 
+  const integer ResultOp_accessCredentialsNotAccepted_ := 16; 
 
-  const ResultOp ResultOp_contractNotInWhiteList_ := 3; 
+  const integer ResultOp_contractAuthenticatorNotAccepted_ := 17; 
 
-  const ResultOp ResultOp_paymentMeansNotAccepted_ := 20; 
+  const integer ResultOp_receiptAuthenticatorNotAccepted_ := 18; 
 
-  const ResultOp ResultOp_correctTransaction_ := 0; 
+  const integer ResultOp_claimedVehicleCharacteristicsMissing_ := 19; 
 
-  const ResultOp ResultOp_obeStatusNotAccepted_ := 1; 
+  const integer ResultOp_paymentMeansNotAccepted_ := 20; 
 
-  const ResultOp ResultOp_paymentMeansInBlackList_ := 22; 
+  const integer ResultOp_paymentAuthenticatorNotAccepted_ := 21; 
 
-  const ResultOp ResultOp_contractRestrictionsNotFulfilled_ := 7; 
+  const integer ResultOp_paymentMeansInBlackList_ := 22; 
 
-  const ResultOp ResultOp_entryReceiptMissing_ := 11; 
+  const integer ResultOp_paymentMeansNotCorrect_ := 23; 
 
-  const ResultOp ResultOp_paymentMeansNotCorrect_ := 23; 
+  const integer ResultOp_expiredPaymentMeans_ := 24; 
 
-  const ResultOp ResultOp_equipmentNotCertified_ := 14; 
+  const integer ResultOp_paymentMeansRestrictionsNotFulfilled_ := 25; 
 
   type record SessionClass {
     Int1 sessionTariffClass,
@@ -654,10 +600,8 @@ module EfcDsrcApplication language "ASN.1:1997" {
 
   type record SessionLocation {
     boolean ascendingKilometrage,
-    _0SessionLocation laneCodeNumber
+    integer laneCodeNumber (0 .. 127)
   }
-
-  type integer _0SessionLocation (0 .. 127); 
 
   type enumerated StationType {
     unspecified(0), 
@@ -680,20 +624,12 @@ module EfcDsrcApplication language "ASN.1:1997" {
 
   type record DateAndTime {
     DateCompact timeDate,
-    _0DateAndTime timeCompact
+    record {
+      integer hours (0 .. 23),
+      integer mins (0 .. 59),
+      integer double_secs (0 .. 30)
+    } timeCompact
   }
-
-  type record _0DateAndTime {
-    _0_0DateAndTime hours,
-    _0_0DateAndTime0 mins,
-    _0_0DateAndTime1 double_secs
-  }
-
-  type integer _0_0DateAndTime (0 .. 23); 
-
-  type integer _0_0DateAndTime0 (0 .. 59); 
-
-  type integer _0_0DateAndTime1 (0 .. 30); 
 
   type record SoundLevel {
     Int1 soundstationary,
@@ -707,17 +643,15 @@ module EfcDsrcApplication language "ASN.1:1997" {
   }
 
   type record TrailerDetails {
-    _0TrailerDetails trailerType,
+    integer trailerType (0 .. 31),
     TrailerAxles trailerAxles
   }
 
-  type integer _0TrailerDetails (0 .. 31); 
+  const integer TrailerDetails_trailerType_notPresent_ := 0; 
 
-  const _0TrailerDetails TrailerDetails_trailerType_trailer_ := 1; 
+  const integer TrailerDetails_trailerType_trailer_ := 1; 
 
-  const _0TrailerDetails TrailerDetails_trailerType_semitrailer_ := 2; 
-
-  const _0TrailerDetails TrailerDetails_trailerType_notPresent_ := 0; 
+  const integer TrailerDetails_trailerType_semitrailer_ := 2; 
 
   type LPN TrailerLicencePlateNumber; 
 
@@ -727,34 +661,26 @@ module EfcDsrcApplication language "ASN.1:1997" {
   }
 
   type record ValidityOfContract {
-    _0ValidityOfContract issuerRestrictions,
+    octetstring issuerRestrictions length (2),
     DateCompact contractExpiryDate
   }
-
-  type octetstring _0ValidityOfContract length (2); 
 
   type octetstring VehicleAuthenticator; 
 
   type record VehicleAxles {
     Int1 vehicleFirstAxleHeight,
-    _0VehicleAxles vehicleAxlesNumber
-  }
-
-  type record _0VehicleAxles {
-    _0_0VehicleAxles tyreType,
-    _0_0VehicleAxles0 numberOfAxles
-  }
-
-  type enumerated _0_0VehicleAxles {
-    notSpecified(0), 
-    singleTyre(1), 
-    dualTyres(2), 
-    reservedForUse(3)
-  }
-
-  type record _0_0VehicleAxles0 {
-    TrailerAxles trailerAxles,
-    TractorAxles tractorAxles
+    record {
+      enumerated {
+        notSpecified(0),
+        singleTyre(1),
+        dualTyres(2),
+        reservedForUse(3)
+      } tyreType,
+      record {
+        TrailerAxles trailerAxles,
+        TractorAxles tractorAxles
+      } numberOfAxles
+    } vehicleAxlesNumber
   }
 
   type integer TrailerAxles (0 .. 7); 

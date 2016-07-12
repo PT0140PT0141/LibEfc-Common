@@ -4,8 +4,8 @@
  *  PLEASE DO NOT EDIT! The file will be overwritten when the input file changes.
  *
  *  Source:    EfcAutonomousContextData.asn
- *  Generator: TTworkbench ASN.1 Parser 1.1.13.201605251730
- *  Date:      15/06/16 10:57
+ *  Generator: TTworkbench ASN.1 Parser 1.1.14.201606151123
+ *  Date:      12/07/16 10:57
  *
  * ----------------------------------------------------------------------------
  *  The ASN.1 to TTCN-3 is a proprietary mapping based on the ES 201 873-7 ETSI standard.
@@ -70,23 +70,19 @@ module EfcAutonomousContextData language "ASN.1:1997" {
 
   type record TollContextOverview {
     EfcDsrcApplication.Provider tollContext,
-    _0TollContextOverview tollContextPartitions,
+    record of TollContextPartitionId tollContextPartitions,
     ASNAUX.UTF8String tollSchemeName optional,
-    _0TollContextOverview0 tollContextBoundingBoxes optional,
+    record of SphericalBox tollContextBoundingBoxes optional,
     VersionAndValidity tollContextOverviewVersion
   }
-
-  type record of SphericalBox _0TollContextOverview0; 
-
-  type record of TollContextPartitionId _0TollContextOverview; 
 
   type record TollContextPartitionOverview {
     TollContextPartitionId tollContextPartitionId,
     ASNAUX.UTF8String tollContextPartitionName optional,
     TollSchemeType tollContextPartitionType,
     OperationalStatus operationalStatus,
-    _0TollContextPartitionOverview timeZone,
-    _0TollContextPartitionOverview0 dstOffset optional,
+    integer timeZone (-720 .. 720),
+    integer dstOffset (-120 .. 120) optional,
     Polygon tollContextPartitionBoundingPolygon optional,
     boolean sendChargeReportIfEntering optional,
     Int1 precedenceLevel optional,
@@ -94,61 +90,41 @@ module EfcAutonomousContextData language "ASN.1:1997" {
     VersionAndValidity tollContextPartitionOverviewVersion
   }
 
-  type integer _0TollContextPartitionOverview (-720 .. 720); 
-
-  type integer _0TollContextPartitionOverview0 (-120 .. 120); 
-
   type record TariffTable {
-    _0TariffTable applicablePartitions,
-    _0TariffTable0 tariffs,
+    record of TollContextPartitionId applicablePartitions,
+    record of Tariff tariffs,
     EfcDsrcApplication.PayUnit standardCurrency,
     TypeOfFee typeOfFee optional,
     VersionAndValidity tariffTableVersion
   }
 
-  type record of TollContextPartitionId _0TariffTable; 
-
-  type record of Tariff _0TariffTable0; 
-
   type record CurrencyConversionTable {
-    _0CurrencyConversionTable conversions,
+    record of record {
+      Currency alternativeCurrency,
+      Int4 conversionRate
+    } conversions,
     VersionAndValidity currencyConversionTableVersion
   }
 
-  type record of _0_0CurrencyConversionTable _0CurrencyConversionTable; 
-
-  type record _0_0CurrencyConversionTable {
-    Currency alternativeCurrency,
-    Int4 conversionRate
-  }
-
   type record TariffClassDefinition {
-    _0TariffClassDefinition tariffClasses,
+    record of TariffClass tariffClasses,
     VersionAndValidity tariffClassDefinitionVersion
   }
 
-  type record of TariffClass _0TariffClassDefinition; 
-
   type record LocalVehicleClassDefinition {
-    _0LocalVehicleClassDefinition localVehicleClasses,
+    record of LocalVehicleClass localVehicleClasses,
     VersionAndValidity localVehicleClassVersion optional
   }
 
-  type record of LocalVehicleClass _0LocalVehicleClassDefinition; 
-
   type record TimeClassDefinition {
-    _0TimeClassDefinition timeClasses,
+    record of TimeClass timeClasses,
     VersionAndValidity timeClassDefinitionVersion optional
   }
 
-  type record of TimeClass _0TimeClassDefinition; 
-
   type record UserClassDefinition {
-    _0UserClassDefinition userClasses,
+    record of UserClass userClasses,
     VersionAndValidity userClassDefinitionVersion optional
   }
-
-  type record of UserClass _0UserClassDefinition; 
 
   type record TollContextPartitionLayout {
     TollContextPartitionId tollContextPartitionId,
@@ -158,23 +134,17 @@ module EfcAutonomousContextData language "ASN.1:1997" {
   }
 
   type record ChargeReportingEvents {
-    _0ChargeReportingEvents applicablePartitions,
-    _0ChargeReportingEvents0 absoluteTimeEvents optional,
+    record of TollContextPartitionId applicablePartitions,
+    record of AbsoluteTimeEvent absoluteTimeEvents optional,
     RelativeTimeEvent relativeTimeEvents optional,
     EfcAutonomousCharging.Distance travelledDistanceEvents optional,
-    _0ChargeReportingEvents1 locationEvents optional,
+    record of LocationEvent locationEvents optional,
     FeeLimit feeLimitEvents optional,
     VersionAndValidity chargeReportingEventsVersion
   }
 
-  type record of AbsoluteTimeEvent _0ChargeReportingEvents0; 
-
-  type record of LocationEvent _0ChargeReportingEvents1; 
-
-  type record of TollContextPartitionId _0ChargeReportingEvents; 
-
   type record ChargeReportConfiguration {
-    _0ChargeReportConfiguration applicablePartitions,
+    record of TollContextPartitionId applicablePartitions,
     ChargeReportContent chargeReportContent,
     UsageStatementContent usageStatementContent,
     CccAttributesContent cccAttributesContent optional,
@@ -187,8 +157,6 @@ module EfcAutonomousContextData language "ASN.1:1997" {
     NmeaDataContent nmeaDataContent optional,
     VersionAndValidity chargeReportConfigurationVersion
   }
-
-  type record of TollContextPartitionId _0ChargeReportConfiguration; 
 
   type record AbsolutePointCoordinates {
     EfcCcc.Longitude longitude,
@@ -222,9 +190,9 @@ module EfcAutonomousContextData language "ASN.1:1997" {
 
   type integer AidIdentifier (0 .. 255); 
 
-  const AidIdentifier AidIdentifier_iso17575_3_2016_ := 1; 
+  const integer AidIdentifier_iso17575_3_2010_ := 0; 
 
-  const AidIdentifier AidIdentifier_iso17575_3_2010_ := 0; 
+  const integer AidIdentifier_iso17575_3_2016_ := 1; 
 
   type Int1 AreaId; 
 
@@ -232,13 +200,9 @@ module EfcAutonomousContextData language "ASN.1:1997" {
     AreaId areaId,
     Polygon areaBorder,
     LocationClassId locationClass optional,
-    _0AreaLayout applicableTimeClasses optional,
-    _0AreaLayout0 roadNetworks optional
+    record of TimeClassId applicableTimeClasses optional,
+    record of RoadNetwork roadNetworks optional
   }
-
-  type record of TimeClassId _0AreaLayout; 
-
-  type record of RoadNetwork _0AreaLayout0; 
 
   type record CccAttributesContent {
     boolean timeOfCCCRecord,
@@ -252,15 +216,11 @@ module EfcAutonomousContextData language "ASN.1:1997" {
 
   type union ChargeDistance {
     EfcAutonomousCharging.Distance predefinedDistance,
-    _0ChargeDistance entryDependingDistance
+    record {
+      record of EntryDependingDistanceData entryDependingDistance,
+      EfcAutonomousCharging.Distance missingEntryInformation
+    } entryDependingDistance
   }
-
-  type record _0ChargeDistance {
-    _0_0ChargeDistance entryDependingDistance,
-    EfcAutonomousCharging.Distance missingEntryInformation
-  }
-
-  type record of EntryDependingDistanceData _0_0ChargeDistance; 
 
   type Int4 ChargeObjectDesignation; 
 
@@ -302,10 +262,8 @@ module EfcAutonomousContextData language "ASN.1:1997" {
 
   type record ContractTypes {
     EfcDsrcApplication.Provider contractProvider,
-    _0ContractTypes typeOfContract
+    octetstring typeOfContract length (2)
   }
-
-  type octetstring _0ContractTypes length (2); 
 
   type record CopValueRange {
     EfcDsrcApplication.CopValue lowerLimit,
@@ -322,36 +280,24 @@ module EfcAutonomousContextData language "ASN.1:1997" {
   type record CordonEntryLocation {
     ChargeObjectDesignation entryLocationId,
     LocationClassId entryLocationClass,
-    _0CordonEntryLocation applicableTimeClasses optional
+    record of TimeClassId applicableTimeClasses optional
   }
-
-  type record of TimeClassId _0CordonEntryLocation; 
 
   type record CordonExitLocation {
     ChargeObjectDesignation exitLocationId,
-    _0CordonExitLocation exitLocationClass,
-    _0CordonExitLocation0 applicableTimeClasses optional
+    record of record {
+      LocationClassId locationClass,
+      record of EntryLocationId entryLocation optional
+    } exitLocationClass,
+    record of TimeClassId applicableTimeClasses optional
   }
-
-  type record of _0_0CordonExitLocation _0CordonExitLocation; 
-
-  type record _0_0CordonExitLocation {
-    LocationClassId locationClass,
-    _0_0_0CordonExitLocation entryLocation optional
-  }
-
-  type record of EntryLocationId _0_0_0CordonExitLocation; 
-
-  type record of TimeClassId _0CordonExitLocation0; 
 
   type Int1 CordonId; 
 
   type record CordonLayout {
     CordonId cordonId,
-    _0CordonLayout cordonBorderPolygon
+    record of CordonBorderSegment cordonBorderPolygon
   }
-
-  type record of CordonBorderSegment _0CordonLayout; 
 
   type Int4 CordonSegmentId; 
 
@@ -373,38 +319,26 @@ module EfcAutonomousContextData language "ASN.1:1997" {
   }
 
   type record DieselEmissionValueRange {
-    _0DieselEmissionValueRange particulate optional,
-    _0DieselEmissionValueRange0 absorptionCoeffRange
-  }
-
-  type record _0DieselEmissionValueRange {
-    EfcDsrcApplication.UnitType unitType,
-    _0_0DieselEmissionValueRange valueRange
-  }
-
-  type record _0_0DieselEmissionValueRange {
-    _0_0_0DieselEmissionValueRange lowerLimit,
-    _0_0_0DieselEmissionValueRange0 upperLimit
-  }
-
-  type integer _0_0_0DieselEmissionValueRange0 (0 .. 32767); 
-
-  type integer _0_0_0DieselEmissionValueRange (0 .. 32767); 
-
-  type record _0DieselEmissionValueRange0 {
-    Int2 lowerLimit,
-    Int2 upperLimit
+    record {
+      EfcDsrcApplication.UnitType unitType,
+      record {
+        integer lowerLimit (0 .. 32767),
+        integer upperLimit (0 .. 32767)
+      } valueRange
+    } particulate optional,
+    record {
+      Int2 lowerLimit,
+      Int2 upperLimit
+    } absorptionCoeffRange
   }
 
   type record EfcLayer {
     integer efcLayerId,
     ASNAUX.UTF8String tollContextName optional,
-    _0EfcLayer chargeObjects,
+    record of GdfChargeObject chargeObjects,
     GdfSource referencedGdfSource,
     VersionAndValidity efcLayerVersion
   }
-
-  type record of GdfChargeObject _0EfcLayer; 
 
   type record EfcNodeId {
     integer efcContextSpecificId,
@@ -428,34 +362,22 @@ module EfcAutonomousContextData language "ASN.1:1997" {
 
   type record ExhaustEmissionValueRange {
     EfcDsrcApplication.UnitType unitType,
-    _0ExhaustEmissionValueRange emissionCORange optional,
-    _0ExhaustEmissionValueRange0 emissionHCRange optional,
-    _0ExhaustEmissionValueRange1 emissionNOXRange optional,
-    _0ExhaustEmissionValueRange2 emissionHCNOXRange optional
-  }
-
-  type record _0ExhaustEmissionValueRange {
-    _0_0ExhaustEmissionValueRange lowerLimit,
-    _0_0ExhaustEmissionValueRange0 upperLimit
-  }
-
-  type integer _0_0ExhaustEmissionValueRange (0 .. 32767); 
-
-  type integer _0_0ExhaustEmissionValueRange0 (0 .. 32767); 
-
-  type record _0ExhaustEmissionValueRange2 {
-    Int2 lowerLimit,
-    Int2 upperLimit
-  }
-
-  type record _0ExhaustEmissionValueRange0 {
-    Int2 lowerLimit,
-    Int2 upperLimit
-  }
-
-  type record _0ExhaustEmissionValueRange1 {
-    Int2 lowerLimit,
-    Int2 upperLimit
+    record {
+      integer lowerLimit (0 .. 32767),
+      integer upperLimit (0 .. 32767)
+    } emissionCORange optional,
+    record {
+      Int2 lowerLimit,
+      Int2 upperLimit
+    } emissionHCRange optional,
+    record {
+      Int2 lowerLimit,
+      Int2 upperLimit
+    } emissionNOXRange optional,
+    record {
+      Int2 lowerLimit,
+      Int2 upperLimit
+    } emissionHCNOXRange optional
   }
 
   type EfcDsrcApplication.PaymentFee FeeLimit; 
@@ -464,27 +386,19 @@ module EfcAutonomousContextData language "ASN.1:1997" {
     ChargeObjectDesignation chargeObjectDesignation,
     EfcDsrcApplication.Provider roadOperatorId optional,
     integer applicableLocationClass optional,
-    _0GdfChargeObject applicableTimeClasses optional,
+    record of TimeClassId applicableTimeClasses optional,
     EfcAutonomousCharging.Distance tollRelevantLength,
     EfcAutonomousCharging.Distance equivalentMeasuredLength optional,
     TollRoad tollRoad,
-    _0GdfChargeObject0 liabilityRules
+    union {
+      GdfReference tollPoint,
+      record {
+        GdfReference firstPoint,
+        GdfReference secondPoint
+      } minTollPath,
+      integer minimumUsage (1 .. 1000)
+    } liabilityRules
   }
-
-  type record of TimeClassId _0GdfChargeObject; 
-
-  type union _0GdfChargeObject0 {
-    GdfReference tollPoint,
-    _0_0GdfChargeObject0 minTollPath,
-    _0_0GdfChargeObject00 minimumUsage
-  }
-
-  type record _0_0GdfChargeObject0 {
-    GdfReference firstPoint,
-    GdfReference secondPoint
-  }
-
-  type integer _0_0GdfChargeObject00 (1 .. 1000); 
 
   type record GdfReference {
     integer datasetId,
@@ -510,48 +424,32 @@ module EfcAutonomousContextData language "ASN.1:1997" {
   type integer Int4 (0 .. 4294967295); 
 
   type record IntervalScaleParameter {
-    _0IntervalScaleParameter vehicleMaxLadenWeightIntervals optional,
-    _0IntervalScaleParameter0 vehicleLengthOverallIntervals optional
-  }
-
-  type record _0IntervalScaleParameter0 {
-    Int2Signed zeroOffset,
-    VehicleLengthOverall resolution,
-    VehicleLengthOverall max
-  }
-
-  type record _0IntervalScaleParameter {
-    Int2Signed zeroOffset,
-    VehicleMaxLadenWeight resolution,
-    VehicleMaxLadenWeight max
+    record {
+      Int2Signed zeroOffset,
+      VehicleMaxLadenWeight resolution,
+      VehicleMaxLadenWeight max
+    } vehicleMaxLadenWeightIntervals optional,
+    record {
+      Int2Signed zeroOffset,
+      VehicleLengthOverall resolution,
+      VehicleLengthOverall max
+    } vehicleLengthOverallIntervals optional
   }
 
   type union Layout {
-    _0Layout sectionPricingLayout,
-    _0Layout0 areaPricingLayout,
-    _0Layout1 cordonPricingLayout
+    union {
+      record of SectionLayout sectionLayoutDescription,
+      SectionLayoutGdf sectionLayoutDescriptionGdf
+    } sectionPricingLayout,
+    record of AreaLayout areaPricingLayout,
+    record of CordonLayout cordonPricingLayout
   }
-
-  type union _0Layout {
-    _0_0Layout sectionLayoutDescription,
-    SectionLayoutGdf sectionLayoutDescriptionGdf
-  }
-
-  type record of SectionLayout _0_0Layout; 
-
-  type record of CordonLayout _0Layout1; 
-
-  type record of AreaLayout _0Layout0; 
 
   type union LiabilityRules {
-    _0LiabilityRules tollPoints,
+    record length (1 .. 2) of Point tollPoints,
     Link minTollPath,
-    _0LiabilityRules0 minimumUsage
+    integer minimumUsage (0 .. 1000)
   }
-
-  type record length (1 .. 2) of Point _0LiabilityRules; 
-
-  type integer _0LiabilityRules0 (0 .. 1000); 
 
   type record Line {
     Point point1,
@@ -562,10 +460,8 @@ module EfcAutonomousContextData language "ASN.1:1997" {
     LinkId linkId,
     Point startPoint,
     Point endPoint,
-    _0Link intermediatePoints optional
+    record of Point intermediatePoints optional
   }
-
-  type record of Point _0Link; 
 
   type Int4 LinkId; 
 
@@ -595,20 +491,16 @@ module EfcAutonomousContextData language "ASN.1:1997" {
 
   type record LocationEvent {
     ChargeObjectDesignation chargeObject optional,
-    _0LocationEvent line optional,
-    _0LocationEvent0 area optional
-  }
-
-  type record _0LocationEvent0 {
-    Polygon areaDescription,
-    boolean atEntry,
-    boolean atExit
-  }
-
-  type record _0LocationEvent {
-    Line lineDescription,
-    boolean crossingDirection1,
-    boolean crossingDirection2
+    record {
+      Line lineDescription,
+      boolean crossingDirection1,
+      boolean crossingDirection2
+    } line optional,
+    record {
+      Polygon areaDescription,
+      boolean atEntry,
+      boolean atExit
+    } area optional
   }
 
   type record MaxFee {
@@ -642,41 +534,23 @@ module EfcAutonomousContextData language "ASN.1:1997" {
   }
 
   type record NominalTimeParameters {
-    _0NominalTimeParameters weekdays optional,
-    _0NominalTimeParameters0 dates optional,
-    _0NominalTimeParameters1 classesSetExternally optional
+    record of Weekday weekdays optional,
+    record of EfcDsrcApplication.DateCompact dates optional,
+    record of integer classesSetExternally optional
   }
 
-  type record of Weekday _0NominalTimeParameters; 
+  const integer NominalTimeParameters_classesSetExternally__COMP_reserved_ := 0; 
 
-  type record of _0_0NominalTimeParameters1 _0NominalTimeParameters1; 
+  const integer NominalTimeParameters_classesSetExternally__COMP_congestionChargeLevel1_ := 1; 
 
-  type integer _0_0NominalTimeParameters1 (0 .. 255); 
-
-  const _0_0NominalTimeParameters1 NominalTimeParameters_classesSetExternally__COMP_reserved_ := 0; 
-
-  const _0_0NominalTimeParameters1 NominalTimeParameters_classesSetExternally__COMP_congestionChargeLevel2_ := 2; 
-
-  const _0_0NominalTimeParameters1 NominalTimeParameters_classesSetExternally__COMP_congestionChargeLevel1_ := 1; 
-
-  type record of EfcDsrcApplication.DateCompact _0NominalTimeParameters0; 
+  const integer NominalTimeParameters_classesSetExternally__COMP_congestionChargeLevel2_ := 2; 
 
   type record NominalVehicleParameters {
-    _0NominalVehicleParameters vehicleClasses,
-    _0NominalVehicleParameters0 vehicleTrainAxlesNumbers optional,
-    _0NominalVehicleParameters1 euroValues optional,
-    _0NominalVehicleParameters2 copValues optional
+    record of EfcDsrcApplication.VehicleClass vehicleClasses,
+    record of integer vehicleTrainAxlesNumbers optional,
+    record of EfcDsrcApplication.EuroValue euroValues optional,
+    record of EfcDsrcApplication.CopValue copValues optional
   }
-
-  type record of EfcDsrcApplication.VehicleClass _0NominalVehicleParameters; 
-
-  type record of _0_0NominalVehicleParameters0 _0NominalVehicleParameters0; 
-
-  type integer _0_0NominalVehicleParameters0 (0 .. 15); 
-
-  type record of EfcDsrcApplication.CopValue _0NominalVehicleParameters2; 
-
-  type record of EfcDsrcApplication.EuroValue _0NominalVehicleParameters1; 
 
   type record OperationalStatus {
     ASNAUX.GeneralizedTime startsOperationAt,
@@ -684,90 +558,42 @@ module EfcAutonomousContextData language "ASN.1:1997" {
   }
 
   type record OrdinalTimeParameters {
-    _0OrdinalTimeParameters weekdays optional,
-    _0OrdinalTimeParameters0 absoluteTimeOfDay optional,
-    _0OrdinalTimeParameters1 relativeTimePeriods optional,
-    _0OrdinalTimeParameters2 periodsInYear optional
-  }
-
-  type record of _0_0OrdinalTimeParameters _0OrdinalTimeParameters; 
-
-  type record _0_0OrdinalTimeParameters {
-    Weekday startDay,
-    Weekday endDay
-  }
-
-  type record of _0_0OrdinalTimeParameters2 _0OrdinalTimeParameters2; 
-
-  type record _0_0OrdinalTimeParameters2 {
-    EfcDsrcApplication.DateCompact startDay,
-    EfcDsrcApplication.DateCompact endDay
-  }
-
-  type record of _0_0OrdinalTimeParameters1 _0OrdinalTimeParameters1; 
-
-  type record _0_0OrdinalTimeParameters1 {
-    Int2 minPeriod optional,
-    Int2 maxPeriod optional
-  }
-
-  type record of _0_0OrdinalTimeParameters0 _0OrdinalTimeParameters0; 
-
-  type record _0_0OrdinalTimeParameters0 {
-    Time startTime,
-    Time endTime
+    record of record {
+      Weekday startDay,
+      Weekday endDay
+    } weekdays optional,
+    record of record {
+      Time startTime,
+      Time endTime
+    } absoluteTimeOfDay optional,
+    record of record {
+      Int2 minPeriod optional,
+      Int2 maxPeriod optional
+    } relativeTimePeriods optional,
+    record of record {
+      EfcDsrcApplication.DateCompact startDay,
+      EfcDsrcApplication.DateCompact endDay
+    } periodsInYear optional
   }
 
   type record OrdinalVehicleParameters {
-    _0OrdinalVehicleParameters vehicleLengthOverall optional,
-    _0OrdinalVehicleParameters0 vehicleHeightOverall optional,
-    _0OrdinalVehicleParameters1 vehicleWidthOverall optional,
-    _0OrdinalVehicleParameters2 vehicleFirstAxleHeight optional,
-    _0OrdinalVehicleParameters3 vehicleTractorAxlesNumber optional,
-    _0OrdinalVehicleParameters4 vehicleTrailerAxlesNumber optional,
-    _0OrdinalVehicleParameters5 vehicleMaxLadenWeight optional,
-    _0OrdinalVehicleParameters6 vehicleTrainMaximumWeight optional,
-    _0OrdinalVehicleParameters7 vehicleWeightUnladen optional,
-    _0OrdinalVehicleParameters8 vehicleWeightLaden optional,
-    _0OrdinalVehicleParameters9 euroValue optional,
-    _0OrdinalVehicleParameters10 copValue optional,
-    _0OrdinalVehicleParameters11 vehicleClass optional,
-    _0OrdinalVehicleParameters12 co2EmissionValue optional,
-    _0OrdinalVehicleParameters13 dieselEmissionValue optional,
-    _0OrdinalVehicleParameters14 exhaustEmissionValue optional
+    record of VehicleLengthOverallRange vehicleLengthOverall optional,
+    record of VehicleHeightOverallRange vehicleHeightOverall optional,
+    record of VehicleWidthOverallRange vehicleWidthOverall optional,
+    record of VehicleFirstAxleHeightRange vehicleFirstAxleHeight optional,
+    record of VehicleTractorAxlesNumberRange vehicleTractorAxlesNumber optional,
+    record of VehicleTrailerAxlesNumberRange vehicleTrailerAxlesNumber optional,
+    record of VehicleMaxLadenWeightRange vehicleMaxLadenWeight optional,
+    record of VehicleTrainMaximumWeightRange vehicleTrainMaximumWeight optional,
+    record of VehicleWeightUnladenRange vehicleWeightUnladen optional,
+    record of VehicleWeightLadenRange vehicleWeightLaden optional,
+    record of EuroValueRange euroValue optional,
+    record of CopValueRange copValue optional,
+    record of VehicleClassRange vehicleClass optional,
+    record of CO2EmissionValueRange co2EmissionValue optional,
+    record of DieselEmissionValueRange dieselEmissionValue optional,
+    record of ExhaustEmissionValueRange exhaustEmissionValue optional
   }
-
-  type record of CopValueRange _0OrdinalVehicleParameters10; 
-
-  type record of CO2EmissionValueRange _0OrdinalVehicleParameters12; 
-
-  type record of VehicleClassRange _0OrdinalVehicleParameters11; 
-
-  type record of EuroValueRange _0OrdinalVehicleParameters9; 
-
-  type record of VehicleWeightLadenRange _0OrdinalVehicleParameters8; 
-
-  type record of VehicleWeightUnladenRange _0OrdinalVehicleParameters7; 
-
-  type record of VehicleTrainMaximumWeightRange _0OrdinalVehicleParameters6; 
-
-  type record of VehicleLengthOverallRange _0OrdinalVehicleParameters; 
-
-  type record of ExhaustEmissionValueRange _0OrdinalVehicleParameters14; 
-
-  type record of DieselEmissionValueRange _0OrdinalVehicleParameters13; 
-
-  type record of VehicleMaxLadenWeightRange _0OrdinalVehicleParameters5; 
-
-  type record of VehicleTrailerAxlesNumberRange _0OrdinalVehicleParameters4; 
-
-  type record of VehicleTractorAxlesNumberRange _0OrdinalVehicleParameters3; 
-
-  type record of VehicleFirstAxleHeightRange _0OrdinalVehicleParameters2; 
-
-  type record of VehicleWidthOverallRange _0OrdinalVehicleParameters1; 
-
-  type record of VehicleHeightOverallRange _0OrdinalVehicleParameters0; 
 
   type union Point {
     PointId pointIdentifier,
@@ -803,64 +629,46 @@ module EfcAutonomousContextData language "ASN.1:1997" {
   type record RoadNetwork {
     Int1 networkId,
     LocationClassId locationClass,
-    _0RoadNetwork roadNetworkObjects
+    record of RoadNetworkObject roadNetworkObjects
   }
-
-  type record of RoadNetworkObject _0RoadNetwork; 
 
   type record RoadNetworkObject {
     ChargeObjectDesignation chargeObjectId,
     ASNAUX.UTF8String chargeObjectName optional,
     Point chargeObjectRefPoint optional,
-    _0RoadNetworkObject networkPoints optional,
+    record of Point networkPoints optional,
     Link tollPath,
-    _0RoadNetworkObject0 supportingInformation optional,
-    _0RoadNetworkObject1 applicableTimeClasses optional
+    record of SupportingPoint supportingInformation optional,
+    record of TimeClassId applicableTimeClasses optional
   }
-
-  type record of Point _0RoadNetworkObject; 
-
-  type record of TimeClassId _0RoadNetworkObject1; 
-
-  type record of SupportingPoint _0RoadNetworkObject0; 
 
   type integer RoundingRule (0 .. 255); 
 
-  const RoundingRule RoundingRule_up_ := 1; 
+  const integer RoundingRule_no_ := 0; 
 
-  const RoundingRule RoundingRule_accounting_ := 3; 
+  const integer RoundingRule_up_ := 1; 
 
-  const RoundingRule RoundingRule_down_ := 2; 
+  const integer RoundingRule_down_ := 2; 
 
-  const RoundingRule RoundingRule_no_ := 0; 
+  const integer RoundingRule_accounting_ := 3; 
 
   type record SectionLayout {
     ChargeObjectDesignation chargeObjectId,
     ASNAUX.UTF8String chargeObjectName optional,
     Point chargeObjectRefPoint optional,
-    _0SectionLayout networkPoints optional,
+    record of PointIdDefinition networkPoints optional,
     Link tollPath,
     LiabilityRules liabilityRules,
-    _0SectionLayout0 pathStructureTowards optional,
-    _0SectionLayout1 pathStructureOnwards optional,
-    _0SectionLayout2 supportingInformation optional,
+    record of Link pathStructureTowards optional,
+    record of Link pathStructureOnwards optional,
+    record of SupportingPoint supportingInformation optional,
     ChargeDistance chargeDistance,
     EfcAutonomousCharging.Distance realDistance optional,
-    _0SectionLayout3 applicableTimeClasses optional,
+    record of TimeClassId applicableTimeClasses optional,
     LocationClassId locationClass,
     boolean storageRequired optional,
     SupplementaryInvoicingData invoicingRelatedData optional
   }
-
-  type record of PointIdDefinition _0SectionLayout; 
-
-  type record of SupportingPoint _0SectionLayout2; 
-
-  type record of TimeClassId _0SectionLayout3; 
-
-  type record of Link _0SectionLayout0; 
-
-  type record of Link _0SectionLayout1; 
 
   type record SectionLayoutGdf {
     EfcLayer efcLayer
@@ -898,7 +706,7 @@ module EfcAutonomousContextData language "ASN.1:1997" {
     RoundingRule roundingRuleForFee,
     Int4 vat optional,
     RoundingRule roundingRuleForVat optional,
-    _0Tariff intervalScaleParameters optional,
+    record of IntervalScaleParameter intervalScaleParameters optional,
     Int4 offsetFee optional,
     Int4 minFee optional,
     Int4 thresholdFee optional,
@@ -906,23 +714,13 @@ module EfcAutonomousContextData language "ASN.1:1997" {
     Currency alternativeCurrency optional
   }
 
-  type record of IntervalScaleParameter _0Tariff; 
-
   type record TariffClass {
     TariffClassId tariffClassId,
-    _0TariffClass localVehicleClasses,
-    _0TariffClass0 timeClasses optional,
-    _0TariffClass1 locationClasses optional,
-    _0TariffClass2 userClasses optional
+    record of LocalVehicleClassId localVehicleClasses,
+    record of TimeClassId timeClasses optional,
+    record of LocationClassId locationClasses optional,
+    record of UserClassId userClasses optional
   }
-
-  type record of LocationClassId _0TariffClass1; 
-
-  type record of UserClassId _0TariffClass2; 
-
-  type record of TimeClassId _0TariffClass0; 
-
-  type record of LocalVehicleClassId _0TariffClass; 
 
   type record TariffClassDescriptionContent {
     boolean tariffClassId,
@@ -935,25 +733,17 @@ module EfcAutonomousContextData language "ASN.1:1997" {
   type Int4 TariffClassId; 
 
   type record Time {
-    _0Time hours,
-    _0Time0 mins,
-    _0Time1 secs
+    integer hours (0 .. 23),
+    integer mins (0 .. 59),
+    integer secs (0 .. 59)
   }
-
-  type integer _0Time (0 .. 23); 
-
-  type integer _0Time1 (0 .. 59); 
-
-  type integer _0Time0 (0 .. 59); 
 
   type record TimeClass {
     TimeClassId timeClassId,
     NominalTimeParameters nominalElements optional,
-    _0TimeClass ordinalElements optional,
+    record of OrdinalTimeParameters ordinalElements optional,
     Int1 priorityValue optional
   }
-
-  type record of OrdinalTimeParameters _0TimeClass; 
 
   type Int2 TimeClassId; 
 
@@ -961,56 +751,52 @@ module EfcAutonomousContextData language "ASN.1:1997" {
 
   type record TollRoad {
     EfcNodeId efcNodeFrom,
-    _0TollRoad efcLink,
+    record {
+      record of RoadElementsTowardChargePoint roadElementsTowardChargePoint,
+      GdfReference junctionIdTo
+    } efcLink,
     EfcNodeId efcNnodeTo
   }
 
-  type record _0TollRoad {
-    _0_0TollRoad roadElementsTowardChargePoint,
-    GdfReference junctionIdTo
-  }
-
-  type record of RoadElementsTowardChargePoint _0_0TollRoad; 
-
   type integer TollSchemeType (0 .. 255); 
 
-  const TollSchemeType TollSchemeType_roadSectionPricing_ := 0; 
+  const integer TollSchemeType_roadSectionPricing_ := 0; 
 
-  const TollSchemeType TollSchemeType_cordonPricing_ := 3; 
+  const integer TollSchemeType_areaPricingDistance_ := 1; 
 
-  const TollSchemeType TollSchemeType_areaPricingTime_ := 2; 
+  const integer TollSchemeType_areaPricingTime_ := 2; 
 
-  const TollSchemeType TollSchemeType_areaPricingDistance_ := 1; 
+  const integer TollSchemeType_cordonPricing_ := 3; 
 
   type integer TypeOfFee (0 .. 255); 
 
-  const TypeOfFee TypeOfFee_fee_ := 1; 
+  const integer TypeOfFee_reserved_ := 0; 
 
-  const TypeOfFee TypeOfFee_custom_ := 3; 
+  const integer TypeOfFee_fee_ := 1; 
 
-  const TypeOfFee TypeOfFee_tax_ := 2; 
+  const integer TypeOfFee_tax_ := 2; 
 
-  const TypeOfFee TypeOfFee_reserved_ := 0; 
+  const integer TypeOfFee_custom_ := 3; 
 
   type integer TypeOfSection (0 .. 255); 
 
-  const TypeOfSection TypeOfSection_manual_ := 1; 
+  const integer TypeOfSection_reserved_ := 0; 
 
-  const TypeOfSection TypeOfSection_openRoadTolling_ := 5; 
+  const integer TypeOfSection_manual_ := 1; 
 
-  const TypeOfSection TypeOfSection_distanceBasedFreeFlowVirtual_ := 7; 
+  const integer TypeOfSection_closedEntry_ := 2; 
 
-  const TypeOfSection TypeOfSection_reserved_ := 0; 
+  const integer TypeOfSection_closedExit_ := 3; 
 
-  const TypeOfSection TypeOfSection_checkpoint_ := 4; 
+  const integer TypeOfSection_checkpoint_ := 4; 
 
-  const TypeOfSection TypeOfSection_closedEntry_ := 2; 
+  const integer TypeOfSection_openRoadTolling_ := 5; 
 
-  const TypeOfSection TypeOfSection_closedExit_ := 3; 
+  const integer TypeOfSection_distanceBasedFreeFlowPhysical_ := 6; 
 
-  const TypeOfSection TypeOfSection_aggregatedTrx_ := 8; 
+  const integer TypeOfSection_distanceBasedFreeFlowVirtual_ := 7; 
 
-  const TypeOfSection TypeOfSection_distanceBasedFreeFlowPhysical_ := 6; 
+  const integer TypeOfSection_aggregatedTrx_ := 8; 
 
   type record UsageStatementContent {
     boolean useOfUsageStatementAuthentication,
@@ -1029,14 +815,10 @@ module EfcAutonomousContextData language "ASN.1:1997" {
 
   type record UserClass {
     UserClassId userClassId,
-    _0UserClass contractTypes optional,
-    _0UserClass0 actualNumberOfPassengers optional,
+    record of ContractTypes contractTypes optional,
+    record of ActualNumberOfPassengers actualNumberOfPassengers optional,
     Int1 priorityValue optional
   }
-
-  type record of ContractTypes _0UserClass; 
-
-  type record of ActualNumberOfPassengers _0UserClass0; 
 
   type Int1 UserClassId; 
 
@@ -1127,19 +909,19 @@ module EfcAutonomousContextData language "ASN.1:1997" {
 
   type integer Weekday; 
 
-  const Weekday Weekday_tuesday_ := 2; 
-
   const Weekday Weekday_reserved_ := 0; 
-
-  const Weekday Weekday_friday_ := 5; 
-
-  const Weekday Weekday_thursday_ := 4; 
 
   const Weekday Weekday_monday_ := 1; 
 
+  const Weekday Weekday_tuesday_ := 2; 
+
   const Weekday Weekday_wednesday_ := 3; 
 
-  const Weekday Weekday_sunday_ := 7; 
+  const Weekday Weekday_thursday_ := 4; 
+
+  const Weekday Weekday_friday_ := 5; 
 
   const Weekday Weekday_saturday_ := 6; 
+
+  const Weekday Weekday_sunday_ := 7; 
 }

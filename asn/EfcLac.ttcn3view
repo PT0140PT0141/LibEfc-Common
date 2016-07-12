@@ -4,8 +4,8 @@
  *  PLEASE DO NOT EDIT! The file will be overwritten when the input file changes.
  *
  *  Source:    EfcLac.asn
- *  Generator: TTworkbench ASN.1 Parser 1.1.13.201605251730
- *  Date:      15/06/16 10:57
+ *  Generator: TTworkbench ASN.1 Parser 1.1.14.201606151123
+ *  Date:      12/07/16 10:57
  *
  * ----------------------------------------------------------------------------
  *  The ASN.1 to TTCN-3 is a proprietary mapping based on the ES 201 873-7 ETSI standard.
@@ -71,10 +71,8 @@ module EfcLac language "ASN.1:1997" {
     INT2Signed distanceToObject,
     EfcDsrcGeneric.Time lacTime,
     MAC_TC macTc,
-    _0LACData mac2
+    octetstring mac2 length (8)
   }
-
-  type octetstring _0LACData length (8); 
 
   type record ChargeObjectId {
     INT2 regimeId,
@@ -89,19 +87,15 @@ module EfcLac language "ASN.1:1997" {
   type record MAC_TC {
     INT1 keyRef,
     MAC_TC_Algorithm algorithmId,
-    _0MAC_TC mac,
-    _0MAC_TC0 nonce
+    octetstring mac length (4),
+    octetstring nonce length (2)
   }
-
-  type octetstring _0MAC_TC0 length (2); 
-
-  type octetstring _0MAC_TC length (4); 
 
   type integer MAC_TC_Algorithm (0 .. 255); 
 
-  const MAC_TC_Algorithm MAC_TC_Algorithm_cbcDes64bitKey_ := 0; 
+  const integer MAC_TC_Algorithm_cbcDes64bitKey_ := 0; 
 
-  const MAC_TC_Algorithm MAC_TC_Algorithm_cmacAes128bitKey_ := 1; 
+  const integer MAC_TC_Algorithm_cmacAes128bitKey_ := 1; 
 
   type integer INT1 (0 .. 255); 
 
@@ -113,11 +107,8 @@ module EfcLac language "ASN.1:1997" {
 
   type record ApplicationContextMark {
     LAC_ContextMark lacContextMark,
-    _0ApplicationContextMark ac_cr_reference,
-    _0ApplicationContextMark0 rndOBE
+    octetstring ac_cr_reference length (2),
+    octetstring rndOBE length (4)
   }
 
-  type octetstring _0ApplicationContextMark0 length (4); 
-
-  type octetstring _0ApplicationContextMark length (2); 
 }

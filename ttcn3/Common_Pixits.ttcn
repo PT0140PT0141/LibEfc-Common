@@ -52,8 +52,8 @@ module Common_Pixits {
          * @see     6.3.2 Context data versioning
          */
         modulepar VersionId PX_VERSION_ID := { 
-            basicVersionId := '00000100'O 
-        }; // Version 0.0.1.0
+            basicVersionId := '00000105'O 
+        }; // Version 0.0.1.5
         /**
          * @desc    Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 1: Charging
          * @see     6.3.2 Context data versioning

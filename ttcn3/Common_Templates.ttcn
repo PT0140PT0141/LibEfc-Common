@@ -88,9 +88,19 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
         group Common_Charging_ChargeReport {
             
             /**
-             * @desc    This is the minimal form of sent ChargeReport message, all optional fields are omitted
+             * @desc    This is the minimal form of sent UsageStatementList
              * @remark  All other ChargeReport template shall modify this one
-             * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 3: Context data
+             * @see     [TS 17575-3], Clause 7.6.1 usageStatementList
+             */
+            template (value) UsageStatement_<Container> m_usageStatement_usageStatement<Container>(
+                                                                                                   in template UsageStatement<Container> p_usageStatement
+            ) := {
+                usageStatement := p_usageStatement
+            } // End of template UsageStatement_
+            
+            /**
+             * @desc    This is the minimal form of sent ChargeReport message, all optional fields are omitted
+             * @see     [TS 17575-3], 7.2.1 ChargeReport
              */
             template (value) ChargeReport<Container> m_chargeReport_default<Container> := {
                 protocolVersion := c_Iso17575_3AduHeader_protocolVersion,
@@ -106,7 +116,9 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
                 },
                 versionInfo := omit,
                 usageStatementList := {
-                    { usageStatement := m_usageStatement_default }
+                    {
+                        m_usageStatement_usageStatement(m_usageStatement_default)//{ usageStatement := m_usageStatement_default }
+                    }
                 },
                 sumVatForThisSession := omit,
                 accountStatus := omit,
@@ -117,7 +129,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
 
             /**
              * @desc    This is the minimal form of awaited ChargeReport message, all optional fields are ignored
-             * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 3: Context data
+             * @see     [TS 17575-3], 7.2.1 ChargeReport
              */
             template ChargeReport<Container> mw_chargeReport_any<Container> := {
                 protocolVersion := c_Iso17575_3AduHeader_protocolVersion,
@@ -139,8 +151,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             /**
              * @desc    This is the default form of awaited ChargeReport message. 
              * Only mandatory fields are set, check m_chargeReportContent_default template for these fields 
-             * @see     Electronic fee collection (EFC) — Conformity evaluation of Front End and Back End equipment to ISO 17575-1 — Part 1: Test suite structure and test purpose
-             * @see     mandatory fields: TP/CR/FE/BV/01, TP/CR/FE/BV/02
+             * @see     [TS 17575-3], 7.2.1 ChargeReport
              */
             template ChargeReport<Container> mw_chargeReport_default<Container> 
             modifies mw_chargeReport_any<Container> := {
@@ -382,8 +393,8 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              */
             template (value) UsageStatementContent m_usageStatementContent_default := {
                 useOfUsageStatementAuthentication   := false,
-                usageStatementId                    := true,
-                tollContext                         := true,
+                usageStatementId                    := false,
+                tollContext                         := false,
                 chargeReportFinalRecipient          := false,
                 sumVat                              := false,
                 aggregatedFee                       := false,
@@ -418,9 +429,9 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             template (value) AggregatedSingleTariffClassSessionContent m_aggregatedSingleTariffClassSessionContent_default := {
                 timePeriodCovered               := false,
                 currentTariffClass              := false,
-                tariffClassDescriptionContent   := false,
+                tariffClassDescriptionContent   := omit,
                 vehicleDescription              := false,
-                vehicleDescriptionContent       := false,
+                vehicleDescriptionContent       := omit,
                 totalDistanceCovered            := false,
                 numberOfDetectedEvents          := false,
                 obeStatus                       := false,
@@ -443,7 +454,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 3: Context data - Clause 8.3.5.2   EFC attribute ChargeReportConfiguration
              * @remark  All other VersionAndValidity template shall modify this one
              */
-            template (value)VersionAndValidity m_chargeReportConfigurationVersion_default := {
+            template (value) VersionAndValidity m_chargeReportConfigurationVersion_default := {
                 version := PX_VERSION_ID,
                 validFrom := PX_VALID_FROM
             }
@@ -537,8 +548,8 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
                                                                                                          in template (value) TollContextPartitionId         p_tollContextPartitionId,
                                                                                                          in template (value) TollSchemeType                 p_tollContextPartitionType := TollSchemeType_roadSectionPricing_,
                                                                                                          in template (value) OperationalStatus              p_operationalStatus := m_operationalStatus_default,
-                                                                                                         in template (value) _0TollContextPartitionOverview p_timeZone := 0,
-                                                                                                         in template (value) EfcAutonomousContextData.Int1  p_precedenceLevel := 0
+                                                                                                         in template (value) TollContextPartitionOverview.timeZone  p_timeZone := 0,
+                                                                                                         in template (value) EfcAutonomousContextData.Int1          p_precedenceLevel := 0
             ) := {
                 tollContextPartitionId              := p_tollContextPartitionId,
                 tollContextPartitionName            := omit,
@@ -566,9 +577,9 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * @see     ISO 17575-3:2016 Table 5 — EFC attribute TariffTable (informative)
              */
             template (value) TariffTable m_tariffTable_default(
-                                                               in template (value) _0TariffTable p_applicablePartitions,
-                                                               in template (value) _0TariffTable0 p_tariffs,
-                                                               in template (value) EfcDsrcApplication.PayUnit p_standardCurrency
+                                                               in template (value) TariffTable.applicablePartitions p_applicablePartitions,
+                                                               in template (value) TariffTable.tariffs              p_tariffs,
+                                                               in template (value) EfcDsrcApplication.PayUnit       p_standardCurrency
             ) := {
                 applicablePartitions    := p_applicablePartitions,
                 tariffs                 := p_tariffs,
@@ -594,9 +605,8 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
                 roundingRuleForChargeUnitsUsed  := RoundingRule_no_,
                 basicFeePerChargeUnit           := 0,
                 roundingRuleForFee              := RoundingRule_no_,
-                basicFeePerChargeUnit           := 0,
                 vat                             := omit,
-                roundingRuleForVAT              := omit,
+                roundingRuleForVat              := omit,
                 intervalScaleParameters         := omit,
                 offsetFee                       := omit,
                 minFee                          := omit,
@@ -614,12 +624,12 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             template (value) CurrencyConversionTable m_currencyConversionTable_default := { // TODO To be moved into PIXIT
                 conversions                     := {
                     {
-                        alternativeCurrency   := 0,
-                        conversionRate        := 0
+                        alternativeCurrency   := 1,
+                        conversionRate        := 1
                     },
                     {
-                        alternativeCurrency   := 1,
-                        conversionRate        := 0
+                        alternativeCurrency   := 2,
+                        conversionRate        := 1
                     }
                 },
                 currencyConversionTableVersion  := {
@@ -776,44 +786,45 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
                 timeClasses := {
                     {
                         timeClassId := 99,
-                        priorityValue := omit, // 0: lowest priority, 255: highest priority
                         nominalElements := omit,
                         ordinalElements := {
-                            weekdays := {
-                                {
-                                    startDay := Weekday_monday_,
-                                    endDay := Weekday_friday_
-                                }
-                            },
-                            absoluteTimeOfDay := {
-                                {
-                                    startTime := { // (apply daylight saving time)
-                                        hours := 7,
-                                        mins := 0,
-                                        secs := 0
-                                    }, 
-                                    endTime := { // (apply daylight saving time)
-                                        hours := 18,
-                                        mins := 0,
-                                        secs := 0
-                                    } 
-                                }
-                            },
-                            relativeTimePeriods := omit,
-                            periodsInYear := {
-                                {
-                                    startDay := {
-                                        year := 2010,
-                                        month := 1,
-                                        day := 2
-                                    }, 
-                                    endDay := {
-                                        year := 2010,
-                                        month := 12,
-                                        day := 24
-                                    } // (apply leap year correction)
-                                }
-                            } 
+                            {
+                                weekdays := {
+                                    {
+                                        startDay := Weekday_monday_,
+                                        endDay := Weekday_friday_
+                                    }
+                                },
+                                absoluteTimeOfDay := {
+                                    {
+                                        startTime := { // (apply daylight saving time)
+                                            hours := 7,
+                                            mins := 0,
+                                            secs := 0
+                                        }, 
+                                        endTime := { // (apply daylight saving time)
+                                            hours := 18,
+                                            mins := 0,
+                                            secs := 0
+                                        } 
+                                    }
+                                },
+                                relativeTimePeriods := omit,
+                                periodsInYear := {
+                                    {
+                                        startDay := {
+                                            year := 2010,
+                                            month := 1,
+                                            day := 2
+                                        }, 
+                                        endDay := {
+                                            year := 2010,
+                                            month := 12,
+                                            day := 24
+                                        } // (apply leap year correction)
+                                    }
+                                } 
+                            }
                         }, // End of field ordinalElements
                         priorityValue := omit
                     }
@@ -877,46 +888,48 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * @see     ISO 17575-3:2016 Table 16 — Data type TollContextPartitionLayout (informative)
              */
             template (value) TollContextPartitionLayout m_tollContextPartitionLayout_default := {
-                tollContextPartitionId  := 0,
+                tollContextPartitionId              := 0,
                 layoutDescription                   := {
                     sectionPricingLayout            := {
-                        {
-                            chargeObjecDesignation := 5,
-                            chargeObjectName := omit,
-                            chargeObjectRefPoint := omit,
-                            networkPoints := omit,
-                            tollPath := {
-                                linkId := 1024,
-                                startPoint := {
-                                    pointIdentifier := 33
+                        sectionLayoutDescription := {
+                            {
+                                chargeObjectId := 5,
+                                chargeObjectName := omit,
+                                chargeObjectRefPoint := omit,
+                                networkPoints := omit,
+                                tollPath := {
+                                    linkId := 1024,
+                                    startPoint := {
+                                        pointIdentifier := 33
+                                    },
+                                    endPoint := {
+                                        pointIdentifier := 34
+                                    },
+                                    intermediatePoints := omit
                                 },
-                                endPoint := {
-                                    pointIdentifier := 34
+                                liabilityRules := {
+                                    minimumUsage := 512
                                 },
-                                intermediatePoints := omit
-                            },
-                            liabilityRules := {
-                                minTollPortion := 512
-                            },
-                            pathStructureTowards := omit,
-                            pathStructureOnwards := omit,
-                            supportingInformation := omit,
-                            chargeDistance := {
-                                predefinedDistance := {
-                                    dist := 32,
-                                    disUnit := DisUnit.kilometres
-                                }
-                            },
-                            realDistance := omit,
-                            applicableTimeClasses := omit,
-                            locationClass := 1025,
-                            storageRequired := omit,
-                            InvoicingRelatedData := omit
-                        } // End of field sectionPricingLayout
-                    } // End of field sectionPricingLayout
-                },
+                                pathStructureTowards := omit,
+                                pathStructureOnwards := omit,
+                                supportingInformation := omit,
+                                chargeDistance := {
+                                    predefinedDistance := {
+                                        dist := 32,
+                                        disUnit := 0
+                                    }
+                                },
+                                realDistance := omit,
+                                applicableTimeClasses := omit,
+                                locationClass := 1025,
+                                storageRequired := omit,
+                                invoicingRelatedData := omit
+                            } // End of field sectionPricingLayout
+                        } // End of field sectionLayoutDescription
+                    } // End of field sectionLayoutDescription
+                }, // End of field layoutDescription
                 geoRefPoint := omit,
-                tollContextPartitionLayoutVersion := {
+                tollContextPartitionVersion := {
                     version := PX_VERSION_ID,
                     validFrom := PX_VALID_FROM
                 }
@@ -952,7 +965,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             
             /**
              * @desc    This is the minimal form of awaited UsageStatement message
-             * @see     ISO 17575-3:2016 Clause 7.6.2 UsageStatement
+             * @see     ISO 17575-1:2016 Clause 7.6.2 UsageStatement
              */
             template UsageStatement<Container> mw_usageStatement_default<Container> := {
                 usageStatementId                    := ?,
@@ -970,13 +983,13 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             
             /**
              * @desc    This is the minimal form of awaited UsageStatement message
-             * @see     ISO 17575-3:2016 Clause 7.6.2 UsageStatement
+             * @see     ISO 17575--1:2016 Clause 7.6.2 UsageStatement
              */
             template UsageStatement<Container> mw_usageStatement_tollContext<Container> (
-                                                                                         in template (present) Provider p_tollContext := ?
-            ) modifies mw_usageStatement_default := {
+                                                                                         template Provider p_tollContext := ?
+            ) modifies mw_usageStatement_default<Container> := {
                 tollContext                         := p_tollContext
-            } // End of template mw_usageStatement_default
+            } // End of template mw_usageStatement_tollContext
             
         } // End of group Default_Contents
 
@@ -991,17 +1004,29 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * @remark  It is used as ContextData1 in ContextData ATS
              */
             template Iso17575_3AduBody m_ContextData_default := {
-                tollContextOverview             := m_optionally_Signed_Unsecured(m_tollContextOverview_default(PX_CONTEXT_ID)),
-                tollContextPartitionOverview    := m_optionally_Signed_Unsecured({m_tollContextPartitionOverview_default(0)}), // TODO To be refined using a PIXIT
-                tariffTable                     := m_optionally_Signed_Unsecured(m_tariffTable_default),
-                currencyConversionTable         := m_optionally_Signed_Unsecured(m_currencyConversionTable_default),
-                tariffClassDefinition           := m_optionally_Signed_Unsecured(m_tariffClassDefinition_default),
-                localVehicleClassDefinition     := m_optionally_Signed_Unsecured(m_localVehicleClassDefinition_default),
-                timeClassDefinition             := m_optionally_Signed_Unsecured(m_timeClassDefinition_default),
-                userClassDefinition             := m_optionally_Signed_Unsecured(m_userClassDefinition_default),
-                tollContextLayout               := m_optionally_Signed_Unsecured(m_tollContextPartitionLayout_default),
-                chargeReportingEvents           := m_optionally_Signed_Unsecured(m_chargeReportingEvents_default),
-                chargeReportConfiguration       := m_optionally_Signed_Unsecured(m_chargeReportConfiguration_default)
+//                tollContextOverview             := m_optionally_Signed_Unsecured(m_tollContextOverview_default(PX_CONTEXT_ID)),
+//                tollContextPartitionOverview    := m_optionally_Signed_Unsecured({m_tollContextPartitionOverview_default(0)}), // TODO To be refined using a PIXIT
+//                tariffTable                     := m_optionally_Signed_Unsecured(m_tariffTable_default),
+//                currencyConversionTable         := m_optionally_Signed_Unsecured(m_currencyConversionTable_default),
+//                tariffClassDefinition           := m_optionally_Signed_Unsecured(m_tariffClassDefinition_default),
+//                localVehicleClassDefinition     := m_optionally_Signed_Unsecured(m_localVehicleClassDefinition_default),
+//                timeClassDefinition             := m_optionally_Signed_Unsecured(m_timeClassDefinition_default),
+//                userClassDefinition             := m_optionally_Signed_Unsecured(m_userClassDefinition_default),
+//                tollContextLayout               := m_optionally_Signed_Unsecured(m_tollContextPartitionLayout_default),
+//                chargeReportingEvents           := m_optionally_Signed_Unsecured(m_chargeReportingEvents_default),
+//                chargeReportConfiguration       := m_optionally_Signed_Unsecured(m_chargeReportConfiguration_default),
+                tollContextOverview             := omit,
+                tollContextPartitionOverview    := omit,
+                tariffTable                     := omit,
+                currencyConversionTable         := omit,
+                tariffClassDefinition           := omit,
+                localVehicleClassDefinition     := omit,
+                timeClassDefinition             := omit,
+                userClassDefinition             := omit,
+                tollContextLayout               := omit,
+                chargeReportingEvents           := omit,
+                chargeReportConfiguration       := omit,
+                tollContextVersion              := 1 // [TS 17575-3], Clause 6.3.1 Protocol versioning
             } // End of template m_ContextData_default
             
         } // End of group DefaultContextData

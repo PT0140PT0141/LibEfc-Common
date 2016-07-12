@@ -4,8 +4,8 @@
  *  PLEASE DO NOT EDIT! The file will be overwritten when the input file changes.
  *
  *  Source:    EfcCcc.asn
- *  Generator: TTworkbench ASN.1 Parser 1.1.13.201605251730
- *  Date:      15/06/16 10:57
+ *  Generator: TTworkbench ASN.1 Parser 1.1.14.201606151123
+ *  Date:      12/07/16 10:57
  *
  * ----------------------------------------------------------------------------
  *  The ASN.1 to TTCN-3 is a proprietary mapping based on the ES 201 873-7 ETSI standard.
@@ -54,12 +54,10 @@ module EfcCcc language "ASN.1:1997" {
     type VersionId, MessageAuthenticator, Duration, Distance; 
   }; 
 
-  type record of _0ActiveContexts ActiveContexts; 
-
-  type record _0ActiveContexts {
+  type record of record {
     EfcDsrcApplication.Provider tollContext,
     INT1 contextVersion
-  }
+  } ActiveContexts; 
 
   type EfcDsrcApplication.EFC_ContextMark CCC_ContextMark; 
 
@@ -119,13 +117,13 @@ module EfcCcc language "ASN.1:1997" {
 
   type integer StatusIndicator (0 .. 255); 
 
-  const StatusIndicator StatusIndicator_noGo_ := 0; 
+  const integer StatusIndicator_noGo_ := 0; 
 
-  const StatusIndicator StatusIndicator_go_ := 1; 
+  const integer StatusIndicator_go_ := 1; 
 
-  const StatusIndicator StatusIndicator_noGoContractual_ := 2; 
+  const integer StatusIndicator_noGoContractual_ := 2; 
 
-  const StatusIndicator StatusIndicator_noGoUserSwitchedOff_ := 3; 
+  const integer StatusIndicator_noGoUserSwitchedOff_ := 3; 
 
   type EfcDsrcApplication.LPN VehicleLicensePlateNumber; 
 
@@ -162,21 +160,18 @@ module EfcCcc language "ASN.1:1997" {
 
   type integer DistRecordingStatus (0 .. 255); 
 
-  const DistRecordingStatus DistRecordingStatus_presentAndInactive_ := 3; 
+  const integer DistRecordingStatus_notPresent_ := 1; 
 
-  const DistRecordingStatus DistRecordingStatus_notPresent_ := 1; 
+  const integer DistRecordingStatus_presentAndActive_ := 2; 
 
-  const DistRecordingStatus DistRecordingStatus_presentAndActive_ := 2; 
+  const integer DistRecordingStatus_presentAndInactive_ := 3; 
 
-  const DistRecordingStatus DistRecordingStatus_reservedForFutureUse_ := 4; 
+  const integer DistRecordingStatus_reservedForFutureUse_ := 4; 
 
   type record ApplicationContextMark {
     CCC_ContextMark cccContextMark,
-    _0ApplicationContextMark ac_cr_reference,
-    _0ApplicationContextMark0 rndOBE
+    octetstring ac_cr_reference length (2),
+    octetstring rndOBE length (4)
   }
 
-  type octetstring _0ApplicationContextMark0 length (4); 
-
-  type octetstring _0ApplicationContextMark length (2); 
 }

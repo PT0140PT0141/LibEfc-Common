@@ -4,8 +4,8 @@
  *  PLEASE DO NOT EDIT! The file will be overwritten when the input file changes.
  *
  *  Source:    EfcAutonomousCharging.asn
- *  Generator: TTworkbench ASN.1 Parser 1.1.13.201605251730
- *  Date:      15/06/16 10:57
+ *  Generator: TTworkbench ASN.1 Parser 1.1.14.201606151123
+ *  Date:      12/07/16 10:57
  *
  * ----------------------------------------------------------------------------
  *  The ASN.1 to TTCN-3 is a proprietary mapping based on the ES 201 873-7 ETSI standard.
@@ -64,13 +64,13 @@ module EfcAutonomousCharging language "ASN.1:1997" {
 
   type integer AccountStatus (0 .. 255); 
 
-  const AccountStatus AccountStatus_empty_ := 2; 
+  const integer AccountStatus_ok_ := 0; 
 
-  const AccountStatus AccountStatus_ok_ := 0; 
+  const integer AccountStatus_low_ := 1; 
 
-  const AccountStatus AccountStatus_negative_ := 3; 
+  const integer AccountStatus_empty_ := 2; 
 
-  const AccountStatus AccountStatus_low_ := 1; 
+  const integer AccountStatus_negative_ := 3; 
 
   type union AccountUpdate {
     ReloadAccount reloadAccount,
@@ -108,14 +108,12 @@ module EfcAutonomousCharging language "ASN.1:1997" {
 
   type integer AidIdentifier (0 .. 255); 
 
-  const AidIdentifier AidIdentifier_iso17575_1_2016_ := 0; 
+  const integer AidIdentifier_iso17575_1_2016_ := 0; 
 
   type record Altitude {
-    _0Altitude altitude,
+    integer altitude (-65536 .. 65535),
     DisUnit altUnit optional
   }
-
-  type integer _0Altitude (-65536 .. 65535); 
 
   type record AuthenticatedAddToAccount {
     bitstring addAccountPer,
@@ -173,11 +171,11 @@ module EfcAutonomousCharging language "ASN.1:1997" {
 
   type integer DetectionMode (0 .. 255); 
 
-  const DetectionMode DetectionMode_inferred_ := 1; 
+  const integer DetectionMode_measured_ := 0; 
 
-  const DetectionMode DetectionMode_measured_ := 0; 
+  const integer DetectionMode_inferred_ := 1; 
 
-  const DetectionMode DetectionMode_lac_ := 2; 
+  const integer DetectionMode_lac_ := 2; 
 
   type record Distance {
     EfcDsrcApplication.Int4 dist,
@@ -186,19 +184,19 @@ module EfcAutonomousCharging language "ASN.1:1997" {
 
   type integer DisUnit (0 .. 255); 
 
-  const DisUnit DisUnit_yards_ := 3; 
+  const integer DisUnit_kilometres_ := 0; 
 
-  const DisUnit DisUnit_quartermetres_ := 6; 
+  const integer DisUnit_miles_ := 1; 
 
-  const DisUnit DisUnit_kilometres_ := 0; 
+  const integer DisUnit_metres_ := 2; 
 
-  const DisUnit DisUnit_miles_ := 1; 
+  const integer DisUnit_yards_ := 3; 
 
-  const DisUnit DisUnit_metres_ := 2; 
+  const integer DisUnit_feet_ := 4; 
 
-  const DisUnit DisUnit_feet_ := 4; 
+  const integer DisUnit_decimetres_ := 5; 
 
-  const DisUnit DisUnit_decimetres_ := 5; 
+  const integer DisUnit_quartermetres_ := 6; 
 
   type record Duration {
     EfcDsrcApplication.Int4 dur,
@@ -207,23 +205,21 @@ module EfcAutonomousCharging language "ASN.1:1997" {
 
   type integer DurUnit (0 .. 255); 
 
-  const DurUnit DurUnit_hours_ := 2; 
+  const integer DurUnit_seconds_ := 0; 
 
-  const DurUnit DurUnit_days_ := 3; 
+  const integer DurUnit_minutes_ := 1; 
 
-  const DurUnit DurUnit_months_ := 4; 
+  const integer DurUnit_hours_ := 2; 
 
-  const DurUnit DurUnit_seconds_ := 0; 
+  const integer DurUnit_days_ := 3; 
 
-  const DurUnit DurUnit_minutes_ := 1; 
+  const integer DurUnit_months_ := 4; 
 
   type record ListOfRawUsageData {
-    _0ListOfRawUsageData rawDataList,
+    record of MeasuredRawData rawDataList,
     TariffClassDescription currentTariffClass optional,
     boolean vehicleDescription optional
   }
-
-  type record of MeasuredRawData _0ListOfRawUsageData; 
 
   type record MacMessageAuthenticator {
     integer masterKeyRef,
@@ -261,62 +257,36 @@ module EfcAutonomousCharging language "ASN.1:1997" {
   }
 
   type record NmeaData {
-    _0NmeaData time optional,
-    _0NmeaData0 status optional,
-    _0NmeaData1 latitude optional,
-    _0NmeaData2 latNS optional,
-    _0NmeaData3 longitude optional,
-    _0NmeaData4 longEW optional,
-    _0NmeaData5 speed optional,
-    _0NmeaData6 heading optional,
-    _0NmeaData7 date optional,
-    _0NmeaData8 signalIntegrity optional,
-    _0NmeaData9 altitude optional,
-    _0NmeaData10 usedSatellites optional,
-    _0NmeaData11 hdop optional
+    ASNAUX.NumericString time length (9) optional,
+    ASNAUX.PrintableString status (
+      "A", 
+      "V"
+    ) optional,
+    ASNAUX.NumericString latitude length (8) optional,
+    ASNAUX.PrintableString latNS (
+      "N", 
+      "S"
+    ) optional,
+    ASNAUX.NumericString longitude length (9) optional,
+    ASNAUX.PrintableString longEW (
+      "E", 
+      "W"
+    ) optional,
+    ASNAUX.NumericString speed length (3) optional,
+    ASNAUX.NumericString heading length (3) optional,
+    ASNAUX.NumericString date length (6) optional,
+    ASNAUX.PrintableString signalIntegrity (
+      "A", 
+      "D", 
+      "E", 
+      "M", 
+      "S", 
+      "N"
+    ) optional,
+    ASNAUX.PrintableString altitude length (5) optional,
+    ASNAUX.NumericString usedSatellites length (2) optional,
+    ASNAUX.NumericString hdop length (3) optional
   }
-
-  type ASNAUX.NumericString _0NmeaData7 length (6); 
-
-  type ASNAUX.NumericString _0NmeaData6 length (3); 
-
-  type ASNAUX.PrintableString _0NmeaData9 length (5); 
-
-  type ASNAUX.PrintableString _0NmeaData8 (
-    "A", 
-    "D", 
-    "E", 
-    "M", 
-    "S", 
-    "N"
-  ); 
-
-  type ASNAUX.NumericString _0NmeaData11 length (3); 
-
-  type ASNAUX.NumericString _0NmeaData10 length (2); 
-
-  type ASNAUX.NumericString _0NmeaData3 length (9); 
-
-  type ASNAUX.PrintableString _0NmeaData2 (
-    "N", 
-    "S"
-  ); 
-
-  type ASNAUX.NumericString _0NmeaData5 length (3); 
-
-  type ASNAUX.PrintableString _0NmeaData4 (
-    "E", 
-    "W"
-  ); 
-
-  type ASNAUX.NumericString _0NmeaData1 length (8); 
-
-  type ASNAUX.NumericString _0NmeaData length (9); 
-
-  type ASNAUX.PrintableString _0NmeaData0 (
-    "A", 
-    "V"
-  ); 
 
   type record ObeId {
     EfcDsrcApplication.Int2 manufacturerId,
@@ -329,14 +299,10 @@ module EfcAutonomousCharging language "ASN.1:1997" {
   }
 
   type record Position {
-    _0Position longitude,
-    _0Position0 latitude,
+    integer longitude (-2147483648 .. 2147483647),
+    integer latitude (-2147483648 .. 2147483647),
     Altitude altitude optional
   }
-
-  type integer _0Position0 (-2147483648 .. 2147483647); 
-
-  type integer _0Position (-2147483648 .. 2147483647); 
 
   type record ReloadAccount {
     boolean reloadOldCreditAmount optional,
@@ -373,14 +339,10 @@ module EfcAutonomousCharging language "ASN.1:1997" {
 
   type union VersionId {
     octetstring basicVersionId,
-    _0VersionId extendedVersionId
-  }
-
-  type record of _0_0VersionId _0VersionId; 
-
-  type record _0_0VersionId {
-    ASNAUX.UTF8String versionName,
-    ASNAUX.UTF8String value_
+    record of record {
+      ASNAUX.UTF8String versionName,
+      ASNAUX.UTF8String value_
+    } extendedVersionId
   }
 
 }
