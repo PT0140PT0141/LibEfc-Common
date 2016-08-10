@@ -58,31 +58,23 @@ module Common_Pixits {
          * @desc    Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 1: Charging
          * @see     6.3.2 Context data versioning
          */
-        modulepar GeneralizedTime PX_VALID_FROM := "20100101000001"
-//        {
-//            timeDate := {
-//                year := 2010,
-//                month := 1,
-//                day := 1
-//            },
-//            timeCompact := {
-//                hours := 0,
-//                mins := 0,
-//                double_secs := 1
-//            }
-//        }
-        ; // 2010/01/01 00:00:01 GMT +0 - The 16 bit zero value {hours 0, mins 0, double-secs 0} denotes "no time"
+        modulepar GeneralizedTime PX_VALID_FROM := "20100101000001"; // 2010/01/01 00:00:01 GMT +0 - The 16 bit zero value {hours 0, mins 0, double-secs 0} denotes "no time"
+        /**
+         * @desc    Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 1: Charging
+         * @see     6.3.2 Context data versioning
+         */
+        modulepar GeneralizedTime PX_VALID_FROM_13 := "20100101000001"; // 2010/01/01 00:00:01 GMT +0 - The 16 bit zero value {hours 0, mins 0, double-secs 0} denotes "no time"
         
         /**
          * @desc    Describe a default provider for ContextID
          * @see     B.4.3 PICS proforma tables - Table C.6
          */
-        modulepar CountryCode PX_CONTEXT_ID_OPERATOR := '0011000011'B; // See EN ISO 3166-1 - Fehler! Kein Text mit angegebener Formatvorlage im Dokument./TC Fehler! Kein Text mit angegebener Formatvorlage im Dokument. - ClauseB.4.2.4 Initialisation response (VST)
+        modulepar CountryCode PX_TOLL_CONTEXT_ID_OPERATOR := '0011000011'B; // See EN ISO 3166-1 - Fehler! Kein Text mit angegebener Formatvorlage im Dokument./TC Fehler! Kein Text mit angegebener Formatvorlage im Dokument. - ClauseB.4.2.4 Initialisation response (VST)
         /**
          * @desc    Describe a default issuer provider for ContextID
          * @see     B.4.3 PICS proforma tables - Table C.6
          */
-        modulepar IssuerIdentifier PX_CONTEXT_ID_IDENTIFIER := 2; // See EN ISO 3166-1 - Fehler! Kein Text mit angegebener Formatvorlage im Dokument./TC Fehler! Kein Text mit angegebener Formatvorlage im Dokument. - ClauseB.4.2.4 Initialisation response (VST)
+        modulepar IssuerIdentifier PX_TOLL_CONTEXT_ID_IDENTIFIER := 2; // See EN ISO 3166-1 - Fehler! Kein Text mit angegebener Formatvorlage im Dokument./TC Fehler! Kein Text mit angegebener Formatvorlage im Dokument. - ClauseB.4.2.4 Initialisation response (VST)
         /**
          * @desc    Describe a default provider for informationOriginator
          * @see     B.4.3 PICS proforma tables - Table C.6
@@ -133,23 +125,24 @@ module Common_Pixits {
          * @see     B.4.3 PICS proforma tables - Table C.6
          */
         modulepar IssuerIdentifier PX_ANY_RECIPIENT := 6;
-
-        /**
-         * @desc    Describe a default tollContextPartitionID
-         * @see     B.4.3 PICS proforma tables - Table B.122 — Toll context partition layout Item
-         */
-        modulepar ContextId PX_CONTEXT_ID := 0;
         
         /**
          * @desc    Describe a default provider for contextId
          * @see     B.4.3 PICS proforma tables - Table C.6
          */
-        modulepar TollContextPartitionId PX_TOLLCONTEXTPARTITIONID := 0;
+        modulepar Provider PX_TOLL_CONTEXT_ID_1 := {
+            countryCode         := '0011111010'B, // See EN ISO 3166-1 - Fehler! Kein Text mit angegebener Formatvorlage im Dokument./TC Fehler! Kein Text mit angegebener Formatvorlage im Dokument. - ClauseB.4.2.4 Initialisation response (VST)
+            providerIdentifier  := 1
+        };
         
+        /**
+         * @desc    Describe a TollContext partition ID
+         */
+        modulepar TollContextPartitionId PX_TOLLCONTEXTPARTITIONID_1 := 1;
         /**
          * @desc    Describe a default provider for aduSequenceNumber
          * @see     B.4.3 PICS proforma tables - Table C.6
          */
         modulepar EfcAutonomousContextData.Int4 PX_ADU_SEQ_NUMBER := 125684;
-    
+        
 } // End of module Common_Pixits

@@ -8,12 +8,12 @@
  */
 module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
     /**
-     * @desc    Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 1: Charging
+     * @desc    [17575-1:2016], Charging
      * @see     Annex A (normative) EFC data type specifications
      */
     import from EfcAutonomousCharging language "ASN.1:1997" all;
     /**
-     * @desc    Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 3: Context data
+     * @desc    [17575-3:2016], Context data
      * @see     A.2 Data specifications
      */
     import from EfcAutonomousContextData language "ASN.1:1997" all;
@@ -30,12 +30,13 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
     
     import from Common_TypesAndValues all;
     import from Common_Pixits all;
+    import from Common_Pics all;
     import from Common_Functions all;
 
     group Providers_Templates {
         /**
          * @desc    This is the informationOriginator Provider description
-         * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 4: Roaming
+         * @see     ISO 14906:2011/Amd1:2015
          */
         template (value) Provider m_informationOriginator := {
             countryCode := PX_ORIGINATOR_EFC_OPERATOR,
@@ -43,7 +44,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
         } // End of template m_informationOriginator
         /**
          * @desc    This is the informationSender Provider description
-         * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 4: Roaming
+         * @see     ISO 14906:2011/Amd1:2015
          */
         template (value) Provider m_informationSender := {
             countryCode := PX_SENDER_EFC_OPERATOR,
@@ -51,7 +52,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
         } // End of template informationSender
         /**
          * @desc    This is the m_tollCharger Provider description
-         * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 4: Roaming
+         * @see     ISO 14906:2011/Amd1:2015
          */
         template (value) Provider m_tollCharger := {
             countryCode := PX_TOLLCHARGER_EFC_OPERATOR,
@@ -59,7 +60,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
         } // End of template m_tollCharger
         /**
          * @desc    This is the recipient Provider description
-         * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 4: Roaming
+         * @see     ISO 14906:2011/Amd1:2015
          */
         template (value) Provider m_recipient := {
             countryCode := PX_RECIPIENT_EFC_OPERATOR,
@@ -67,7 +68,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
         } // End of template m_recipient
         /**
          * @desc    This is the m_tollCharger Provider description
-         * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 4: Roaming
+         * @see     ISO 14906:2011/Amd1:2015
          */
         template (value) Provider m_contractProvider := {
             countryCode := PX_TOLLCHARGER_EFC_OPERATOR,
@@ -77,7 +78,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
     
     /**
      * @desc    This group contains all template for ChargeReport message
-     * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 1: Charging
+     * @see     [17575-1:2016], Charging
      */
     group Common_Charging {
 
@@ -93,16 +94,38 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * @see     [TS 17575-3], Clause 7.6.1 usageStatementList
              */
             template (value) UsageStatement_<Container> m_usageStatement_usageStatement<Container>(
-                                                                                                   in template UsageStatement<Container> p_usageStatement
+                                                                                                   in template (value) UsageStatement<Container> p_usageStatement
             ) := {
                 usageStatement := p_usageStatement
-            } // End of template UsageStatement_
+            } // End of template m_usageStatement_usageStatement
+            
+            /**
+             * @desc    This is the minimal form of received UsageStatementList
+             * @remark  All other ChargeReport template shall modify this one
+             * @see     [TS 17575-3], Clause 7.6.1 usageStatementList
+             */
+            template (present) UsageStatement_<Container> mw_usageStatement_usageStatement<Container>(
+                                                                                                      template (present) UsageStatement<Container> p_usageStatement := ?
+            ) := {
+                usageStatement := p_usageStatement
+            } // End of template mw_usageStatement_usageStatement
+            
+            /**
+             * @desc    This is the minimal form of received UsageStatementList
+             * @remark  All other ChargeReport template shall modify this one
+             * @see     [TS 17575-3], Clause 7.6.1 usageStatementList
+             */
+            template (present) UsageStatement_<Container> mw_usageStatement_authenticatedUsageStatement<Container>(
+                                                                                                                   template (present) AuthenticatedUsageStatement p_authenticatedUsageStatement := ?
+            ) := {
+                authenticatedUsageStatement := p_authenticatedUsageStatement
+            } // End of template mw_usageStatement_authenticatedUsageStatement
             
             /**
              * @desc    This is the minimal form of sent ChargeReport message, all optional fields are omitted
              * @see     [TS 17575-3], 7.2.1 ChargeReport
              */
-            template (value) ChargeReport<Container> m_chargeReport_default<Container> := {
+            template (omit) ChargeReport m_chargeReport_default := {
                 protocolVersion := c_Iso17575_3AduHeader_protocolVersion,
                 obeId := omit, 
                 vehicleLPNr := omit,
@@ -115,10 +138,8 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
                     endOfPeriod := fx_getMessageDate(+3600)
                 },
                 versionInfo := omit,
-                usageStatementList := {
-                    {
-                        m_usageStatement_usageStatement(m_usageStatement_default)//{ usageStatement := m_usageStatement_default }
-                    }
+                usageStatementList := { 
+//                    { m_usageStatement_usageStatement(m_usageStatement_default) }
                 },
                 sumVatForThisSession := omit,
                 accountStatus := omit,
@@ -131,7 +152,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * @desc    This is the minimal form of awaited ChargeReport message, all optional fields are ignored
              * @see     [TS 17575-3], 7.2.1 ChargeReport
              */
-            template ChargeReport<Container> mw_chargeReport_any<Container> := {
+            template ChargeReport mw_chargeReport_any := {
                 protocolVersion := c_Iso17575_3AduHeader_protocolVersion,
                 obeId := *, 
                 vehicleLPNr := *,
@@ -153,8 +174,8 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * Only mandatory fields are set, check m_chargeReportContent_default template for these fields 
              * @see     [TS 17575-3], 7.2.1 ChargeReport
              */
-            template ChargeReport<Container> mw_chargeReport_default<Container> 
-            modifies mw_chargeReport_any<Container> := {
+            template ChargeReport mw_chargeReport_default
+            modifies mw_chargeReport_any := {
                 obeId       := ?, // Because of m_chargeReportContent_default.obeId is true
                 tollContext := ? // Because of m_chargeReportContent_default.tollCharger is true
             } // End of template mw_chargeReport_default
@@ -181,7 +202,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
 
         /**
          * @desc    This group contains all template for EFC_ContextMark message
-         * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 1: Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 3: Charging
+         * @see     [17575-1:2016], [17575-3:2016], Charging
          *           - Clause 6
          */
         group EFC_ContextMark_Templates {
@@ -199,17 +220,17 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
 
     } // End of group Common_Charging
 
-    group Common_ContextData {
+    group Common_contextData {
         
         /**
-         * @desc    Group of Context Date describes in ISO 17575-3:2016 Annex C.1.1: General structure of Context Data
+         * @desc    Group of Context Date describes in [17575-3:2016],  Annex C.1.1: General structure of Context Data
          */
         group ContextData_Common_ADU_Header {
             
             /**
              * @desc    Main send template for any unsecured ADU
              * @param   p_notAuthenticatedIso17575_3Adu Unsecured ADU (of data type Iso17575-3Adu)
-             * @see     ISO 17575-3:2016 Clause 7.2 Message authentication (data type Iso17575-3-InformationContent)
+             * @see     [17575-3:2016], Clause 7.2 Message authentication (data type Iso17575-3-InformationContent)
              */
             template (value) Iso17575_3InformationContent m_Iso17575_3InformationContent_unsecured(
                                                                                                    in template (value) Iso17575_3Adu p_notAuthenticatedIso17575_3Adu
@@ -220,7 +241,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             /**
              * @desc    Main receive template for any unsecured ADU
              * @param   p_notAuthenticatedIso17575_3Adu Unsecured ADU (of data type Iso17575-3Adu)
-             * @see     ISO 17575-3:2016 Clause 7.2 Message authentication (data type Iso17575-3-InformationContent)
+             * @see     [17575-3:2016], Clause 7.2 Message authentication (data type Iso17575-3-InformationContent)
              */
             template (present) Iso17575_3InformationContent mw_Iso17575_3InformationContent_unsecured(
                                                                                                       template (present) Iso17575_3Adu p_notAuthenticatedIso17575_3Adu := ?
@@ -231,7 +252,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             /**
              * @desc    Main send template for any unsecured ADU
              * @param   p_notAuthenticatedIso17575_3Adu Secured ADU (of data type Iso17575-3Adu)
-             * @see     ISO 17575-3:2016 Clause 7.2 Message authentication (data type Iso17575-3-InformationContent)
+             * @see     [17575-3:2016], Clause 7.2 Message authentication (data type Iso17575-3-InformationContent)
              */
             template (value) Iso17575_3InformationContent m_Iso17575_3InformationContent_secured(
                                                                                                  in template (value) AuthenticatedIso17575_3Adu p_authenticatedIso1575_3Adu
@@ -242,7 +263,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             /**
              * @desc    Main receive template for any secured ADU
              * @param   p_notAuthenticatedIso17575_3Adu Secured ADU (of data type Iso17575-3Adu)
-             * @see     ISO 17575-3:2016 Clause 7.2 Message authentication (data type Iso17575-3-InformationContent)
+             * @see     [17575-3:2016], Clause 7.2 Message authentication (data type Iso17575-3-InformationContent)
              */
             template (present) Iso17575_3InformationContent mw_Iso17575_3InformationContent_secured(
                                                                                                     template (present) AuthenticatedIso17575_3Adu p_authenticatedIso1575_3Adu := ?
@@ -254,8 +275,8 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * @desc    Main send template for any ADU
              * @param   p_aduHeader ADU header (of data type Iso17575-3AduHeader)
              * @param   p_aduBody ADU body (of data type Iso17575-3AduBody)
-             * @see     ISO 17575-3:2016 Clause 7.3 Application data unit structure (data type Iso17575-3Adu)
-             * @see     ISO 17575-3:2016 Figure 4 — Structure of an ISO 17575-3 ADU
+             * @see     [17575-3:2016], Clause 7.3 Application data unit structure (data type Iso17575-3Adu)
+             * @see     [17575-3:2016],  Figure 4 — Structure of an ISO 17575-3 ADU
              */
             template (value) Iso17575_3Adu m_Iso17575_3Adu(
                                                            in template (value) Iso17575_3AduHeader p_aduHeader, 
@@ -267,7 +288,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             
             /**
              * @desc    Main receive template for any ADU
-             * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 3: Context data - Clause 7 ISO 17575-3 ADU and Annex C.1.1: General structure of Context Data - Table C.6
+             * @see     [17575-3:2016], Context data - Clause 7 ISO 17575-3 ADU and Annex C.1.1: General structure of Context Data - Table C.6
              * @remark  All receive templates shall modify this one
              */
             template (present) Iso17575_3Adu mw_Iso17575_3Adu_default := {
@@ -277,7 +298,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             
             /**
              * @desc    Verify structure of sent Iso17575-3Adu(s),and allowed values of all data elements according to Table C.6: General Structure of Context Data
-             * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 3: Context data - Clause 7 ISO 17575-3 ADU and Annex C.1.1: General structure of Context Data - Table C.6
+             * @see     [17575-3:2016], Context data - Clause 7 ISO 17575-3 ADU and Annex C.1.1: General structure of Context Data - Table C.6
              * @remark  All receive templates shall modify this one
              */
             template Iso17575_3Adu mw_Iso17575_3Adu 
@@ -300,7 +321,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             
             /**
              * @desc    Main receive template for any ADU
-             * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 3: Context data - Clause 7 ISO 17575-3 ADU and Annex C.1.1: General structure of Context Data - Table C.6
+             * @see     [17575-3:2016], Context data - Clause 7 ISO 17575-3 ADU and Annex C.1.1: General structure of Context Data - Table C.6
              * @remark  All receive templates shall modify this one
              */
             template (present) Iso17575_3Adu mw_Iso17575_3Adu_TollContext_default(
@@ -312,7 +333,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             /**
              * @desc    Verify structure of sent Iso17575-3Adu(s),and allowed values of all data elements according to Table C.6: General Structure of Context Data
              * @param   p_tollCharger Provider value to match
-             * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 3: Context data - Clause 7 ISO 17575-3 ADU and Annex C.1.1: General structure of Context Data - Table C.6
+             * @see     [17575-3:2016], Context data - Clause 7 ISO 17575-3 ADU and Annex C.1.1: General structure of Context Data - Table C.6
              * @remark  All receive templates shall modify this one
              */
             template (present) Iso17575_3Adu mw_Iso17575_3Adu_TollContext(
@@ -321,7 +342,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
            
             /**
              * @desc    Main receive template for any ADU header
-             * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 3: Context data - Clause 7.2 ADU Header - Table 1: Data elements of the ADU Header
+             * @see     [17575-3:2016], Context data - Clause 7.2 ADU Header - Table 1: Data elements of the ADU Header
              * @remark  All receive templates shall modify this one
              */
             template Iso17575_3AduHeader mw_aduHeader_any := {
@@ -337,7 +358,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * @desc    Main receive template for any ADU header
              * @param   p_tollContext TollContext value to match
              * @param   p_contextId ContextId value to match
-             * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 3: Context data - Clause 7.2 ADU Header - Table 1: Data elements of the ADU Header
+             * @see     [17575-3:2016], Context data - Clause 7.2 ADU Header - Table 1: Data elements of the ADU Header
              * @remark  All receive templates shall modify this one
              */
             template (present) Iso17575_3AduHeader mw_aduHeader_TollContext( 
@@ -351,14 +372,14 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * @see     7.4 Application data unit header (data type ISO 17575-3AduHeader)
              * @remark  All other ChargeReportConfiguration template shall modify this one
              */
-            template (value) Iso17575_3AduHeader m_aduHeader := {
+            template (value) Iso17575_3AduHeader m_aduHeader_default := {
                 protocolVersion         := c_Iso17575_3AduHeader_protocolVersion,
                 informationSender       := m_informationSender,
                 informationOriginator   := m_informationOriginator,
                 tollContext             := m_tollCharger,
                 aduSequenceNumber       := PX_ADU_SEQ_NUMBER,
                 messageDate             := fx_getMessageDate()
-            } // End of template m_aduHeader
+            } // End of template m_aduHeader_default
             
         } // End of group ContextData_Common_ADU_Header
         /**
@@ -367,18 +388,18 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
         group Default_Contents {
             /**
              * @desc    ChargeReportConfiguration default template
-             * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 3: Context data - Clause 8.3.5.2.1 Data type ChargeReport
+             * @see     [17575-3:2016], Context data - Clause 8.3.5.2.1 Data type ChargeReport
              * @remark  Use PICS to initialize properly this template. These values are assigned according to Electronic fee collection (EFC) — Conformity evaluation of Front End and Back End equipment to ISO 17575-3 — Part 1: Test suite structure and test purpose - Table C.8: ContextData1
              */
             template (value) ChargeReportContent m_chargeReportContent_default := {
-                useOfCrAuthentication       := false,
+                useOfCrAuthentication       := true,
                 obeId                       := true,
                 vehicleLPNr                 := false,
                 paymentMeans                := false,
                 tollContext                 := true,
                 chargeReportFinalRecipient  := false,
-                timeOfReport                := false,
-                reportPeriod                := false,
+                timeOfReport                := true,
+                reportPeriod                := true,
                 versionInfo                 := false,
                 sumVatForThisSession        := false,
                 accountStatus               := false,
@@ -388,8 +409,8 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             } // End of template m_chargeReportContent_default
             /**
              * @desc    UsageStatementContent default template
-             * @see     ISO 17575-3:2016 Clause 8.5.5.3.3 Data type UsageStatementContent
-             * @see     ISO 17575-3:2016 Table 25 — Data elements in data type UsageStatementContent (informative)
+             * @see     [17575-3:2016], Clause 8.5.5.3.3 Data type UsageStatementContent
+             * @see     [17575-3:2016], Table 25 — Data elements in data type UsageStatementContent (informative)
              */
             template (value) UsageStatementContent m_usageStatementContent_default := {
                 useOfUsageStatementAuthentication   := false,
@@ -407,9 +428,9 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             } // End of template m_usageStatementContent_default
             /**
              * @desc    This is the minimal form of awaited UsageStatement message
-             * @see     ISO 17575-3:2016 Clause 7.6.2 UsageStatement
+             * @see     [17575-3:2016], Clause 7.6.2 UsageStatement
              */
-            template (omit) UsageStatement<Container> m_usageStatement_default <in type Container> := {
+            template (omit) UsageStatement<Container> m_usageStatement_default <Container> := {
                 usageStatementId := omit,
                 tollContext := omit,
                 chargeReportFinalRecipient := omit,
@@ -422,6 +443,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
                 noUsage := omit,
                 additionalUsageInformation := omit
             } // End of template m_usageStatement_default
+            
             /**
              * @desc    This is the minimal form of awaited AggregatedSingleTariffClassSessionContent message
              * @remark  All other UsageStatement template shall modify this one
@@ -451,7 +473,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
 
             /**
              * @desc    chargeReportConfigurationVersion default template
-             * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 3: Context data - Clause 8.3.5.2   EFC attribute ChargeReportConfiguration
+             * @see     [17575-3:2016], Context data - Clause 8.3.5.2   EFC attribute ChargeReportConfiguration
              * @remark  All other VersionAndValidity template shall modify this one
              */
             template (value) VersionAndValidity m_chargeReportConfigurationVersion_default := {
@@ -461,11 +483,13 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             
             /**
              * @desc    ChargeReportConfiguration default template
-             * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 3: Context data - Clause 8.3.5.2 EFC attribute ChargeReportConfiguration
+             * @see     [17575-3:2016], Context data - Clause 8.3.5.2 EFC attribute ChargeReportConfiguration
+             * @see     [16410-1:2016], Table C.4 —  ContextData1
              * @remark  All other ChargeReportConfiguration template shall modify this one
+             * @remark  Omit means all parameters set to false
              */
             template (value) ChargeReportConfiguration m_chargeReportConfiguration_default := {
-                applicablePartitions := { 1 },
+                applicablePartitions := { PX_TOLLCONTEXTPARTITIONID_1 },
                 chargeReportContent := m_chargeReportContent_default,
                 usageStatementContent := m_usageStatementContent_default,
                 cccAttributesContent := omit,
@@ -484,12 +508,12 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * @param   p_tollContext Identify the toll charger that operates the toll scheme
              * @param   p_tollContextPartitions The list of identifiers of the toll context partitions belonging to the single toll context
              * @remark  All other TollContextOverview template shall modify this one
-             * @see     ISO 17575-3:2016 Clause 8.5.2.2 Toll context overview
-             * @see     ISO 17575-3:2016 Table 3 — EFC attribute TollContextOverview (informative)
+             * @see     [17575-3:2016], Clause 8.5.2.2 Toll context overview
+             * @see     [17575-3:2016], Table 3 — EFC attribute TollContextOverview (informative)
              */
             template (value) TollContextOverview m_tollContextOverview_default(
                                                                                in template (value) Provider                                     p_tollContext,
-                                                                               in template (value) TollContextOverview.tollContextPartitions    p_tollContextPartitions
+                                                                               in template (value) TollContextOverview.tollContextPartitions    p_tollContextPartitions := { PX_TOLLCONTEXTPARTITIONID_1 }
             ) := {
                 tollContext                 := p_tollContext,
                 tollContextPartitions       := p_tollContextPartitions,
@@ -508,14 +532,14 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * @param   p_operationalStatus Information regarding the period of operation of the toll context partition
              * @param   p_timeZone The time zone applicable for the toll context partition in relation to Coordinated Universal Time (UTC)
              * @remark  All other TollContextPartitionOverview template shall modify this one
-             * @see     ISO 17575-3:2016 Clause 8.5.2.3 Toll context partition overview
-             * @see     ISO 17575-3:2016 Table 4 — EFC attribute TollContextPartitionOverview (informative)
+             * @see     [17575-3:2016], Clause 8.5.2.3 Toll context partition overview
+             * @see     [17575-3:2016], Table 4 — EFC attribute TollContextPartitionOverview (informative)
              */
             template (value) TollContextPartitionOverview m_tollContextPartitionOverview_default(
-                                                                                                 in template (value) TollContextPartitionId         p_tollContextPartitionId,
-                                                                                                 in template (value) TollSchemeType                 p_tollContextPartitionType := TollSchemeType_roadSectionPricing_,
-                                                                                                 in template (value) OperationalStatus              p_operationalStatus := m_operationalStatus_default,
-                                                                                                 in template (value) integer                        p_timeZone := 0
+                                                                                                 in template (value) TollContextPartitionId                 p_tollContextPartitionId,
+                                                                                                 in template (value) TollSchemeType                         p_tollContextPartitionType := TollSchemeType_roadSectionPricing_,
+                                                                                                 in template (value) OperationalStatus                      p_operationalStatus := m_operationalStatus_default,
+                                                                                                 in template (value) TollContextPartitionOverview.timeZone  p_timeZone := 0
             ) := {
                 tollContextPartitionId              := p_tollContextPartitionId,
                 tollContextPartitionName            := omit,
@@ -541,8 +565,8 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * @param   p_timeZone The time zone applicable for the toll context partition in relation to Coordinated Universal Time (UTC)
              * @param   p_precedenceLevel Specify priorities for overlapping toll context partitions
              * @remark  All other TollContextPartitionOverview template shall modify this one
-             * @see     ISO 17575-3:2016 Clause 8.5.2.3 Toll context partition overview
-             * @see     ISO 17575-3:2016 Table 4 — EFC attribute TollContextPartitionOverview (informative)
+             * @see     [17575-3:2016], Clause 8.5.2.3 Toll context partition overview
+             * @see     [17575-3:2016], Table 4 — EFC attribute TollContextPartitionOverview (informative)
              */
             template (value) TollContextPartitionOverview m_tollContextPartitionOverview_precedenceLevel(
                                                                                                          in template (value) TollContextPartitionId         p_tollContextPartitionId,
@@ -573,8 +597,8 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * @param   p_tariffs The a list of tariff related data for each tariff class. Each of the list entries shall be of data type Tariff
              * @param   p_standardCurrency Used to determine the currency that shall be used
              * @remark  All other TariffTable template shall modify this one
-             * @see     ISO 17575-3:2016 Clause 8.5.3.2.1 EFC attribute TariffTable
-             * @see     ISO 17575-3:2016 Table 5 — EFC attribute TariffTable (informative)
+             * @see     [17575-3:2016], Clause 8.5.3.2.1 EFC attribute TariffTable
+             * @see     [17575-3:2016], Table 5 — EFC attribute TariffTable (informative)
              */
             template (value) TariffTable m_tariffTable_default(
                                                                in template (value) TariffTable.applicablePartitions p_applicablePartitions,
@@ -594,16 +618,16 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             /**
              * @desc    Default template for Tariff data element, to be used in singleton { m_tariff_default }
              * @remark  All other Tariff template shall modify this one
-             * @see     ISO 17575-3:2016 Clause 8.5.3.2.2 Data type Tariff
-             * @see     ISO 17575-3:2016 Table 6 — Data type Tariff (informative)
+             * @see     [17575-3:2016], Clause 8.5.3.2.2 Data type Tariff
+             * @see     [17575-3:2016], Table 6 — Data type Tariff (informative)
              */
             template (value) Tariff m_tariff_default := { // TODO To be moved into PIXIT
-                tariffClass                     := 50,
+                tariffClass                     := 1,
                 chargeUnit                      := {
-                    event := 0
+                    event := 5
                 },
                 roundingRuleForChargeUnitsUsed  := RoundingRule_no_,
-                basicFeePerChargeUnit           := 0,
+                basicFeePerChargeUnit           := 10,
                 roundingRuleForFee              := RoundingRule_no_,
                 vat                             := omit,
                 roundingRuleForVat              := omit,
@@ -618,7 +642,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             /**
              * @desc    Default template for Tariff data element, to be used in singleton { m_tariff_default }
              * @remark  All other CurrencyConversionTable template shall modify this one
-             * @see     ISO 17575-3:2016 Clause 8.5.3.2.3 EFC attribute CurrencyConversionTable
+             * @see     [17575-3:2016], Clause 8.5.3.2.3 EFC attribute CurrencyConversionTable
              * @see     Table 6 — Data type Tariff (informative)
              */
             template (value) CurrencyConversionTable m_currencyConversionTable_default := { // TODO To be moved into PIXIT
@@ -641,8 +665,8 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             /**
              * @desc    Default template for TariffClassDefinition data element
              * @remark  All other TariffClassDefinition template shall modify this one
-             * @see     ISO 17575-3:2016 Clause 8.5.3.3.2 EFC attribute TariffClassDefinition
-             * @see     ISO 17575-3:2016 Table 8 — EFC attribute TariffClassDefinition (informative)
+             * @see     [17575-3:2016], Clause 8.5.3.3.2 EFC attribute TariffClassDefinition
+             * @see     [17575-3:2016], Table 8 — EFC attribute TariffClassDefinition (informative)
              */
             template (value) TariffClassDefinition m_tariffClassDefinition_default := { // TODO To be moved into PIXIT
                 tariffClasses := {
@@ -704,8 +728,8 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             /**
              * @desc    Default template for LocalVehicleClassDefinition data element
              * @remark  All other LocalVehicleClassDefinition template shall modify this one
-             * @see     ISO 17575-3:2016 Clause 8.5.3.4.2 Data type LocalVehicleClass
-             * @see     ISO 17575-3:2016 Table 11 — Data type LocalVehicleClass (informative)
+             * @see     [17575-3:2016], Clause 8.5.3.4.2 Data type LocalVehicleClass
+             * @see     [17575-3:2016], Table 11 — Data type LocalVehicleClass (informative)
              */
             template (value) LocalVehicleClassDefinition m_localVehicleClassDefinition_default := { // TODO To be moved into PIXIT
                 localVehicleClasses := {
@@ -779,8 +803,8 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             /**
              * @desc    Default template for TimeClassDefinition data element
              * @remark  All other TimeClassDefinition template shall modify this one
-             * @see     ISO 17575-3:2016 Clause 8.5.3.5 EFC attribute TimeClassDefinition
-             * @see     ISO 17575-3:2016 Table 12 — EFC attribute TimeClassDefinition (informative)
+             * @see     [17575-3:2016], Clause 8.5.3.5 EFC attribute TimeClassDefinition
+             * @see     [17575-3:2016], Table 12 — EFC attribute TimeClassDefinition (informative)
              */
             template (value) TimeClassDefinition m_timeClassDefinition_default := { // TODO To be moved into PIXIT
                 timeClasses := {
@@ -837,14 +861,14 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             
             /**
              * @desc    Default template for UserClassDefinition data element
-             * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 3: Context data - Clause 8.3.3.2 Tariff table
+             * @see     [17575-3:2016], Context data - Clause 8.3.3.2 Tariff table
              * @see     Clause 8.3.3.6 EFC attribute UserClassDefinition
              */
             /**
              * @desc    Default template for UserClassDefinition data element
              * @remark  All other UserClassDefinition template shall modify this one
-             * @see     ISO 17575-3:2016 Clause 8.5.3.6 EFC attribute UserClassDefinition
-             * @see     ISO 17575-3:2016 Table 14 — EFC attribute UserClassDefinition (informative)
+             * @see     [17575-3:2016], Clause 8.5.3.6 EFC attribute UserClassDefinition
+             * @see     [17575-3:2016], Table 14 — EFC attribute UserClassDefinition (informative)
              */
             template (value) UserClassDefinition m_userClassDefinition_default := { // TODO To be moved into PIXIT
                 userClasses := 
@@ -884,8 +908,8 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             /**
              * @desc    Default template for TollContextPartitionLayout data element
              * @remark  All other TollContextPartitionLayout template shall modify this one
-             * @see     ISO 17575-3:2016 Clause 8.5.4 Requirements with regards to context layout
-             * @see     ISO 17575-3:2016 Table 16 — Data type TollContextPartitionLayout (informative)
+             * @see     [17575-3:2016], Clause 8.5.4 Requirements with regards to context layout
+             * @see     [17575-3:2016], Table 16 — Data type TollContextPartitionLayout (informative)
              */
             template (value) TollContextPartitionLayout m_tollContextPartitionLayout_default := {
                 tollContextPartitionId              := 0,
@@ -937,26 +961,33 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             
             /**
              * @desc    Default template for ChargeReportingEvents data element
-             * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 3: Context data - Clause 8.3.3.2 Tariff table
+             * @see     [17575-3:2016], Context data - Clause 8.3.3.2 Tariff table
              * @see     Clause 8.3.5.1 EFC attribute ChargeReportingEvents
              */
             template (value) ChargeReportingEvents m_chargeReportingEvents_default := {
-                 applicablePartitions           := { 1 }, 
+                 applicablePartitions           := { PX_TOLLCONTEXTPARTITIONID_1 }, 
                  absoluteTimeEvents             := omit,
                  relativeTimeEvents             := omit,
                  travelledDistanceEvents        := omit,
                  locationEvents                 := omit,
                  feeLimitEvents                 := omit,
-                 chargeReportingEventsVersion   := {
-                    version := PX_VERSION_ID,
-                    validFrom := PX_VALID_FROM
-                 }
+                 chargeReportingEventsVersion   := m_chargeReportingEventsVersion_default
             } // End of template m_chargeReportingEvents_default
+            
+            /**
+             * @desc    chargeReportingEventsVersion default template
+             * @see     [17575-3:2016], Context data - Clause 8.3.5.2   EFC attribute ChargeReportConfiguration
+             * @remark  All other VersionAndValidity template shall modify this one
+             */
+            template (value) VersionAndValidity m_chargeReportingEventsVersion_default := {
+                version := PX_VERSION_ID,
+                validFrom := PX_VALID_FROM
+            } // End of template m_chargeReportingEventsVersion_default
             
             /**
              * @desc    Default template for ChargeReportingEvents data element
              * @remark  All other OperationalStatus template shall modify this one
-             * @see     ISO 17575-3:2016 Clause 8.5.2.3 Toll context partition overview
+             * @see     [17575-3:2016], Clause 8.5.2.3 Toll context partition overview
              */
             template (value) OperationalStatus m_operationalStatus_default := {
                 startsOperationAt   := fx_getMessageDate(),
@@ -964,8 +995,28 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             } // End of template m_operationalStatus_default
             
             /**
+             * @desc    Main template for TollContextOverview data element
+             * @param   p_tollContext Identify the toll charger that operates the toll scheme
+             * @remark  All other TollContextOverview template shall modify this one
+             * @see     [17575-3:2016], Clause 8.5.2.2 Toll context overview
+             * @see     [17575-3:2016], Table 3 — EFC attribute TollContextOverview (informative)
+             */
+            template (present) TollContextOverview mw_tollContextOverview_default(
+                                                                                  in template (present) Provider p_tollContext := ?
+            ) := {
+                tollContext                 := p_tollContext,
+                tollContextPartitions       := ?,
+                tollSchemeName              := *,
+                tollContextBoundingBoxes    := *,
+                tollContextOverviewVersion  := {
+                    version     := PX_VERSION_ID,
+                    validFrom   := PX_VALID_FROM
+                }
+            } // End of template mw_tollContextOverview_default
+            
+            /**
              * @desc    This is the minimal form of awaited UsageStatement message
-             * @see     ISO 17575-1:2016 Clause 7.6.2 UsageStatement
+             * @see     [17575-1:2016], Clause 7.6.2 UsageStatement
              */
             template UsageStatement<Container> mw_usageStatement_default<Container> := {
                 usageStatementId                    := ?,
@@ -985,17 +1036,71 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * @desc    This is the minimal form of awaited UsageStatement message
              * @see     ISO 17575--1:2016 Clause 7.6.2 UsageStatement
              */
-            template UsageStatement<Container> mw_usageStatement_tollContext<Container> (
-                                                                                         template Provider p_tollContext := ?
+            template (present) UsageStatement<Container> mw_usageStatement_tollContext<Container> (
+                                                                                                   template (present) Provider p_tollContext := ?
             ) modifies mw_usageStatement_default<Container> := {
                 tollContext                         := p_tollContext
             } // End of template mw_usageStatement_tollContext
+            
+            /**
+             * @desc    Default template for TollContextPartitionLayout data element
+             * @remark  All other TollContextPartitionLayout template shall modify this one
+             * @see     [17575-3:2016], Clause 8.5.4 Requirements with regards to context layout
+             * @see     [17575-3:2016], Table 16 — Data type TollContextPartitionLayout (informative)
+             */
+            template (present) TollContextPartitionLayout mw_tollContextPartitionLayout(
+                                                                                        template (present) TollContextPartitionId p_tollContextPartitionId := ?,
+                                                                                        template (present) Layout p_layout := ?
+            ) := {
+                tollContextPartitionId      := p_tollContextPartitionId,
+                layoutDescription           := p_layout,
+                geoRefPoint                 := *,
+                tollContextPartitionVersion := ?
+            } // End of template mw_tollContextPartitionLayout_default
+            
+            /**
+             * @desc    Default template for Layout/sectionLayoutDescription data element
+             * @param   p_sectionLayout SectionLayout value to check
+             * @remark  All other TollContextPartitionLayout template shall modify this one
+             * @see     [17575-3:2016], Clause 8.5.4.2 Requirements for section based layout
+             */
+            template (present) Layout mw_layout_sectionPricingLayout(
+                                                                     template (present) Layout.sectionPricingLayout.sectionLayoutDescription p_sectionLayout := ?
+            ) := {
+                sectionPricingLayout := {
+                    sectionLayoutDescription := p_sectionLayout
+                }
+            } // End of template mw_layout_sectionPricingLayout
+            
+            /**
+             * @desc    Default template for Layout/sectionLayoutDescription data element
+             * @param   p_areaPricingLayout AreaPricingLayout value to check
+             * @remark  All other TollContextPartitionLayout template shall modify this one
+             * @see     [17575-3:2016], Clause 8.5.4.2 Requirements for section based layout
+             */
+            template (present) Layout mw_layout_areaPricingLayout(
+                                                                  template (present) Layout.areaPricingLayout p_areaPricingLayout := ?
+            ) := {
+                areaPricingLayout := p_areaPricingLayout
+            } // End of template mw_layout_areaPricingLayout
+            
+            /**
+             * @desc    Default template for Layout/sectionLayoutDescription data element
+             * @param   p_cordonPricingLayout CordonPricingLayout value to check
+             * @remark  All other TollContextPartitionLayout template shall modify this one
+             * @see     [17575-3:2016], Clause 8.5.4.2 Requirements for section based layout
+             */
+            template (present) Layout mw_layout_cordonPricingLayout(
+                                                                    template (present) Layout.cordonPricingLayout p_cordonPricingLayout := ?
+            ) := {
+                cordonPricingLayout := p_cordonPricingLayout
+            } // End of template mw_layout_cordonPricingLayout
             
         } // End of group Default_Contents
 
         /**
          * @desc    Group of Context Date describes in Annex C.2: Data structure - Table C.8
-         * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 1: Charging for data element descriptions
+         * @see     [17575-1:2016], Charging for data element descriptions
          */
         group DefaultContextData {
             
@@ -1003,20 +1108,9 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * @desc    Default ContextData template
              * @remark  It is used as ContextData1 in ContextData ATS
              */
-            template Iso17575_3AduBody m_ContextData_default := {
-//                tollContextOverview             := m_optionally_Signed_Unsecured(m_tollContextOverview_default(PX_CONTEXT_ID)),
-//                tollContextPartitionOverview    := m_optionally_Signed_Unsecured({m_tollContextPartitionOverview_default(0)}), // TODO To be refined using a PIXIT
-//                tariffTable                     := m_optionally_Signed_Unsecured(m_tariffTable_default),
-//                currencyConversionTable         := m_optionally_Signed_Unsecured(m_currencyConversionTable_default),
-//                tariffClassDefinition           := m_optionally_Signed_Unsecured(m_tariffClassDefinition_default),
-//                localVehicleClassDefinition     := m_optionally_Signed_Unsecured(m_localVehicleClassDefinition_default),
-//                timeClassDefinition             := m_optionally_Signed_Unsecured(m_timeClassDefinition_default),
-//                userClassDefinition             := m_optionally_Signed_Unsecured(m_userClassDefinition_default),
-//                tollContextLayout               := m_optionally_Signed_Unsecured(m_tollContextPartitionLayout_default),
-//                chargeReportingEvents           := m_optionally_Signed_Unsecured(m_chargeReportingEvents_default),
-//                chargeReportConfiguration       := m_optionally_Signed_Unsecured(m_chargeReportConfiguration_default),
-                tollContextOverview             := omit,
-                tollContextPartitionOverview    := omit,
+            template Iso17575_3AduBody m_contextData_default := {
+                tollContextOverview             := m_optionally_Signed_Unsecured<TollContextOverview>(m_tollContextOverview_default(PX_TOLL_CONTEXT_ID_1)),
+                tollContextPartitionOverview    := m_optionally_Signed_Unsecured<TollContextPartitionOverviews>({ m_tollContextPartitionOverview_default(PX_TOLLCONTEXTPARTITIONID_1) }),
                 tariffTable                     := omit,
                 currencyConversionTable         := omit,
                 tariffClassDefinition           := omit,
@@ -1024,14 +1118,14 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
                 timeClassDefinition             := omit,
                 userClassDefinition             := omit,
                 tollContextLayout               := omit,
-                chargeReportingEvents           := omit,
-                chargeReportConfiguration       := omit,
+                chargeReportingEvents           := m_optionally_Signed_Unsecured<ChargeReportingEventss>({ m_chargeReportingEvents_default }),
+                chargeReportConfiguration       := m_optionally_Signed_Unsecured<ChargeReportConfigurations>({ m_chargeReportConfiguration_default }),
                 tollContextVersion              := 1 // [TS 17575-3], Clause 6.3.1 Protocol versioning
-            } // End of template m_ContextData_default
+            } // End of template m_contextData_default
             
         } // End of group DefaultContextData
         
-    } // End of group Common_ContextData
+    } // End of group Common_contextData
 
     group SecurityTemplates {
         

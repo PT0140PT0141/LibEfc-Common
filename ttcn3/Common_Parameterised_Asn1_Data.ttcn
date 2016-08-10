@@ -17,14 +17,14 @@ module Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Parameteriz
     
 // EfcLac
     type union LAC_T_APDUs <in type Container> {
-        Action_Request<Container>       action_request/*,
+        Action_Request<Container>       action_request,
         Action_Response<Container>      action_response,
         Event_Report_Request<Container> event_report_request,
         Event_Report_Response           event_report_response, 
         Set_Request<Container>          set_request,
         Set_Response                    set_response,
         Initialisation_Request          initialisation_request,
-        Initialisation_Response         initialisation_response*/
+        Initialisation_Response         initialisation_response
     }
     
     type union LacContainer <in type Container> {
@@ -54,40 +54,40 @@ module Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Parameteriz
     }
 
     type union CccContainer <in type Container> {
-        integer                   integer_,
-        octetstring               octetstring_,
-        universal charstring      universalString,
-        BeaconID                  beaconId,
-        CCC_T_APDUs<Container>               t_apdu, // TT
-        Dsrc_EID                  dsrc_Ase_Id,
-        AttributeIdList           attrIdList,
-        AttributeList<Container>             attrList,
-        EfcDsrcGeneric.Time       time,
-        GetStampedRq              gstrq ,
-        GetStampedRs<Container>   gstrs,
-        EFC_ContextMark           efccontext,
-        LPN                       vehlpn/*,
-        vehclass                        [49]    VehicleClass,
-        vehdims                         [50]    VehicleDimensions,
-        vehaxles                        [51]    VehicleAxles,
-        vehwtlims                       [52]    VehicleWeightLimits,
-        vehspchars                      [54]    VehicleSpecificCharacteristics,
-        equOBUId                        [56]    EquipmentOBUId,
-        paymeans                        [64]    PaymentMeans,
-        setmmirq                        [69]    SetMMIRq,
-        tch                             [79]    TrailerCharacteristics,
-        vehicleAxlesHistory             [81]    VehicleAxlesHistory,
-        communicationStatus             [82]    CommunicationStatus,
-        gnssStatus                      [83]    GnssStatus,
-        distanceRecordingStatus         [84]    DistanceRecordingStatus,
-        activeContexts                  [85]    ActiveContexts,
-        oBEStatusHistory                [86]    OBEStatusHistory,
-        vehicleWeightHistory            [93]    VehicleWeightHistory,
-        extendedOBEStatusHistory        [94]    ExtendedOBEStatusHistory,
-        extendedVehicleAxlesHistory     [95]    ExtendedVehicleAxlesHistory,
-        localVehicleClassId             [96]    LocalVehicleClassId,
-        vehicleCurrentMaxTrainWeight    [97]    VehicleCurrentMaxTrainWeight,
-        attributeUpdateInterval         [98]    AttributeUpdateInterval,*/
+        integer                         integer_,
+        octetstring                     octetstring_,
+        universal charstring            universalString,
+        BeaconID                        beaconId,
+        CCC_T_APDUs<Container>          t_apdu, // TT
+        Dsrc_EID                        dsrc_Ase_Id,
+        AttributeIdList                 attrIdList,
+        AttributeList<Container>        attrList,
+        EfcDsrcGeneric.Time             time,
+        GetStampedRq                    gstrq ,
+        GetStampedRs<Container>         gstrs,
+        EFC_ContextMark                 efccontext,
+        LPN                             vehlpn,
+        VehicleClass                    vehclass,
+        VehicleDimensions               vehdims,
+        VehicleAxles                    vehaxles,
+        VehicleWeightLimits             vehwtlims,
+        VehicleSpecificCharacteristics  vehspchars,
+        EquipmentOBUId                  equOBUId,
+        PaymentMeans                    paymeans,
+        SetMMIRq                        setmmirq,
+        TrailerCharacteristics          tch,
+        VehicleAxlesHistory             vehicleAxlesHistory,
+        CommunicationStatus             communicationStatus,
+        GnssStatus                      gnssStatus,
+        DistanceRecordingStatus         distanceRecordingStatus,
+        ActiveContexts                  activeContexts,
+        OBEStatusHistory                oBEStatusHistory,
+        VehicleWeightHistory            vehicleWeightHistory,
+        ExtendedOBEStatusHistory        extendedOBEStatusHistory,
+        ExtendedVehicleAxlesHistory     extendedVehicleAxlesHistory,
+        LocalVehicleClassId             localVehicleClassId,
+        VehicleCurrentMaxTrainWeight    vehicleCurrentMaxTrainWeight,
+        AttributeUpdateInterval         attributeUpdateInterval
     }
     
 // EfcDsrcGeneric
@@ -128,7 +128,7 @@ module Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Parameteriz
         bitstring                   fill, // BIT STRING (SIZE(1)),
         Dsrc_EID                    eid,
         Dsrc_EID                    iid optional,
-        AttributeList<Container>               attrList,
+        AttributeList<Container>    attrList,
         ReturnStatus                ret optional
     }
     
@@ -137,7 +137,7 @@ module Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Parameteriz
         boolean                     mode_,
         Dsrc_EID                    eid,
         octetstring                 accessCredentials optional, // OCTET STRING (SIZE(0..127,...))
-        AttributeList<Container>               attrList,
+        AttributeList<Container>    attrList,
         Dsrc_EID                    iid optional
     }
     
@@ -154,7 +154,9 @@ module Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Parameteriz
         Initialisation_Response         initialisation_response
     }
     
-    type T_APDUs_Generic<integer> T_APDUs;
+    type T_APDUs_Generic<octetstring> T_APDUs; // Need to use a dummy type for the declaration
+    
+    type record length(0..255) of integer EfcContainer_vector_;
     
     type union EfcContainer <in type Container> {
         integer                     integer_,
@@ -166,40 +168,40 @@ module Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Parameteriz
         T_APDUs_Generic <Container> t_apdu,
         // TT: instead of this:
 //        T_APDUs                     t_apdu,
-        DSRCApplicationEntityID     dsrcApplicationEntityId [6] ,
+        DSRCApplicationEntityID     dsrcApplicationEntityId,
         Dsrc_EID                    dsrc_Ase_Id,
         AttributeIdList             attrIdList,
-        AttributeList<Container>               attrList/*,
-        broadcastPool [10] BroadcastPool,
-        directory [11] Directory,
-        file [12] File,
-        fileType [13] FileType,
-        record [14] Record,
-        time [15] Time,
-        vector [16] SEQUENCE (SIZE(0..255)) OF INTEGER(0..127,...),
-        gstrq [17] GetStampedRq,
-        gstrs [18] GetStampedRs{EfcContainer},
-        sstrq [19] SetStampedRq{EfcContainer},
-        ginrq [20] GetInstanceRq,
-        ginrs [21] GetInstanceRs{EfcContainer},
-        sinrq [22] SetInstanceRq{EfcContainer},
-        charq [23] ChannelRq,
-        chars [24] ChannelRs,
-        cpprq [25] CopyRq,
-        subrq [26] SubRq,
-        addrq [27] AddRq,
-        debrq [28] DebitRq,
-        debrs [29] DebitRs,
-        crerq [30] CreditRq,
-        crers [31] CreditRs,
-        efccontext [32] EFC_ContextMark,
-        contser [33] ContractSerialNumber,
-        contval [34] ContractValidity,
-        contveh [35] ContractVehicle,
-        contauth [36] ContractAuthenticator,
-        recspt [37] ReceiptServicePart,
-        sessioncls [38] SessionClass,
-        recservserialno [39] ReceiptServiceSerialNumber,
+        AttributeList<Container>    attrList,
+        BroadcastPool               broadcastPool,
+        Directory                   directory,
+        File                        file,
+        FileType                    fileType,
+        Record                      record_,
+        EfcDsrcGeneric.Time         time,
+        EfcContainer_vector_        vector,
+        GetStampedRq                gstrq,
+        GetStampedRs<Container>     gstrs,
+        SetStampedRq<Container>     sstrq,
+        GetInstanceRq               ginrq,
+        GetInstanceRs               ginrs,
+        SetInstanceRq<Container>    sinrq,
+        ChannelRq                   charq,
+        ChannelRs                   chars,
+        CopyRq                      cpprq,
+        SubRq                       subrq,
+        AddRq                       addrq,
+        DebitRq                     debrq,
+        DebitRs                     debrs,
+        CreditRq                    crerq,
+        CreditRs                    crers,
+        EFC_ContextMark             efccontext,
+        ContractSerialNumber        contser,
+        ContractValidity            contval,
+        ContractVehicle             contveh,
+        ContractAuthenticator       contauth,
+        ReceiptServicePart          recspt,
+        SessionClass                sessioncls,
+        ReceiptServiceSerialNumber  recservserialno/*,
         recfinptENV [40] NULL,
         reccont [41] ReceiptContract,
         recOBUId [42] ReceiptOBUId,
@@ -243,7 +245,7 @@ module Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Parameteriz
         anp [80] ActualNumberOfPassengers*/
     }
     
-    type EfcContainer<integer> ApplicationContextMark;
+    type EfcContainer<octetstring> ApplicationContextMark; // Need to use a dummy type for the declaration
     
     type record ApplicationList_ {
         DSRCApplicationEntityID aid,
@@ -280,7 +282,7 @@ module Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Parameteriz
         Container   attributeValues // (WITH COMPONENTS {octetstring PRESENT})
     }
     
-    type set of GetInstanceRs_<integer> GetInstanceRs; // SEQUENCE (SIZE (0..127,...)) OF SEQUENCE
+    type set of GetInstanceRs_<octetstring> GetInstanceRs; // Need to use a dummy type for the declaration
     
     type record GetStampedRs <in type Container> {
         AttributeList<Container>    attributeList,
@@ -324,13 +326,13 @@ module Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Parameteriz
         AuthenticatedUsageStatement authenticatedUsageStatement
     }
     
-    type set of UsageStatement_<integer> UsageStatementList; 
+    type set of UsageStatement_ <octetstring> UsageStatementList; // Need to use a dummy type for the declaration
     
     /**
      * @desc 
      * @see     ISO 17575-1:2016 Clause 6.3 Charge report
      */
-    type record ChargeReport <in type Container> {
+    type record ChargeReport {
         EfcAutonomousCharging.AidIdentifier protocolVersion,
         ObeId                               obeId optional,
         VehicleLicencePlateNumber           vehicleLPNr optional,
@@ -361,11 +363,11 @@ module Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Parameteriz
         MessageAuthenticator    authenticator
     }
     
-    type set of TollContextPartitionOverview TollContextPartitionOverviews; // TODO To be moved in Common_TypesAndValues module
-    type set of TariffTable TariffTables; // TODO To be moved in Common_TypesAndValues module
-    type set of TollContextPartitionLayout TollContextPartitionLayouts; // TODO To be moved in Common_TypesAndValues module
-    type set of ChargeReportingEvents ChargeReportingEventss; // TODO To be moved in Common_TypesAndValues module
-    type set of ChargeReportConfiguration ChargeReportConfigurations; // TODO To be moved in Common_TypesAndValues module
+    type record of TollContextPartitionOverview TollContextPartitionOverviews; // TODO To be moved in Common_TypesAndValues module
+    type record of TariffTable TariffTables; // TODO To be moved in Common_TypesAndValues module
+    type record of TollContextPartitionLayout TollContextPartitionLayouts; // TODO To be moved in Common_TypesAndValues module
+    type record of ChargeReportingEvents ChargeReportingEventss; // TODO To be moved in Common_TypesAndValues module
+    type record of ChargeReportConfiguration ChargeReportConfigurations; // TODO To be moved in Common_TypesAndValues module
 
     /**
      * @desc Application data unit body
@@ -381,9 +383,8 @@ module Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Parameteriz
      * @member tollContextLayout
      * @member chargeReportingEvents
      * @member chargeReportConfiguration
-     * @member tollContextVersion
      * @member tollContextVersion          Version Information
-     * @see    ISO 17575-3:2016(E) Clause 7.5 Application data unit body (data type ISO 17575-3AduBody)
+     * @see    [17575-3:2016], Clause 7.5 Application data unit body (data type ISO 17575-3AduBody)
      */
     type record Iso17575_3AduBody {
         Optionally_Signed<TollContextOverview>              tollContextOverview optional,
@@ -404,7 +405,7 @@ module Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Parameteriz
      * @desc Application data unit structure
      * @member aduHeader Application data unit header
      * @member aduBody Application data unit body
-     * @see    ISO 17575-3:2016(E) Clause 7.3 Application data unit structure (data type Iso17575-3Adu)
+     * @see    [17575-3:2016], Clause 7.3 Application data unit structure (data type Iso17575-3Adu)
      */
     type record Iso17575_3Adu {
         Iso17575_3AduHeader aduHeader,

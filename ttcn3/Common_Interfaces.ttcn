@@ -27,10 +27,12 @@ module Common_Interfaces language "TTCN-3:2010 Advanced Parameterization" {
          * @desc Defines a message based port which allows to exchange ISO TS 17575 messages with the EUT
          */
          type port EutPort message {
+             in
+                 AuthenticatedChargeReport;
             inout
-                Iso17575_3InformationContent,
-                ChargeReport<integer>, // TODO Add used type
-                ChargeReportResponse;
+                 Iso17575_3InformationContent,
+                 ChargeReport,
+                 ChargeReportResponse;
         } // End of port EutPort
 
         /**
