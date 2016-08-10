@@ -96,12 +96,12 @@ module Common_Pixits {
          */
         modulepar IssuerIdentifier PX_SENDER_RECIPIENT := 3;
         /**
-         * @desc    Describe a default provider for tollCharger
+         * @desc    Describe a default provider for tollContext
          * @see     B.4.3 PICS proforma tables - Table C.6
          */
         modulepar CountryCode PX_TOLLCHARGER_EFC_OPERATOR := '0011111010'B; // See EN ISO 3166-1 - Fehler! Kein Text mit angegebener Formatvorlage im Dokument./TC Fehler! Kein Text mit angegebener Formatvorlage im Dokument. - ClauseB.4.2.4 Initialisation response (VST)
         /**
-         * @desc    Describe a default issuer provider for tollCharger
+         * @desc    Describe a default issuer provider for tollContext
          * @see     B.4.3 PICS proforma tables - Table C.6
          */
         modulepar IssuerIdentifier PX_TOLLCHARGER_RECIPIENT := 4;

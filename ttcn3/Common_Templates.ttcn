@@ -177,7 +177,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             template ChargeReport mw_chargeReport_default
             modifies mw_chargeReport_any := {
                 obeId       := ?, // Because of m_chargeReportContent_default.obeId is true
-                tollContext := ? // Because of m_chargeReportContent_default.tollCharger is true
+                tollContext := ? // Because of m_chargeReportContent_default.tollContext is true
             } // End of template mw_chargeReport_default
         } // End of group Common_Charging_ChargeReport
 
@@ -443,6 +443,23 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
                 noUsage := omit,
                 additionalUsageInformation := omit
             } // End of template m_usageStatement_default
+            
+            template (omit) DetectedChargeObjectContent m_detectedChargeObjectContent_default := {
+                chargeObjectIdContent := {
+                    chargeReportFinalRecipient  := false
+                },
+                subObjectNumber                 := false,
+                timeWhenUsed                    := false,
+                mileageWhenUsed                 := false,
+                currentTariffClass              := false,
+                tariffClassDescriptionContent   := omit,
+                vehicleDescription              := false,
+                vehicleDescriptionContent       := omit,
+                obeStatus                       := false,
+                feeExclVat                      := false,
+                sumVat                          := false,
+                chargeObjDetectionMode          := false
+            }
             
             /**
              * @desc    This is the minimal form of awaited AggregatedSingleTariffClassSessionContent message
