@@ -5,12 +5,12 @@
  */
 module Common_Interfaces language "TTCN-3:2010 Advanced Parameterization" {
     /**
-     * @desc    Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 1: Charging
+     * @desc    [17575-1:2016]: Charging
      * @see     Annex A (normative) EFC data type specifications
      */
     import from EfcAutonomousCharging language "ASN.1:1997" all;
     /**
-     * @desc    Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 3: Context data
+     * @desc    [17575-1:2016]: Context data
      * @see     A.2 Data specifications
      */
     import from EfcAutonomousContextData language "ASN.1:1997" all;

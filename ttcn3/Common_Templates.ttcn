@@ -1,7 +1,7 @@
 /**
  * @author  PT28/PT0141 
  * @desc    This module provides common templates for both Charging and ContextData TCs. Most of these templates shall be used to modify the new ones.
- * @see     Electronic fee collection (EFC) — Conformity evaluation of Front End and Back End equipment to ISO 17575-1 — Part 1: Test suite structure and test purpose
+ * @see     [17575-1:2016]: Test suite structure and test purpose
  * @see     Electronic fee collection (EFC) — Conformity evaluation of Front End and Back End equipment to ISO 17575-3 — Part 1: Test suite structure and test purpose
  * @remark  See Annex C - Data structures
  * @version $id$
@@ -232,44 +232,44 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * @param   p_notAuthenticatedIso17575_3Adu Unsecured ADU (of data type Iso17575-3Adu)
              * @see     [17575-3:2016], Clause 7.2 Message authentication (data type Iso17575-3-InformationContent)
              */
-            template (value) Iso17575_3InformationContent m_Iso17575_3InformationContent_unsecured(
+            template (value) Iso17575_3InformationContent m_iso17575_3InformationContent_unsecured(
                                                                                                    in template (value) Iso17575_3Adu p_notAuthenticatedIso17575_3Adu
             ) := {
                 notAuthenticatedIso17575_3Adu := p_notAuthenticatedIso17575_3Adu
-            } // End of template m_Iso17575_3InformationContent_unsecured
+            } // End of template m_iso17575_3InformationContent_unsecured
             
             /**
              * @desc    Main receive template for any unsecured ADU
              * @param   p_notAuthenticatedIso17575_3Adu Unsecured ADU (of data type Iso17575-3Adu)
              * @see     [17575-3:2016], Clause 7.2 Message authentication (data type Iso17575-3-InformationContent)
              */
-            template (present) Iso17575_3InformationContent mw_Iso17575_3InformationContent_unsecured(
+            template (present) Iso17575_3InformationContent mw_iso17575_3InformationContent_unsecured(
                                                                                                       template (present) Iso17575_3Adu p_notAuthenticatedIso17575_3Adu := ?
             ) := {
                 notAuthenticatedIso17575_3Adu := p_notAuthenticatedIso17575_3Adu
-            } // End of template mw_Iso17575_3InformationContent_unsecured
+            } // End of template mw_iso17575_3InformationContent_unsecured
             
             /**
              * @desc    Main send template for any unsecured ADU
              * @param   p_notAuthenticatedIso17575_3Adu Secured ADU (of data type Iso17575-3Adu)
              * @see     [17575-3:2016], Clause 7.2 Message authentication (data type Iso17575-3-InformationContent)
              */
-            template (value) Iso17575_3InformationContent m_Iso17575_3InformationContent_secured(
+            template (value) Iso17575_3InformationContent m_iso17575_3InformationContent_secured(
                                                                                                  in template (value) AuthenticatedIso17575_3Adu p_authenticatedIso1575_3Adu
             ) := {
                 authenticatedIso1575_3Adu := p_authenticatedIso1575_3Adu
-            } // End of template m_Iso17575_3InformationContent_secured
+            } // End of template m_iso17575_3InformationContent_secured
             
             /**
              * @desc    Main receive template for any secured ADU
              * @param   p_notAuthenticatedIso17575_3Adu Secured ADU (of data type Iso17575-3Adu)
              * @see     [17575-3:2016], Clause 7.2 Message authentication (data type Iso17575-3-InformationContent)
              */
-            template (present) Iso17575_3InformationContent mw_Iso17575_3InformationContent_secured(
+            template (present) Iso17575_3InformationContent mw_iso17575_3InformationContent_secured(
                                                                                                     template (present) AuthenticatedIso17575_3Adu p_authenticatedIso1575_3Adu := ?
             ) := {
                 authenticatedIso1575_3Adu := p_authenticatedIso1575_3Adu
-            } // End of template mw_Iso17575_3InformationContent_secured
+            } // End of template mw_iso17575_3InformationContent_secured
             
             /**
              * @desc    Main send template for any ADU
@@ -278,31 +278,31 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * @see     [17575-3:2016], Clause 7.3 Application data unit structure (data type Iso17575-3Adu)
              * @see     [17575-3:2016],  Figure 4 — Structure of an ISO 17575-3 ADU
              */
-            template (value) Iso17575_3Adu m_Iso17575_3Adu(
+            template (value) Iso17575_3Adu m_iso17575_3Adu(
                                                            in template (value) Iso17575_3AduHeader p_aduHeader, 
                                                            in template (value) Iso17575_3AduBody p_aduBody
             ) := {
                 aduHeader   := p_aduHeader, 
                 aduBody     := p_aduBody
-            } // End of template m_Iso17575_3Adu
+            } // End of template m_iso17575_3Adu
             
             /**
              * @desc    Main receive template for any ADU
              * @see     [17575-3:2016], Context data - Clause 7 ISO 17575-3 ADU and Annex C.1.1: General structure of Context Data - Table C.6
              * @remark  All receive templates shall modify this one
              */
-            template (present) Iso17575_3Adu mw_Iso17575_3Adu_default := {
+            template (present) Iso17575_3Adu mw_iso17575_3Adu_default := {
                 aduHeader   := mw_aduHeader_any,
                 aduBody     := ?
-            } // End of template mw_Iso17575_3Adu_default
+            } // End of template mw_iso17575_3Adu_default
             
             /**
              * @desc    Verify structure of sent Iso17575-3Adu(s),and allowed values of all data elements according to Table C.6: General Structure of Context Data
              * @see     [17575-3:2016], Context data - Clause 7 ISO 17575-3 ADU and Annex C.1.1: General structure of Context Data - Table C.6
              * @remark  All receive templates shall modify this one
              */
-            template Iso17575_3Adu mw_Iso17575_3Adu 
-            modifies mw_Iso17575_3Adu_default := {
+            template Iso17575_3Adu mw_iso17575_3Adu 
+            modifies mw_iso17575_3Adu_default := {
                 aduBody := {
                     tollContextOverview             := ?,
                     tollContextPartitionOverview    := *,
@@ -317,18 +317,18 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
                     chargeReportConfiguration       := *,
                     tollContextVersion              := ?
                 }
-            } // End of template mw_Iso17575_3Adu
+            } // End of template mw_iso17575_3Adu
             
             /**
              * @desc    Main receive template for any ADU
              * @see     [17575-3:2016], Context data - Clause 7 ISO 17575-3 ADU and Annex C.1.1: General structure of Context Data - Table C.6
              * @remark  All receive templates shall modify this one
              */
-            template (present) Iso17575_3Adu mw_Iso17575_3Adu_TollContext_default(
+            template (present) Iso17575_3Adu mw_iso17575_3Adu_TollContext_default(
                                                                                   in template (present) Provider p_tollContext := ?
-            ) modifies mw_Iso17575_3Adu := {
+            ) modifies mw_iso17575_3Adu := {
                 aduHeader := mw_aduHeader_TollContext(p_tollContext)      // See clause 7.2 ADU header
-            } // End of template mw_Iso17575_3Adu_TollContext_default
+            } // End of template mw_iso17575_3Adu_TollContext_default
             
             /**
              * @desc    Verify structure of sent Iso17575-3Adu(s),and allowed values of all data elements according to Table C.6: General Structure of Context Data
@@ -336,9 +336,9 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * @see     [17575-3:2016], Context data - Clause 7 ISO 17575-3 ADU and Annex C.1.1: General structure of Context Data - Table C.6
              * @remark  All receive templates shall modify this one
              */
-            template (present) Iso17575_3Adu mw_Iso17575_3Adu_TollContext(
+            template (present) Iso17575_3Adu mw_iso17575_3Adu_TollContext(
                                                                           in template (present) Provider p_tollContext := ?
-            ) := mw_Iso17575_3Adu_TollContext_default(p_tollContext); // End of template mw_Iso17575_3Adu_TollContext
+            ) := mw_iso17575_3Adu_TollContext_default(p_tollContext); // End of template mw_iso17575_3Adu_TollContext
            
             /**
              * @desc    Main receive template for any ADU header
@@ -389,7 +389,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             /**
              * @desc    ChargeReportConfiguration default template
              * @see     [17575-3:2016], Context data - Clause 8.3.5.2.1 Data type ChargeReport
-             * @remark  Use PICS to initialize properly this template. These values are assigned according to Electronic fee collection (EFC) — Conformity evaluation of Front End and Back End equipment to ISO 17575-3 — Part 1: Test suite structure and test purpose - Table C.8: ContextData1
+             * @remark  Use PICS to initialize properly this template. These values are assigned according to [16410-1:2016], Table C.4: ContextData1
              */
             template (value) ChargeReportContent m_chargeReportContent_default := {
                 useOfCrAuthentication       := true,

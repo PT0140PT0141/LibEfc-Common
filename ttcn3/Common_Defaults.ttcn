@@ -17,7 +17,7 @@ module Common_Defaults {
          * @verdict     Unchanged on success, fail otherwise and the component is stopped if PX_ProcessUnexpectedADUAsError is set to true
          */
         altstep a_defaults() runs on EutComp {
-            [] pco.receive(mw_Iso17575_3InformationContent_unsecured) {
+            [] pco.receive(mw_iso17575_3InformationContent_unsecured) {
                 repeat; // Ignore ADU
             }
             [] pco.receive {

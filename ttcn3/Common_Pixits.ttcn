@@ -6,12 +6,12 @@
 module Common_Pixits {
 
     /**
-     * @desc    Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 1: Charging
+     * @desc    [17575-1:2016]: Charging
      * @see     Annex A (normative) EFC data type specifications
      */
     import from EfcAutonomousCharging language "ASN.1:1997" all;
     /**
-     * @desc    Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 3: Context data
+     * @desc    [17575-1:2016]: Context data
      * @see     A.2 Data specifications
      */
     import from EfcAutonomousContextData language "ASN.1:1997" all; 
@@ -48,19 +48,19 @@ module Common_Pixits {
         modulepar float PX_GUARD := 10.0;
 
         /**
-         * @desc    Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 1: Charging
+         * @desc    [17575-1:2016]: Charging
          * @see     6.3.2 Context data versioning
          */
         modulepar VersionId PX_VERSION_ID := { 
             basicVersionId := '00000105'O 
         }; // Version 0.0.1.5
         /**
-         * @desc    Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 1: Charging
+         * @desc    [17575-1:2016]: Charging
          * @see     6.3.2 Context data versioning
          */
         modulepar GeneralizedTime PX_VALID_FROM := "20100101000001"; // 2010/01/01 00:00:01 GMT +0 - The 16 bit zero value {hours 0, mins 0, double-secs 0} denotes "no time"
         /**
-         * @desc    Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 1: Charging
+         * @desc    [17575-1:2016]: Charging
          * @see     6.3.2 Context data versioning
          */
         modulepar GeneralizedTime PX_VALID_FROM_13 := "20100101000001"; // 2010/01/01 00:00:01 GMT +0 - The 16 bit zero value {hours 0, mins 0, double-secs 0} denotes "no time"
