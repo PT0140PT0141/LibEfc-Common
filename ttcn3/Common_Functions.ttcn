@@ -26,7 +26,9 @@ module Common_Functions language "TTCN-3:2010 Advanced Parameterization" {
      */
     import from Common_Parameterised_Asn1_Data all;
     import from Common_TypesAndValues all;
+    import from Common_Templates all;
     import from Common_Interfaces all;
+    import from Common_Pics all;
     import from Common_LibUpperTester all;
 
     group Common_External_Functions {
@@ -127,6 +129,68 @@ module Common_Functions language "TTCN-3:2010 Advanced Parameterization" {
     } // End of group Communication_Functions
 
     group Security {
+        
+        /**
+         * @desc    This function sends Iso17575_3Adu message according to the security mode
+         * @param   p_Iso17575_3Adu Iso17575_3Adu message to be sent
+         * @verdict unchanged
+         */
+        function f_pco_send_iso17575_3Adu(
+                                          in template (value) Iso17575_3Adu p_Iso17575_3Adu
+        ) runs on EutComp {
+            if (not (PICS_SECURED_MODE)) {
+                pco.send(m_iso17575_3InformationContent_unsecured(p_Iso17575_3Adu));
+            } else {
+                var template (value) AuthenticatedIso17575_3Adu v_secured_packet;
+                f_secured_packet(p_Iso17575_3Adu, v_secured_packet);
+                pco.send(m_iso17575_3InformationContent_secured(v_secured_packet));
+            }
+        } // End of function f_pco_send_iso17575_3Adu
+        
+        altstep a_pco_recv_iso17575_3Adu_chargeReport(
+                                                      template ChargeReport p_chargeReportValueExpected,
+                                                      out template (value) ChargeReport p_chargeReportValue,
+                                                      out template (value) boolean p_result
+        ) runs on EutComp {
+            var AuthenticatedChargeReport v_authenticatedChargeReport;
+            
+            [PICS_SECURED_MODE == false] pco.receive(p_chargeReportValueExpected) -> value p_chargeReportValue {
+                p_result := true;
+            }
+            [PICS_SECURED_MODE == true] pco.receive(AuthenticatedChargeReport:?) -> value v_authenticatedChargeReport {
+                if (f_extract_ChargeReport(v_authenticatedChargeReport, p_chargeReportValue) == true) {
+                    p_result := match(p_chargeReportValueExpected, p_chargeReportValue);
+                } else {
+                    p_result := false;
+                }
+            }
+            [] pco.receive {
+                p_result := false;
+            }
+        } // End of function a_pco_recv_iso17575_3Adu_chargeReport
+        
+        altstep a_pco_recv_iso17575_3Adu(
+                                         template Iso17575_3Adu p_iso17575_3AduValueExpected,
+                                         out template (value) Iso17575_3Adu p_iso17575_3AduValue,
+                                         out template (value) boolean p_result
+        ) runs on EutComp {
+            var Iso17575_3InformationContent v_iso17575_3InformationContent;
+            
+            [PICS_SECURED_MODE == false] pco.receive(mw_iso17575_3InformationContent_unsecured(p_iso17575_3AduValueExpected)) -> value v_iso17575_3InformationContent {
+                p_iso17575_3AduValue := v_iso17575_3InformationContent.notAuthenticatedIso17575_3Adu;
+                p_result := true;
+            }
+            [PICS_SECURED_MODE == true] pco.receive(Iso17575_3InformationContent:?) -> value v_iso17575_3InformationContent {
+                if (f_extract_Iso17575(v_iso17575_3InformationContent.authenticatedIso1575_3Adu, p_iso17575_3AduValue) == true) {
+                    p_result := match(p_iso17575_3AduValueExpected, p_iso17575_3AduValue);
+                } else {
+                    p_result := false;
+                }
+            }
+            [] pco.receive {
+                p_result := false;
+            }
+        } // End of function a_pco_recv_iso17575_3Adu
         
         /**
          * @desc Apply security processing on the encoded Iso17575_3Adu
@@ -242,8 +306,10 @@ module Common_Functions language "TTCN-3:2010 Advanced Parameterization" {
          * @verdict unchanged on success, fail on priocessing error
          * @remark  The UTC time format is "20100101000001+0100", see DateAndTime declaration
          */
-        function f_compareDateAndTime(in DateAndTime p_beginOfPeriod, in DateAndTime p_endOfPeriod) runs on EutComp
-        return integer {
+        function f_compareDateAndTime(
+                                      in DateAndTime p_beginOfPeriod, 
+                                      in DateAndTime p_endOfPeriod
+        ) runs on EutComp return integer {
             var integer v_result := f_compareDateCompact(p_beginOfPeriod.timeDate, p_endOfPeriod.timeDate);
             if (v_result == 0) {
                 return f_compareTimeCompact(p_beginOfPeriod, p_endOfPeriod);
