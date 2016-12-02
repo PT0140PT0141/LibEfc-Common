@@ -73,9 +73,11 @@ ExtendedVehicleAxlesHistory ::= SEQUENCE {
 VehicleWeightHistory ::= SEQUENCE {
     timeWhenChangedToCurrentValue   Time,
     previousVehicleWeight           VehicleCurrentMaxTrainWeight,
-    previousLocalVehicleClassID     LocalVehicleClassId,
+    previousLocalVehicleClassID      Int2, -- LocalVehicleClassId, to prevent cyclic import
     timeWhenChangedToPrevious       Time
     }
+
+Int2 ::= INTEGER(0..65535) 
 
 StatusIndicator ::= INTEGER {
     noGo                    (0),

@@ -4,8 +4,8 @@
  *  PLEASE DO NOT EDIT! The file will be overwritten when the input file changes.
  *
  *  Source:    EfcCcc.asn
- *  Generator: TTworkbench ASN.1 Parser 1.1.14.201606151123
- *  Date:      16/08/16 09:09
+ *  Generator: TTworkbench ASN.1 Parser 1.1.14.201608221443
+ *  Date:      02/12/16 09:35
  *
  * ----------------------------------------------------------------------------
  *  The ASN.1 to TTCN-3 is a proprietary mapping based on the ES 201 873-7 ETSI standard.
@@ -38,20 +38,16 @@ module EfcCcc language "ASN.1:1997" {
     type EquipmentOBUId, EFC_ContextMark, LPN, VehicleAxles, VehicleSpecificCharacteristics, VehicleCurrentMaxTrainWeight, PaymentMeans, Provider; 
   }; 
 
-  import from AVIAEINumberingAndDataStructures language "ASN.1:1997" {
-    type CS5, IssuerIdentifier, CountryCode; 
-  }; 
-
-  import from EfcDsrcGeneric language "ASN.1:1997" {
-    type AttributeIdList; 
-  }; 
-
   import from EfcAutonomousContextData language "ASN.1:1997" {
     type LocalVehicleClassId; 
   }; 
 
   import from EfcAutonomousCharging language "ASN.1:1997" {
     type VersionId, MessageAuthenticator, Duration, Distance; 
+  }; 
+
+  import from EfcDsrcGeneric language "ASN.1:1997" {
+    type ObeConfiguration, ActionType, AttributeIdList, EventType, ReturnStatus, DSRCApplicationEntityID, Time, Get_Request, Dsrc_EID, Profile, BeaconID; 
   }; 
 
   type record of record {
@@ -111,9 +107,11 @@ module EfcCcc language "ASN.1:1997" {
   type record VehicleWeightHistory {
     EfcDsrcGeneric.Time timeWhenChangedToCurrentValue,
     EfcDsrcApplication.VehicleCurrentMaxTrainWeight previousVehicleWeight,
-    EfcAutonomousContextData.LocalVehicleClassId previousLocalVehicleClassID,
+    Int2 previousLocalVehicleClassID,
     EfcDsrcGeneric.Time timeWhenChangedToPrevious
   }
+
+  type integer Int2 (0 .. 65535); 
 
   type integer StatusIndicator (0 .. 255); 
 

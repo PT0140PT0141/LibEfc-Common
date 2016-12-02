@@ -98,6 +98,20 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
             ) := {
                 usageStatement := p_usageStatement
             } // End of template m_usageStatement_usageStatement
+            // TODO To be removed
+//            template (value) UsageStatement_<Container> m_usageStatement_authenticatedUsageStatement<Container>(
+//                                                                                                                in template (value) AuthenticatedUsageStatement p_authenticatedUsageStatement
+//            ) := {
+//                authenticatedUsageStatement := p_authenticatedUsageStatement
+//            } // End of template m_usageStatement_authenticatedUsageStatement
+//            
+//            template (value) AuthenticatedUsageStatement m_authenticatedUsageStatement(
+//                                                                                       in template (value) bitstring p_usageStatementPer,
+//                                                                                       in template (value) MessageAuthenticator p_messageAuthenticator
+//            ) := {
+//                usageStatementPer       := p_usageStatementPer,
+//                messageAuthenticator    := p_messageAuthenticator
+//            } // End of template m_authenticatedUsageStatement
             
             /**
              * @desc    This is the minimal form of received UsageStatementList
@@ -139,7 +153,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
                 },
                 versionInfo := omit,
                 usageStatementList := { 
-//                    { m_usageStatement_usageStatement(m_usageStatement_default) }
+                    m_usageStatement_usageStatement<octetstring>(m_usageStatement_default<octetstring>) 
                 },
                 sumVatForThisSession := omit,
                 accountStatus := omit,

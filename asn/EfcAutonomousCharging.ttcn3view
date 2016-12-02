@@ -4,8 +4,8 @@
  *  PLEASE DO NOT EDIT! The file will be overwritten when the input file changes.
  *
  *  Source:    EfcAutonomousCharging.asn
- *  Generator: TTworkbench ASN.1 Parser 1.1.14.201606151123
- *  Date:      16/08/16 09:09
+ *  Generator: TTworkbench ASN.1 Parser 1.1.14.201608221443
+ *  Date:      23/11/16 10:55
  *
  * ----------------------------------------------------------------------------
  *  The ASN.1 to TTCN-3 is a proprietary mapping based on the ES 201 873-7 ETSI standard.
@@ -34,15 +34,25 @@
 module EfcAutonomousCharging language "ASN.1:1997" {
   import from ASNAUX all; 
 
-  import from EfcDsrcApplication language "ASN.1:1997" all; 
+  import from EfcDsrcApplication language "ASN.1:1997" {
+    type TrailerCharacteristics, Int1, EquipmentOBUId, Int2, EFC_ContextMark, VehicleLicencePlateNumber, Int4, DriverCharacteristics, VehicleWeightLaden, VehicleDimensions, VehicleWeightLimits, SetMMIRq, VehicleClass, PaymentMeans, Provider, PaymentFee, VehicleAxles, VehicleSpecificCharacteristics; 
+  }; 
 
-  import from AVIAEINumberingAndDataStructures language "ASN.1:1997" all; 
+  import from AVIAEINumberingAndDataStructures language "ASN.1:1997" {
+    type CS5, IssuerIdentifier, CountryCode; 
+  }; 
 
-  import from EfcDsrcGeneric language "ASN.1:1997" all; 
+  import from EfcDsrcGeneric language "ASN.1:1997" {
+    type AttributeIdList; 
+  }; 
 
-  import from EfcCcc language "ASN.1:1997" all; 
+  import from EfcCcc language "ASN.1:1997" {
+    type ActiveContexts, GnssStatus, CommunicationStatus, DistanceRecordingStatus, VehicleAxlesHistory, OBEStatusHistory; 
+  }; 
 
-  import from EfcAutonomousContextData language "ASN.1:1997" all; 
+  import from EfcAutonomousContextData language "ASN.1:1997" {
+    type LocalVehicleClassId; 
+  }; 
 
   type record AuthenticatedChargeReport {
     bitstring chargeReportPer,

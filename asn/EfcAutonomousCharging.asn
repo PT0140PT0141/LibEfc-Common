@@ -11,7 +11,7 @@ FROM EfcDsrcApplication {iso(1) standard(0) 14906 application(0) version5(5)}
 TariffClassId, LocalVehicleClassId, TimeClassId, LocationClassId, UserClassId
 FROM EfcAutonomousContextData {iso(1) standard(0) 17575 part3(3) version2(2)}
 
-VehicleAxlesHistory, CommunicationStatus, GnssStatus, DistanceRecordingStatus, ActiveContexts, OBEStatusHistory
+VehicleAxlesHistory, CommunicationStatus, GnssStatus, DistanceRecordingStatus, ActiveContexts, OBEStatusHistory 
 
 FROM EfcCcc {iso(1) standard(0) 12813 version2(2)}
 ;
