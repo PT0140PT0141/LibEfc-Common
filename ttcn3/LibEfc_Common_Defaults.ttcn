@@ -6,10 +6,12 @@
  * @see     Electronic fee collection (EFC) — Application interface definition for autonomous systems — Part 2: Communication and connections to the lower layers
  * @version $id$
  */
-module Common_Defaults {
-    import from Common_Interfaces all;
-    import from Common_Templates all;
-    import from Common_LibUpperTester all;
+module LibEfc_Common_Defaults {
+    
+    // LibEfc_Common
+    import from LibEfc_Common_Interfaces all;
+    import from LibEfc_Common_Templates all;
+    import from LibEfc_Common_LibUpperTester all;
 
     group DefaultMessages {
         /**
@@ -51,4 +53,4 @@ module Common_Defaults {
             } // End of t_wait.timeout
         } // End of altstep a_upperTester
     } // End of DefaultUpperTester
-} // End of module Common_Defaults
+} // End of module LibEfc_Common_Defaults

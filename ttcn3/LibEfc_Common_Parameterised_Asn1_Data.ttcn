@@ -17,7 +17,7 @@ module Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Parameteriz
     import from EfcCcc language "ASN.1:1997" all;
     import from AVIAEINumberingAndDataStructures language "ASN.1:1997" all;
     
-    import from Common_TypesAndValues all;
+    import from LibEfc_Common_TypesAndValues all;
 
 // Parametrisations of module EfcLac
     type union LAC_T_APDUs {

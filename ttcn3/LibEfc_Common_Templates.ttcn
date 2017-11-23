@@ -26,12 +26,12 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
      * @desc    TTCN-3 does not support ASN.1 parameterization (ETSI ES 201 873-7 V4.5.1 Clause 10)
      *          Common_Parameterised_Asn1_Data TTCN-3 module is a workaround
      */
-    import from Common_Parameterised_Asn1_Data all;
+    import from LibEfc_Common_Parameterised_Asn1_Data all;
     
-    import from Common_TypesAndValues all;
-    import from Common_Pixits all;
-    import from Common_Pics all;
-    import from Common_Functions all;
+    import from LibEfc_Common_TypesAndValues all;
+    import from LibEfc_Common_Pixits all;
+    import from LibEfc_Common_Pics all;
+    import from LibEfc_Common_Functions all;
 
     group Providers_Templates {
         /**
