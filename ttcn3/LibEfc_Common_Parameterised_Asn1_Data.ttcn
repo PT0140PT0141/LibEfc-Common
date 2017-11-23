@@ -1,0 +1,624 @@
+/**
+ * @author  PT28/PT0140/PT0141 
+ * @desc    This module provides work-around to implement ASN.1 parametrization capability extensively used in ASN.1 files
+ * @see     Electronic fee collection (EFC) — Conformity evaluation of Front End and Back End equipment to ISO 17575-3 — Part 1: Test suite structure and test purpose
+ * @see     Electronic fee collection (EFC) — Evaluation of equipment for conformity to CEN ISO/TS 17575-3 — Part 1: Test suite structure and test purpose
+ * @remark  See Annex A - EFC data type specifications
+ * @version $id$
+ */
+module Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Parameterization" {
+    
+    // LibEfc_Common
+    import from EfcDsrcGeneric language "ASN.1:1997" all;
+    import from EfcDsrcApplication language "ASN.1:1997" all;
+    import from EfcAutonomousCharging language "ASN.1:1997" all;
+    import from EfcAutonomousContextData language "ASN.1:1997" all;
+    import from EfcLac language "ASN.1:1997" all;
+    import from EfcCcc language "ASN.1:1997" all;
+    import from AVIAEINumberingAndDataStructures language "ASN.1:1997" all;
+    
+    import from Common_TypesAndValues all;
+
+// Parametrisations of module EfcLac
+    type union LAC_T_APDUs {
+        Action_Request<LacContainer>       action_request,
+        Action_Response<LacContainer>      action_response,
+        Event_Report_Request<LacContainer> event_report_request,
+        Event_Report_Response              event_report_response,
+        Set_Request<LacContainer>          set_request,
+        Set_Response                       set_response,
+        ASNAUX.TYPENULL                    reserved4,
+        ASNAUX.TYPENULL                    reserved5,
+        Initialisation_Request             initialisation_request,
+        Initialisation_Response            initialisation_response
+    }
+
+// Parametrisations of module LacContainer
+    type union LacContainer {
+        integer integer_,
+        anytype reserved1,
+        octetstring octetstring_ length (0 .. 127,?),
+        universal charstring universalString,
+        EfcDsrcGeneric.BeaconID beaconId,
+        LAC_T_APDUs t_apdu,
+        EfcDsrcGeneric.DSRCApplicationEntityID dsrcApplicationEntityId,
+        EfcDsrcGeneric.Dsrc_EID dsrc_Ase_Id,
+        EfcDsrcGeneric.AttributeIdList attrIdList,
+        AttributeList<LacContainer> attrList,
+        anytype reserved10,
+        anytype reserved11,
+        anytype reserved12,
+        anytype reserved13,
+        anytype reserved14,
+        EfcDsrcGeneric.Time time,
+        record length (0 .. 255) of integer vector,
+        anytype reserved17,
+        anytype reserved18,
+        anytype reserved19,
+        anytype reserved20,
+        anytype reserved21,
+        anytype reserved22,
+        anytype reserved23,
+        anytype reserved24,
+        anytype reserved25,
+        anytype reserved26,
+        anytype reserved27,
+        anytype reserved28,
+        anytype reserved29,
+        anytype reserved30,
+        anytype reserved31,
+        anytype reserved32,
+        anytype reserved33,
+        anytype reserved34,
+        anytype reserved35,
+        anytype reserved36,
+        anytype reserved37,
+        anytype reserved38,
+        anytype reserved39,
+        anytype reserved40,
+        anytype reserved41,
+        anytype reserved42,
+        anytype reserved43,
+        anytype reserved44,
+        anytype reserved45,
+        anytype reserved46,
+        anytype reserved47,
+        anytype reserved48,
+        anytype reserved49,
+        anytype reserved50,
+        anytype reserved51,
+        anytype reserved52,
+        anytype reserved53,
+        anytype reserved54,
+        anytype reserved55,
+        anytype reserved56,
+        anytype reserved57,
+        anytype reserved58,
+        anytype reserved59,
+        anytype reserved60,
+        anytype reserved61,
+        anytype reserved62,
+        anytype reserved63,
+        anytype reserved64,
+        anytype reserved65,
+        anytype reserved66,
+        anytype reserved67,
+        anytype reserved68,
+        anytype reserved69,
+        anytype reserved70,
+        anytype reserved71,
+        anytype reserved72,
+        anytype reserved73,
+        anytype reserved74,
+        anytype reserved75,
+        anytype reserved76,
+        anytype reserved77,
+        anytype reserved78,
+        anytype reserved79,
+        anytype reservedForFutureISOCENuse80,
+        anytype reservedForFutureISOCENuse81,
+        anytype reservedForFutureISOCENuse82,
+        anytype reservedForFutureISOCENuse83,
+        anytype reservedForFutureISOCENuse84,
+        anytype reservedForFutureISOCENuse85,
+        anytype reservedForFutureISOCENuse86,
+        LACData contLAC,
+        anytype reservedForFutureISOCENuse88,
+        anytype reservedForFutureISOCENuse89,
+        anytype reservedForFutureISOCENuse90,
+        anytype reservedForFutureISOCENuse91,
+        anytype reservedForFutureISOCENuse92,
+        anytype reservedForFutureISOCENuse93,
+        anytype reservedForFutureISOCENuse94,
+        anytype reservedForFutureISOCENuse95,
+        anytype reservedForFutureISOCENuse96,
+        anytype reservedForFutureISOCENuse97,
+        anytype reservedForFutureISOCENuse98,
+        anytype reservedForFutureISOCENuse99,
+        anytype reservedForFutureISOCENuse100,
+        anytype reservedForFutureISOCENuse101,
+        anytype reservedForFutureISOCENuse102,
+        anytype reservedForFutureISOCENuse103,
+        anytype reservedForFutureISOCENuse104,
+        anytype reservedForFutureISOCENuse105,
+        anytype reservedForFutureISOCENuse106,
+        anytype reservedForFutureISOCENuse107,
+        anytype reservedForFutureISOCENuse108,
+        anytype reservedForFutureISOCENuse109,
+        anytype reservedForFutureISOCENuse110,
+        anytype reservedForFutureISOCENuse111,
+        anytype reservedForFutureISOCENuse112
+    }
+  
+// Parametrisations of module EfcCcc
+   type union CCC_T_APDUs {
+        Action_Request<CccContainer>       action_request,
+        Action_Response<CccContainer>      action_response,
+        Event_Report_Request<CccContainer> event_report_request,
+        Event_Report_Response              event_report_response, 
+        anytype                            reserved4,
+        anytype                            reserved5,
+        Get_Request                        get_request,
+        Get_Response<CccContainer>         get_response,
+        Initialisation_Request             initialisation_request,
+        Initialisation_Response            initialisation_response
+    }
+
+// Parametrisations of module CccContainer
+    type union CccContainer {
+      integer integer_,
+      anytype reserved1,
+      octetstring octetstring_ length (0 .. 127,? ),
+      universal charstring universalString,
+      EfcDsrcGeneric.BeaconID beaconId,
+      CCC_T_APDUs t_apdu,
+      EfcDsrcGeneric.DSRCApplicationEntityID dsrcApplicationEntityId,
+      EfcDsrcGeneric.Dsrc_EID dsrc_Ase_Id,
+      EfcDsrcGeneric.AttributeIdList attrIdList,
+      AttributeList<CccContainer> attrList,
+      anytype reserved10,
+      anytype reserved11,
+      anytype reserved12,
+      anytype reserved13,
+      anytype reserved14,
+      EfcDsrcGeneric.Time time,
+      anytype reserved16,
+      GetStampedRq gstrq,
+      GetStampedRs<CccContainer> gstrs,  
+      anytype reserved19,
+      anytype reserved20,
+      anytype reserved21,
+      anytype reserved22,
+      anytype reserved23,
+      anytype reserved24,
+      anytype reserved25,
+      anytype reserved26,
+      anytype reserved27,
+      anytype reserved28,
+      anytype reserved29,
+      anytype reserved30,
+      anytype reserved31,
+      EfcDsrcApplication.EFC_ContextMark efccontext,
+      anytype reserved33,
+      anytype reserved34,
+      anytype reserved35,
+      anytype reserved36,
+      anytype reserved37,
+      anytype reserved38,
+      anytype reserved39,
+      anytype reserved40,
+      anytype reserved41,
+      anytype reserved42,
+      anytype reserved43,
+      anytype reserved44,
+      anytype reserved45,
+      anytype reserved46,
+      EfcDsrcApplication.LPN vehlpn,
+      anytype reserved48,
+      VehicleClass vehclass,
+      VehicleDimensions vehdims,
+      EfcDsrcApplication.VehicleAxles vehaxles,
+      VehicleWeightLimits vehwtlims,
+      anytype reserved53,
+      EfcDsrcApplication.VehicleSpecificCharacteristics vehspchars,
+      anytype reserved55,
+      EfcDsrcApplication.EquipmentOBUId equOBUId,
+      anytype reserved57,
+      anytype reserved58,
+      anytype reserved59,
+      anytype reserved60,
+      anytype reserved61,
+      anytype reserved62,
+      anytype reserved63,
+      EfcDsrcApplication.PaymentMeans paymeans,
+      anytype reserved65,
+      anytype reserved66,
+      anytype reserved67,
+      anytype reserved68,
+      anytype reserved70,
+      anytype reserved71,
+      anytype reserved72,
+      anytype reserved73,
+      anytype reserved74,
+      anytype reserved75,
+      anytype reserved76,
+      anytype reserved77,
+      anytype reserved78,
+      TrailerCharacteristics tch,      
+      anytype reserved80,
+      VehicleAxlesHistory vehicleAxlesHistory,
+      CommunicationStatus communicationStatus,
+      GnssStatus gnssStatus,
+      DistanceRecordingStatus distanceRecordingStatus,
+      ActiveContexts activeContexts,
+      OBEStatusHistory oBEStatusHistory,
+      anytype reservedForFutureISOCENuse87,
+      anytype reservedForFutureISOCENuse88,
+      anytype reservedForFutureISOCENuse89,
+      anytype reservedForFutureISOCENuse90,
+      anytype reservedForFutureISOCENuse91,
+      anytype reservedForFutureISOCENuse92,
+      VehicleWeightHistory vehicleWeightHistory,
+      ExtendedOBEStatusHistory extendedOBEStatusHistory,
+      ExtendedVehicleAxlesHistory extendedVehicleAxlesHistory,
+      EfcAutonomousContextData.LocalVehicleClassId localVehicleClassId,
+      EfcDsrcApplication.VehicleCurrentMaxTrainWeight vehicleCurrentMaxTrainWeight,
+      AttributeUpdateInterval attributeUpdateInterval,
+      anytype reservedForFutureISOCENuse99,
+      anytype reservedForFutureISOCENuse100,
+      anytype reservedForFutureISOCENuse101,
+      anytype reservedForFutureISOCENuse102,
+      anytype reservedForFutureISOCENuse103,
+      anytype reservedForFutureISOCENuse104,
+      anytype reservedForFutureISOCENuse105,
+      anytype reservedForFutureISOCENuse106,
+      anytype reservedForFutureISOCENuse107,
+      anytype reservedForFutureISOCENuse108,
+      anytype reservedForFutureISOCENuse109,
+      anytype reservedForFutureISOCENuse110,
+      anytype reservedForFutureISOCENuse111,
+      anytype reservedForFutureISOCENuse112
+    }
+
+// Parametrisations of module EfcDsrcGeneric
+   type record Action_Request <in type Container> {
+        boolean     mode_,
+        Dsrc_EID    eid,
+        ActionType  actionType,
+        octetstring accessCredentials optional, //OCTET STRING (SIZE (0..127,...))
+        Container   actionParameter optional,
+        Dsrc_EID    iid optional
+    }
+    
+    type record Action_Response <in type Container> {
+        bitstring       fill, // BIT STRING (SIZE(1))
+        Dsrc_EID        eid,
+        Dsrc_EID        iidoptional,
+        Container       responseParameter optional,
+        ReturnStatus    ret optional
+    }
+    
+    type record Attributes <in type Container> {
+        integer     attributeId, // INTEGER (0..127,...)
+        Container   attributeValue 
+    }
+    
+    type set of Attributes<Container> AttributeList<Container>; // SEQUENCE (SIZE(0..127,...)) OF Attributes{Container}
+    
+    type record Event_Report_Request <in type Container> {
+        boolean     mode_,
+        Dsrc_EID    eid,
+        EventType   eventType,
+        octetstring accessCredentials optional, // OCTET STRING (SIZE(0..127,...))
+        Container   eventParameter optional,
+        Dsrc_EID    iid optional
+    }
+    
+    type record Get_Response <in type Container> {
+        bitstring                   fill, // BIT STRING (SIZE(1)),
+        Dsrc_EID                    eid,
+        Dsrc_EID                    iid optional,
+        AttributeList<Container>    attrList,
+        ReturnStatus                ret optional
+    }
+    
+    type record Set_Request <in type Container> {
+        bitstring                   fill, // BIT STRING (SIZE(1)),
+        boolean                     mode_,
+        Dsrc_EID                    eid,
+        octetstring                 accessCredentials optional, // OCTET STRING (SIZE(0..127,...))
+        AttributeList<Container>    attrList,
+        Dsrc_EID                    iid optional
+    }
+    
+    type union T_APDUs_Generic <in type Container> {
+        Action_Request<Container>       action_request,
+        Action_Response<Container>      action_response,
+        Event_Report_Request<Container> event_report_request,
+        Event_Report_Response           event_report_response,
+        Set_Request<Container>          set_request,
+        Set_Response                    set_response,
+        Get_Request                     get_request,
+        Get_Response<Container>         get_response,
+        Initialisation_Request          initialisation_request,
+        Initialisation_Response         initialisation_response
+    }
+    
+    // Parametrisations of module T_APDUs
+    type T_APDUs_Generic<EfcContainer> T_APDUs; 
+    
+    type record length(0..255) of integer EfcContainer_vector_;
+
+// Parametrisations of module EfcContainer
+    type union EfcContainer {
+        integer integer_,
+        bitstring bitstring_,
+        octetstring octetstring_ length (0 .. 127,?),
+        universal charstring universalString,
+        BeaconID beaconId,
+        T_APDUs t_apdu,
+        DSRCApplicationEntityID dsrcApplicationEntityId,
+        Dsrc_EID dsrc_Ase_Id,
+        AttributeIdList attrIdList,
+        BroadcastPool broadcastPool,
+        Directory directory,
+        File file,
+        FileType fileType,
+        Record record_,
+        EfcDsrcGeneric.Time time,
+        record length (0 .. 255) of integer vector,
+        GetStampedRq gstrq,
+        GetStampedRs<EfcContainer> gstrs,
+        SetStampedRq<EfcContainer> sstrq,
+        GetInstanceRq ginrq,
+        GetInstanceRs<EfcContainer> ginrs,
+        SetInstanceRq<EfcContainer> sinrq,
+        ChannelRq charq,
+        ChannelRs chars,
+        CopyRq cpprq,
+        SubRq subrq,
+        AddRq addrq,
+        DebitRq debrq,
+        DebitRs debrs,
+        CreditRq crerq,
+        CreditRs crers,
+        EFC_ContextMark efccontext,
+        ContractSerialNumber contser,
+        ContractValidity contval,
+        EfcDsrcApplication.ContractVehicle contveh,
+        EfcDsrcApplication.ContractAuthenticator contauth,
+        EfcDsrcApplication.ReceiptServicePart recspt,
+        EfcDsrcApplication.SessionClass sessioncls,
+        EfcDsrcApplication.ReceiptServiceSerialNumber recservserialno,
+        anytype recfinptENV,
+        EfcDsrcApplication.ReceiptContract reccont,
+        EfcDsrcApplication.ReceiptOBUId recOBUId,
+        EfcDsrcApplication.ReceiptICC_Id recICCId,
+        EfcDsrcApplication.ReceiptText rectext,
+        EfcDsrcApplication.ReceiptAuthenticator recauth,
+        EfcDsrcApplication.ReceiptDistance recdist,
+        EfcDsrcApplication.LPN vehlpn,
+        CS5 vehid, 
+        EfcDsrcApplication.VehicleClass vehclass,
+        EfcDsrcApplication.VehicleDimensions vehdims,
+        EfcDsrcApplication.VehicleAxles vehaxles,
+        EfcDsrcApplication.VehicleWeightLimits vehwtlims,
+        EfcDsrcApplication.VehicleWeightLaden vehwtladen,
+        EfcDsrcApplication.VehicleSpecificCharacteristics vehspchars,
+        EfcDsrcApplication.VehicleAuthenticator vehauth,
+        EfcDsrcApplication.EquipmentOBUId equOBUId,
+        EfcDsrcApplication.ICC_Id equICCId,
+        EfcDsrcApplication.EquipmentStatus equstat,
+        EfcDsrcApplication.DriverCharacteristics dvrchars,
+        anytype paymeansENV,
+        EfcDsrcApplication.PaymentMeansBalance paymbal,
+        EfcDsrcApplication.PaymentMeansUnit paymunit,
+        EfcDsrcApplication.PaymentSecurityData paysecdata,
+        EfcDsrcApplication.PaymentMeans paymeans,
+        EfcDsrcApplication.ReceiptData1 recdata1,
+        EfcDsrcApplication.ReceiptData2 recdata2,
+        EfcDsrcApplication.ValidityOfContract valofcon,
+        EfcDsrcApplication.ReceiptFinancialPart recfinpt,
+        SetMMIRq setmmirq,
+        EfcDsrcApplication.AxleWeightLimits awl,
+        EfcDsrcApplication.PassengerCapacity paca,
+        EfcDsrcApplication.Engine eng,
+        EfcDsrcApplication.SoundLevel sl,
+        EfcDsrcApplication.ExhaustEmissionValues eev,
+        EfcDsrcApplication.DieselEmissionValues dev,
+        EfcDsrcApplication.CO2EmissionValue co2ev,
+        EfcDsrcApplication.VehicleTotalDistance vtd,
+        EfcDsrcApplication.TrailerLicencePlateNumber tlpn,
+        EfcDsrcApplication.TrailerCharacteristics tch,
+        EfcDsrcApplication.ActualNumberOfPassengers anp,
+        anytype rfuCenISO48,
+        anytype rfuCenISO49,
+        anytype rfuCenISO50,
+        anytype rfuCenISO51,
+        anytype rfuCenISO52,
+        anytype rfuCenISO53
+    }
+    
+    type EfcContainer ApplicationContextMark; 
+    
+//    ApplicationList ::= SEQUENCE (SIZE (0..127,...)) OF SEQUENCE {
+//        aid DSRCApplicationEntityID,
+//        eid Dsrc-EID OPTIONAL,
+//        parameter ApplicationContextMark OPTIONAL
+//    }
+   type record length (0 .. 127, ?) of record {
+        DSRCApplicationEntityID aid,
+        Dsrc_EID                eid optional,
+        ApplicationContextMark  parameter optional
+   } ApplicationList; 
+    
+//TODO consider optimised coding for better addressing capapbility
+//   type record ApplicationList_ {
+//       DSRCApplicationEntityID aid,
+//       Dsrc_EID                eid optional,
+//       ApplicationContextMark  parameter optional
+//   }
+//    
+//   type record length (0 .. 127, ?) of ApplicationList_ ApplicationList;
+    
+// Parametrisations of module BST
+    type record BST {
+        BeaconID              rsu,
+        EfcDsrcGeneric.Time   time,
+        Profile               profile,
+        ApplicationList       mandApplications,
+        ApplicationList       nonmandApplications optional,
+        set of Profile        profileList // SEQUENCE (SIZE(0..127,...))
+    }
+    
+    type BST Initialisation_Request;
+    
+    type record VST {
+        bitstring           fill length(4),
+        Profile             profile,
+        ApplicationList     applications,
+        ObeConfiguration    obeConfiguration 
+    }
+    
+    type VST Initialisation_Response;
+    
+// Parametrisations of module EfcDsrcApplication
+
+//    TODO consider addressing optimisation also here   
+   type record length (0 .. 127, ?) of record {
+     integer attributeId (0 .. 127, ?),
+     Container attributeValues
+   } GetInstanceRs<Container>; 
+    
+    
+    type record GetStampedRs <in type Container> {
+        AttributeList<Container>    attributeList,
+        octetstring                 authenticator
+    }
+    
+    type record SetInstanceRq <in type Container> {
+        octetstring             posOfInstance length(1),
+        Attributes<Container>   attribute
+    }
+    
+    type record SetStampedRq <in type Container> {
+        Attributes<Container>   attribute,
+        octetstring             nonce,
+        octetstring             keyRef length(1)
+    }
+    
+// Parametrisations of module EfcAutonomousCharging
+    type union ListOfDsrcUsageData {
+        AttributeList<EfcContainer>   data14906,
+        AttributeList<CccContainer>   data12813,
+        AttributeList<LacContainer>   data13141
+    }
+
+    type record UsageStatement {
+        EfcDsrcApplication.Int2             usageStatementId optional,
+        Provider                            tollContext optional,
+        Provider                            chargeReportFinalRecipient optional,
+        AggregatedFee                       aggregatedFee optional,
+        PaymentFee                          sumVat optional, 
+        AggregatedSingleTariffClassSession  aggregatedSingleTariffClassSession optional,
+        set of DetectedChargeObject         listOfChargeObjects optional,
+        ListOfDsrcUsageData                 listOfDsrcUsageData optional,
+        ListOfRawUsageData                  listOfRawUsageData optional,
+        boolean                             noUsage optional,
+        octetstring                         additionalUsageInformation optional
+    }
+    
+//    type union UsageStatement_ {  
+//        UsageStatement              usageStatement,
+//        AuthenticatedUsageStatement authenticatedUsageStatement
+//    }
+//    
+//    type set of UsageStatement_ UsageStatementList; // Need to use a dummy type for the declaration
+    
+    /**
+     * @desc 
+     * @see     ISO 17575-1:2016 Clause 6.3 Charge report
+     */
+    type record ChargeReport {
+        EfcAutonomousCharging.AidIdentifier protocolVersion,
+        ObeId                               obeId optional,
+        VehicleLicencePlateNumber           vehicleLPNr optional,
+        PaymentMeans                        paymentMeans optional,  
+        EFC_ContextMark                     serviceProviderContract,
+        Provider                            tollContext optional,
+        Provider                            chargeReportFinalRecipient optional,
+        GeneralizedTime                     timeOfReport optional,
+        Period                              reportPeriod optional,
+        VersionId                           versionInfo optional,
+        record of union {
+            UsageStatement              usageStatement,
+            AuthenticatedUsageStatement authenticatedUsageStatement
+        }                                   usageStatementList,
+        PaymentFee                          sumVatForThisSession optional,
+        AccountStatus                       accountStatus optional,
+        EfcAutonomousContextData.Int4       chargeReportCounter optional,
+        Distance                            mileage optional,
+        set of CccAttributes                listOfCccAttributes optional
+    }
+    
+// Parametrisation of module EfcAutonomousContextData
+    type union Optionally_Signed <in type Payload> {
+        Payload         unsigned_payload,
+        Signed<Payload> signed_payload
+    }
+    
+    type record Signed <in type Payload> {
+        Payload                 payload,
+        GeneralizedTime         timeOfAuthentication,
+        MessageAuthenticator    authenticator
+    }
+    
+    /**
+     * @desc Application data unit body
+     * @member tollContextOverview
+     * @member tollContextOverview
+     * @member tollContextPartitionOverview
+     * @member tariffTable
+     * @member currencyConversionTable
+     * @member tariffClassDefinition
+     * @member localVehicleClassDefinition
+     * @member timeClassDefinition
+     * @member userClassDefinition
+     * @member tollContextLayout
+     * @member chargeReportingEvents
+     * @member chargeReportConfiguration
+     * @member tollContextVersion          Version Information
+     * @see    [17575-3:2016], Clause 7.5 Application data unit body (data type ISO 17575-3AduBody)
+     */
+    type record Iso17575_3AduBody {
+        Optionally_Signed<TollContextOverview>              tollContextOverview optional,
+        Optionally_Signed<TollContextPartitionOverviews>    tollContextPartitionOverview optional,
+        Optionally_Signed<TariffTables>                     tariffTable optional,
+        Optionally_Signed<CurrencyConversionTable>          currencyConversionTable optional,
+        Optionally_Signed<TariffClassDefinition>            tariffClassDefinition optional,
+        Optionally_Signed<LocalVehicleClassDefinition>      localVehicleClassDefinition optional,
+        Optionally_Signed<TimeClassDefinition>              timeClassDefinition optional,
+        Optionally_Signed<UserClassDefinition>              userClassDefinition optional,
+        Optionally_Signed<TollContextPartitionLayouts>      tollContextLayout optional,
+        Optionally_Signed<ChargeReportingEventss>           chargeReportingEvents optional,
+        Optionally_Signed<ChargeReportConfigurations>       chargeReportConfiguration optional,
+        EfcDsrcApplication.Int1                             tollContextVersion 
+    }
+    
+    /**
+     * @desc Application data unit structure
+     * @member aduHeader Application data unit header
+     * @member aduBody Application data unit body
+     * @see    [17575-3:2016], Clause 7.3 Application data unit structure (data type Iso17575-3Adu)
+     */
+    type record Iso17575_3Adu {
+        Iso17575_3AduHeader aduHeader,
+        Iso17575_3AduBody   aduBody
+    }
+    
+    type union Iso17575_3InformationContent { 
+        Iso17575_3Adu               notAuthenticatedIso17575_3Adu,
+        AuthenticatedIso17575_3Adu  authenticatedIso1575_3Adu
+    }
+    
+} // End of module Common_Parameterised_Asn1_Data

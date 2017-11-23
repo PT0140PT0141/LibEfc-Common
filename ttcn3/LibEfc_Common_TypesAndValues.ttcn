@@ -5,12 +5,14 @@
  */
 module Common_TypesAndValues {
     
-    /**
-     * @desc    [17575-1:2016]: Charging
-     * @see     Annex A (normative) EFC data type specifications
-     */
-    import from EfcAutonomousCharging language "ASN.1:1997" all;
-
+    // LibEfc_Common
+    import from EfcDsrcGeneric language "ASN.1:1997" all;
+    import from EfcDsrcApplication language "ASN.1:1997" all;
+    import from EfcAutonomousContextData language "ASN.1:1997" all;
+    import from EfcLac language "ASN.1:1997" all;
+    import from EfcCcc language "ASN.1:1997" all;
+    import from AVIAEINumberingAndDataStructures language "ASN.1:1997" all;
+    
     /**
      * @desc Identifier of the version of the ASN.1 data specification (version of ISO 17575) that is used in the application data units
      * @see  clause ISO 17575-3:2016(E) 6.3.1 Protocol versioning & Table 1 — Data elements of the ADU Header
@@ -60,5 +62,12 @@ module Common_TypesAndValues {
         const integer c_attr_ChargeReportConfiguration := 42; // ChargeReportConfiguration
         const integer c_attr_Roaming := 43; // FIXME: What is the attribut identifier of the roaming element in Container CHOICE data structure?
     } // End of group AttributeIdentifiers
+
+    // These are helper definitions that are not a part of the ASN.1 but needed to deal with the parametrisation of Iso17575_3AduBody
+    type record of TollContextPartitionOverview TollContextPartitionOverviews; 
+    type record of TariffTable TariffTables; 
+    type record of TollContextPartitionLayout TollContextPartitionLayouts;
+    type record of ChargeReportingEvents ChargeReportingEventss;
+    type record of ChargeReportConfiguration ChargeReportConfigurations;
 
 } // End of module Common_TypesAndValues

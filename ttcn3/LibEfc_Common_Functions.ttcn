@@ -363,7 +363,7 @@ module Common_Functions language "TTCN-3:2010 Advanced Parameterization" {
          * @verdict unchanged
          */
         function f_check_regimeID <in type Container> (
-                                                       in UsageStatementList p_usageStatementList, 
+                                                       in ChargeReport.usageStatementList p_usageStatementList, 
                                                        in integer p_usageStatementId
         ) runs on EutComp return boolean {
             // p_usageStatementList shall not be omit

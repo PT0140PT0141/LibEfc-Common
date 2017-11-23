@@ -93,33 +93,19 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * @remark  All other ChargeReport template shall modify this one
              * @see     [TS 17575-3], Clause 7.6.1 usageStatementList
              */
-            template (value) UsageStatement_<Container> m_usageStatement_usageStatement<Container>(
-                                                                                                   in template (value) UsageStatement<Container> p_usageStatement
+            template (value) ChargeReport.usageStatementList[-] m_usageStatement_usageStatement(
+                                                                                             in template (value) UsageStatement p_usageStatement
             ) := {
                 usageStatement := p_usageStatement
             } // End of template m_usageStatement_usageStatement
-            // TODO To be removed
-//            template (value) UsageStatement_<Container> m_usageStatement_authenticatedUsageStatement<Container>(
-//                                                                                                                in template (value) AuthenticatedUsageStatement p_authenticatedUsageStatement
-//            ) := {
-//                authenticatedUsageStatement := p_authenticatedUsageStatement
-//            } // End of template m_usageStatement_authenticatedUsageStatement
-//            
-//            template (value) AuthenticatedUsageStatement m_authenticatedUsageStatement(
-//                                                                                       in template (value) bitstring p_usageStatementPer,
-//                                                                                       in template (value) MessageAuthenticator p_messageAuthenticator
-//            ) := {
-//                usageStatementPer       := p_usageStatementPer,
-//                messageAuthenticator    := p_messageAuthenticator
-//            } // End of template m_authenticatedUsageStatement
             
             /**
              * @desc    This is the minimal form of received UsageStatementList
              * @remark  All other ChargeReport template shall modify this one
              * @see     [TS 17575-3], Clause 7.6.1 usageStatementList
              */
-            template (present) UsageStatement_<Container> mw_usageStatement_usageStatement<Container>(
-                                                                                                      template (present) UsageStatement<Container> p_usageStatement := ?
+            template (present) ChargeReport.usageStatementList[-] mw_usageStatement_usageStatement(
+                                                                                                template (present) UsageStatement p_usageStatement := ?
             ) := {
                 usageStatement := p_usageStatement
             } // End of template mw_usageStatement_usageStatement
@@ -129,8 +115,8 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * @remark  All other ChargeReport template shall modify this one
              * @see     [TS 17575-3], Clause 7.6.1 usageStatementList
              */
-            template (present) UsageStatement_<Container> mw_usageStatement_authenticatedUsageStatement<Container>(
-                                                                                                                   template (present) AuthenticatedUsageStatement p_authenticatedUsageStatement := ?
+            template (present) ChargeReport.usageStatementList[-] mw_usageStatement_authenticatedUsageStatement(
+                                                                                                             template (present) AuthenticatedUsageStatement p_authenticatedUsageStatement := ?
             ) := {
                 authenticatedUsageStatement := p_authenticatedUsageStatement
             } // End of template mw_usageStatement_authenticatedUsageStatement
@@ -146,6 +132,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
                 paymentMeans := omit,
                 serviceProviderContract := m_serviceProviderContract_default,
                 tollContext := omit,
+                chargeReportFinalRecipient := omit,
                 timeOfReport := fx_getMessageDate(),
                 reportPeriod := {
                     beginOfPeriod := fx_getMessageDate(-3600), 
@@ -153,7 +140,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
                 },
                 versionInfo := omit,
                 usageStatementList := { 
-                    m_usageStatement_usageStatement<octetstring>(m_usageStatement_default<octetstring>) 
+                    m_usageStatement_usageStatement(m_usageStatement_default) 
                 },
                 sumVatForThisSession := omit,
                 accountStatus := omit,
@@ -173,6 +160,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
                 paymentMeans := *,
                 serviceProviderContract := ?,
                 tollContext := *,
+                chargeReportFinalRecipient := *,
                 timeOfReport := *,
                 reportPeriod := ?,
                 versionInfo := *,
@@ -444,7 +432,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * @desc    This is the minimal form of awaited UsageStatement message
              * @see     [17575-3:2016], Clause 7.6.2 UsageStatement
              */
-            template (omit) UsageStatement<Container> m_usageStatement_default <Container> := {
+            template (omit) UsageStatement m_usageStatement_default := {
                 usageStatementId := omit,
                 tollContext := omit,
                 chargeReportFinalRecipient := omit,
@@ -762,7 +750,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * @see     [17575-3:2016], Clause 8.5.3.4.2 Data type LocalVehicleClass
              * @see     [17575-3:2016], Table 11 — Data type LocalVehicleClass (informative)
              */
-            template (value) LocalVehicleClassDefinition m_localVehicleClassDefinition_default := { // TODO To be moved into PIXIT
+            template (value) LocalVehicleClassDefinition m_localVehicleClassDefinition_default := { 
                 localVehicleClasses := {
                     {
                         localVehicleClassId := 50, // local definition
@@ -771,7 +759,8 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
                                 3 //acc. to EN 15509
                             },
                             vehicleTrainAxlesNumbers := omit,
-                            euroValues := omit
+                            euroValues := omit,
+                            copValues := omit
                         },
                         ordinalElements := {
                             vehicleLengthOverall := omit,
@@ -802,7 +791,8 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
                             vehicleTrainAxlesNumbers := omit,
                             euroValues := {
                                 euro_3
-                            }
+                            },
+                            copValues := omit
                         },
                         ordinalElements := {
                             vehicleLengthOverall := omit,
@@ -1049,7 +1039,7 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * @desc    This is the minimal form of awaited UsageStatement message
              * @see     [17575-1:2016], Clause 7.6.2 UsageStatement
              */
-            template UsageStatement<Container> mw_usageStatement_default<Container> := {
+            template UsageStatement mw_usageStatement_default := {
                 usageStatementId                    := ?,
                 tollContext                         := *,
                 chargeReportFinalRecipient          := *,
@@ -1067,9 +1057,9 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
              * @desc    This is the minimal form of awaited UsageStatement message
              * @see     ISO 17575--1:2016 Clause 7.6.2 UsageStatement
              */
-            template (present) UsageStatement<Container> mw_usageStatement_tollContext<Container> (
-                                                                                                   template (present) Provider p_tollContext := ?
-            ) modifies mw_usageStatement_default<Container> := {
+            template (present) UsageStatement mw_usageStatement_tollContext(
+                                                                            template (present) Provider p_tollContext := ?
+            ) modifies mw_usageStatement_default := {
                 tollContext                         := p_tollContext
             } // End of template mw_usageStatement_tollContext
             
@@ -1163,14 +1153,14 @@ module Common_Templates language "TTCN-3:2010 Advanced Parameterization" {
         template (value) Optionally_Signed<Payload> m_optionally_Signed_Unsecured<in type Payload> (
                                                                                                     in template (value) Payload p_unsigned_data
         ) := {
-            unsigned_data := p_unsigned_data
+            unsigned_payload := p_unsigned_data
         } // End of template m_optionally_Signed_Unsecured
         
         template (present) Optionally_Signed<Payload> mw_optionally_Signed_Unsecured<in type Payload> (
                                                                                                        template (present) Payload p_unsigned_data := ?
         ) := {
-            unsigned_data := p_unsigned_data
-        } // End of template m_optionally_Signed_Unsecured
+            unsigned_payload:= p_unsigned_data
+        } // End of template mw_optionally_Signed_Unsecured
         
     }
 } // End of module Common_Templates
