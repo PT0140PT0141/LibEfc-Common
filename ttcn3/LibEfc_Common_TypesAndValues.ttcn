@@ -3,7 +3,7 @@
  * @desc 	This module describes common types and values for both FE and BE TTCN-3 components
  * @version	$id$
  */
-module Common_TypesAndValues {
+module LibEfc_Common_TypesAndValues {
     
     // LibEfc_Common
     import from EfcDsrcGeneric language "ASN.1:1997" all;
@@ -70,4 +70,4 @@ module Common_TypesAndValues {
     type record of ChargeReportingEvents ChargeReportingEventss;
     type record of ChargeReportConfiguration ChargeReportConfigurations;
 
-} // End of module Common_TypesAndValues
+} // End of module LibEfc_Common_TypesAndValues

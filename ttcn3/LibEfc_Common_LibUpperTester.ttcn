@@ -3,7 +3,7 @@
  * @version    $Id$
  * @desc        xxx
  */
-module Common_LibUpperTester {
+module LibEfc_Common_LibUpperTester {
 
     /**
      * @desc    Common_LibUpperTester types and values definitions
@@ -70,4 +70,4 @@ module Common_LibUpperTester {
             status := {code := p_code, reason := *}
         } // End of template mw_EO_Response
     } // End of group equipmentOperationTemplates
-} // End of module Common_LibUpperTester
+} // End of module LibEfc_Common_LibUpperTester

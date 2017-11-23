@@ -3,11 +3,11 @@
  * @desc      This module describes the common functionalities for TCs execution (Charging and ContextData)
  * @version   $id$
  */
-module Common_Pics {
+module LibEfc_Common_Pics {
     
     /**
      * @desc    Does the IUT support secured mode?
      */
     modulepar boolean PICS_SECURED_MODE := false; 
     
-} // End of module Common_Pics
+} // End of module LibEfc_Common_Pics

@@ -6,7 +6,7 @@
  * @remark  See Annex A - EFC data type specifications
  * @version $id$
  */
-module Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Parameterization" {
+module LibEfc_Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Parameterization" {
     
     // LibEfc_Common
     import from EfcDsrcGeneric language "ASN.1:1997" all;
@@ -621,4 +621,4 @@ module Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Parameteriz
         AuthenticatedIso17575_3Adu  authenticatedIso1575_3Adu
     }
     
-} // End of module Common_Parameterised_Asn1_Data
+} // End of module LibEfc_Common_Parameterised_Asn1_Data

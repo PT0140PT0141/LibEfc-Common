@@ -3,7 +3,7 @@
  * @desc     This module describes the common parameters for TCs execution (Charging and ContextData)
  * @version    $id$
  */
-module Common_Pixits {
+module LibEfc_Common_Pixits {
 
     /**
      * @desc    [17575-1:2016]: Charging
@@ -145,4 +145,4 @@ module Common_Pixits {
          */
         modulepar EfcAutonomousContextData.Int4 PX_ADU_SEQ_NUMBER := 125684;
         
-} // End of module Common_Pixits
+} // End of module LibEfc_Common_Pixits
