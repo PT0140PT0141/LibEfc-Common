@@ -2,6 +2,8 @@ EfcCcc {iso(1) standard(0) 12813 version2(2)}
 
 DEFINITIONS AUTOMATIC TAGS ::= BEGIN
 
+-- Modify by PT0141
+-- See EN_ISO_16410-2
 IMPORTS 
 
 EquipmentOBUId, PaymentMeans, LPN, VehicleAxles, VehicleSpecificCharacteristics, EFC-ContextMark, Provider, VehicleCurrentMaxTrainWeight 
@@ -13,6 +15,9 @@ FROM EfcDsrcGeneric {iso(1) standard(0) 14906 generic(1) version5(5)}
 LocalVehicleClassId
 FROM EfcAutonomousContextData {iso(1) standard(0) 17575 part3(3) version2(2)};
 
+-- Modify by PT0141
+-- See EN_ISO_16410-2
+-- CCC-...
 -- NOTE: The following are the definitions of the CCC attributes:
 
 ActiveContexts ::= SEQUENCE OF SEQUENCE{
@@ -126,7 +131,9 @@ DistRecordingStatus ::= INTEGER {
     reservedForFutureUse    (4)
 } (0..255)
 
-
+-- Modify by PT0141
+-- See EN_ISO_16410-2
+-- CCC-T-APDUs
 --Note: the following is the extension of the Layer 7 module
 
 ApplicationContextMark ::= SEQUENCE {
@@ -134,5 +141,9 @@ ApplicationContextMark ::= SEQUENCE {
     ac-cr-reference OCTET STRING (SIZE (2)),
     rndOBE          OCTET STRING (SIZE (4))
 }
+
+-- Modify by PT0141
+-- See EN_ISO_16410-2
+-- CccContainer
 
 END

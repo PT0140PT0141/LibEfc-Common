@@ -1,7 +1,8 @@
 EfcDsrcGeneric {iso(1) standard(0) 14906 generic(1) version5(5)}
 DEFINITIONS AUTOMATIC TAGS ::= BEGIN
 IMPORTS
-
+-- Modify by PT0141
+-- See EN_ISO_16410-2
 ContractVehicle,ContractAuthenticator,ICC-Id,
 ReceiptServicePart,SessionClass,SignedValue,ReceiptServiceSerialNumber,
 ReceiptFinancialPart,ReceiptContract,ReceiptOBUId,ReceiptICC-Id,
@@ -16,6 +17,8 @@ ReceiptData2,SessionLocation,ValidityOfContract, AxleWeightLimits, PassengerCapa
 FROM EfcDsrcApplication {iso(1) standard(0) 14906 application(0) version5(5)};
 
 -- defined in ISO 14816 --
+-- Modify by PT0141
+-- See EN_ISO_16410-2
 ActionType ::= INTEGER (0..127,...)
 -- 0 : getStamped
 -- 1 : setStamped
@@ -35,8 +38,15 @@ ActionType ::= INTEGER (0..127,...)
 -- 15 : echo
 -- (16..118) Reserved for ISO/CEN use
 -- (119-127) Reserved for private use
+-- Modify by PT0141
+-- See EN_ISO_16410-2
+-- ApplicationContextMark
 
 AttributeIdList ::= SEQUENCE (SIZE(0.. 127,...)) OF INTEGER(0..127,...)
+
+-- Modify by PT0141
+-- See EN_ISO_16410-2
+--AttributeList{Container}
 
 BeaconID::= SEQUENCE{
 	manufacturerid INTEGER(0.. 65535),
@@ -48,6 +58,9 @@ BroadcastPool ::= SEQUENCE{
 	content SEQUENCE (SIZE(0..127,...)) OF File
 }
 
+-- Modify by PT0141
+-- See EN_ISO_16410-2
+--BST
 FileType ::= NULL -- not defined
 Directory::= SEQUENCE (SIZE(0..127,...)) OF FileName
 Dsrc-EID::= INTEGER(0..127, ...)
@@ -80,6 +93,11 @@ lac (21)
 -- As an example, the application "electronic-fee-collection (1)"
 -- is standardised by EN/ISO 14906
 
+
+-- Modify by PT0141
+-- See EN_ISO_16410-2
+-- Event-Report-Request{Container}
+
 Event-Report-Response::= SEQUENCE{
 fill BIT STRING (SIZE(2)),
 eid Dsrc-EID,
@@ -103,6 +121,10 @@ accessCredentials OCTET STRING (SIZE(0..127,...)) OPTIONAL,
 iid Dsrc-EID OPTIONAL,
 attrIdList AttributeIdList OPTIONAL
 }
+
+-- Modify by PT0141
+-- See EN_ISO_16410-2
+-- Get-Response{Container}
 ObeConfiguration::= SEQUENCE{
 equipmentClass INTEGER(0..32767),
 manufacturerID INTEGER(0..65535),
@@ -130,6 +152,10 @@ processing (5),
 chainingError (6)
 -- (7..127) are reserved for future CEN use
 }(0..127,...)
+
+-- Modify by PT0141
+-- See EN_ISO_16410-2
+--Set-Request{Container}
 Set-Response::= SEQUENCE{
 fill BIT STRING (SIZE(2)),
 eid Dsrc-EID,
@@ -139,5 +165,9 @@ ret ReturnStatus OPTIONAL
 Time::= INTEGER(0..4294967295)
 -- �UNIX time�: number of seconds since midnight at the
 -- start of 1st January 1970
+
+-- Modify by PT0141
+-- See EN_ISO_16410-2
+--T-APDUs-Generic{Container}
 
 END

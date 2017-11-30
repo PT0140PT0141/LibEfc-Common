@@ -5,6 +5,9 @@ DEFINITIONS AUTOMATIC TAGS
 
 IMPORTS
 
+-- Modify by PT0141
+-- See EN_ISO_16410-2
+
 Distance, Duration, VersionId, MessageAuthenticator
 FROM EfcAutonomousCharging {iso(1) standard(0) 17575 part1(1) version2(2)}
 
@@ -16,6 +19,9 @@ FROM EfcCcc {iso(1) standard(0) 12813 version2(2)};
 
 -- Note: This is the top level information exchange structure
 
+-- Modify by PT0141
+-- See EN_ISO_16410-2
+-- Iso17575-3InformationContent
 AuthenticatedIso17575-3Adu ::=  SEQUENCE {
     iso17575-3AduPer                BIT STRING,
     -- PER encoded content of the ASN.1 data element Iso17575-3 Adu
@@ -26,6 +32,9 @@ AuthenticatedIso17575-3Adu ::=  SEQUENCE {
 
 -- NOTE: The following is the definition of the ISO17575-3 ADU
 
+-- Modify by PT0141
+-- See EN_ISO_16410-2
+-- Iso17575-3Adu
 --------------------------------------------------------------------
 -- NOTE: The following are the definitions of the 17575-3 ADU Header
 --------------------------------------------------------------------
@@ -42,6 +51,9 @@ Iso17575-3AduHeader ::= SEQUENCE {
 -- NOTE: The following are the definitions of the ISO 17575-3 ADU Body
 -- i.e. the sequence of optional attributes
 
+-- Modify by PT0141
+-- See EN_ISO_16410-2
+-- Iso17575-3AduBody
 
 ------------------------------------------------------------------------------------------
 -- NOTE: The following are the definitions of the EFC Attributes
@@ -155,6 +167,9 @@ ChargeReportConfiguration ::=               SEQUENCE {
 -- authentication
 ----------------------------------------------------------------------------------------
 
+-- Modify by PT0141
+-- See EN_ISO_16410-2
+-- Optionally-Signed{Payload}
 ----------------------------------------------------------------------------------------
 -- NOTE: The following are the definitions of the data elements in alphabetic order
 ----------------------------------------------------------------------------------------

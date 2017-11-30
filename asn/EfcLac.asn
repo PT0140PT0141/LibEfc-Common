@@ -13,11 +13,15 @@ Longitude, Latitude, Altitude
 FROM EfcCcc {iso(1) standard(0) 12813 version2(2)}
 
 -- Imports the L7 DSRCData module data from the EFC Application Interface Definition
+-- Modify by PT0141
+-- See EN_ISO_16410-2
 ActionType, AttributeIdList,
 BeaconID, Dsrc-EID, DSRCApplicationEntityID, EventType, ObeConfiguration, Profile, ReturnStatus, Time
 FROM EfcDsrcGeneric {iso(1) standard(0) 14906 generic(1) version5(5)};
 
 -- NOTE: The following are the definitions of the LAC attributes
+-- Modify by PT0141
+-- See EN_ISO_16410-2
 
 LAC-ContextMark ::= EFC-ContextMark
 
@@ -70,6 +74,10 @@ ApplicationContextMark::= SEQUENCE {
     lacContextMark      LAC-ContextMark,
     ac-cr-reference     OCTET STRING (SIZE (2)),
     rndOBE              OCTET STRING (SIZE (4))
+
+-- Modify by PT0141
+-- See EN_ISO_16410-2
+-- LAC-T-APDUs
 }
 
 END

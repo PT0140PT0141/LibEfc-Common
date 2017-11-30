@@ -3,6 +3,8 @@ EfcAutonomousCharging {iso(1) standard(0) 17575 part1(1) version2(2)}
 DEFINITIONS AUTOMATIC TAGS 
 ::= BEGIN
 
+-- Modify by PT0141
+-- See EN_ISO_16410-2
 IMPORTS
 
 EquipmentOBUId, PaymentMeans, Provider, DriverCharacteristics, PaymentFee, VehicleAxles, VehicleClass, VehicleDimensions, VehicleLicencePlateNumber, VehicleSpecificCharacteristics, VehicleWeightLaden, VehicleWeightLimits, TrailerCharacteristics, EFC-ContextMark, SetMMIRq, Int1, Int2, Int4
@@ -38,6 +40,9 @@ AuthenticatedChargeReportResponse ::= SEQUENCE {
 	messageAuthenticator		MessageAuthenticator
 	}
 
+-- Modify by PT0141
+-- See EN_ISO_16410-2
+-- ChargeReport
 ChargeReportResponse ::= SEQUENCE {
 	chargeReportRespSender		Provider OPTIONAL,	-- 14906
 	dataReceived			DataReceived OPTIONAL,
@@ -148,6 +153,8 @@ DataReceived ::= CHOICE {
 	chargeReportCounter			Int4
 	}
 
+-- Modify by PT0141
+-- See EN_ISO_16410-2
 DetectedChargeObject ::= SEQUENCE {
 	chargeObjectId			ChargeObjectId,
 	subObjectNumber			Int4 OPTIONAL,
@@ -201,6 +208,11 @@ DurUnit ::= INTEGER {
 		-- (128-255) are reserved for private use
 	} (0..255)
 
+-- Modify by PT0141
+-- See EN_ISO_16410-2
+-- ListOfDsrcUsageData
+-- Modify by PT0141
+-- See EN_ISO_16410-2
 ListOfRawUsageData ::= SEQUENCE {
 	rawDataList			SEQUENCE OF MeasuredRawData,
 	currentTariffClass			TariffClassDescription OPTIONAL,
@@ -208,6 +220,8 @@ ListOfRawUsageData ::= SEQUENCE {
 	...
 	}
 
+-- Modify by PT0141
+-- See EN_ISO_16410-2
 MacMessageAuthenticator ::= SEQUENCE {
 --	algorithmIdentifier			AlgorithmIdentifier,
 	masterKeyRef			INTEGER,
@@ -228,12 +242,16 @@ MessageAuthenticator ::= CHOICE {
 	signature				[1] MessageAuthenticatorEfc
 	}
 
+-- Modify by PT0141
+-- See EN_ISO_16410-2
 MessageAuthenticatorEfc ::= SEQUENCE {
 	tbsMessageAuthenticatorEfc		TbsMessageAuthenticatorEfc,
 --	signatureAlgorithm			AlgorithmIdentifier OPTIONAL,
 	signatureValue      			BIT STRING
 	}
 
+-- Modify by PT0141
+-- See EN_ISO_16410-2
 MessageContentDigest ::= SEQUENCE {
 --	hashAlgorithm			AlgorithmIdentifier,
 	hashedMessageContent		OCTET STRING
@@ -298,6 +316,8 @@ TariffClassDescription ::= SEQUENCE {
 	userClass				UserClassId OPTIONAL
 	}
 
+-- Modify by PT0141
+-- See EN_ISO_16410-2
 TbsMessageAuthenticatorEfc ::= SEQUENCE {
 	version				INTEGER DEFAULT 1,
 --	signatureAlgorithm			AlgorithmIdentifier,
@@ -308,7 +328,12 @@ TbsMessageAuthenticatorEfc ::= SEQUENCE {
 --	certificates			SEQUENCE OF Certificate OPTIONAL,
 --	signingCertificate			SigningCertificateV2 OPTIONAL
 	}
+-- Modify by PT0141
+-- See EN_ISO_16410-2
+-- UsageStatement
 
+-- Modify by PT0141
+-- See EN_ISO_16410-2
 ListOfDsrcUsageDataVehicleDescription ::= SEQUENCE {
 	vehicleLPNr			VehicleLicencePlateNumber OPTIONAL,
 	axles				VehicleAxles OPTIONAL,

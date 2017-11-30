@@ -4,6 +4,8 @@ IMPORTS
 CountryCode, CS5, IssuerIdentifier
 FROM AVIAEINumberingAndDataStructures {iso(1) standard(0) iso14816(14816) asnm1(1) version1(1)} 
 -- defined in ISO 14816 --
+-- Modify by PT0141
+-- See EN_ISO_16410-2
 AttributeIdList
 FROM EfcDsrcGeneric {iso(1) standard(0) 14906 generic(1) version5(5)};
 -- NOTE: The following are the definitions of the action and response
@@ -79,11 +81,19 @@ posOfFirstInstance INTEGER(0..255), -- position of first instance to be retrieve
 posOfLastInstance INTEGER(0..255), -- position last instance to be retrieved
 attributeIdList AttributeIdList -- Ids of attributes to be retrieved
 }
+
+-- Modify by PT0141
+-- See EN_ISO_16410-2
+-- GetInstanceRs{Container}
 GetStampedRq::= SEQUENCE {
 attributeIdList AttributeIdList,
 nonce OCTET STRING, -- e.g. a random number
 keyRef INTEGER(0..255)
 }
+
+-- Modify by PT0141
+-- See EN_ISO_16410-2
+-- GetStampedRs{Container}
 SetMMIRq::= INTEGER {
 ok (0), -- operation / transaction successfully completed
 nok (1), -- operation / transaction not successfully completed
@@ -92,6 +102,10 @@ noSignalling (255) -- no signalling
 -- (3-127) are reserved for future CEN use
 -- (128-254) are reserved for private use
 } (0..255)
+
+-- Modify by PT0141
+-- See EN_ISO_16410-2
+-- SetStampedRq
 SubRq::= SEQUENCE {
 attributeId INTEGER(0..127,...),
 value INTEGER

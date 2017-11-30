@@ -107,4 +107,8 @@ ServiceApplicationLimit::= BIT STRING {
 	issuerSpecificRestriction4	(7)
 	} (SIZE(8))
 	
+-- Modify by PT0141
+-- See EN_ISO_16410-2
+-- version
+
 END
