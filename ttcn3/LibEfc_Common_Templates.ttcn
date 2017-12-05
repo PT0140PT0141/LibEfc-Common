@@ -1150,14 +1150,14 @@ module LibEfc_Common_Templates language "TTCN-3:2010 Advanced Parameterization" 
 
     group SecurityTemplates {
         
-        template (value) Optionally_Signed<Payload> m_optionally_Signed_Unsecured<in type Payload> (
-                                                                                                    in template (value) Payload p_unsigned_data
+        template (value) Optionally_Signed<PduPayload> m_optionally_Signed_Unsecured<in type PduPayload> (
+                                                                                                          in template (value) PduPayload p_unsigned_data
         ) := {
             unsigned_payload := p_unsigned_data
         } // End of template m_optionally_Signed_Unsecured
         
-        template (present) Optionally_Signed<Payload> mw_optionally_Signed_Unsecured<in type Payload> (
-                                                                                                       template (present) Payload p_unsigned_data := ?
+        template (present) Optionally_Signed<PduPayload> mw_optionally_Signed_Unsecured<in type PduPayload> (
+                                                                                                             template (present) PduPayload p_unsigned_data := ?
         ) := {
             unsigned_payload:= p_unsigned_data
         } // End of template mw_optionally_Signed_Unsecured

@@ -159,7 +159,7 @@ module LibEfc_Common_Functions language "TTCN-3:2010 Advanced Parameterization" 
             }
             [PICS_SECURED_MODE == true] pco.receive(AuthenticatedChargeReport:?) -> value v_authenticatedChargeReport {
                 if (f_extract_ChargeReport(v_authenticatedChargeReport, p_chargeReportValue) == true) {
-                    p_result := match(p_chargeReportValueExpected, p_chargeReportValue);
+                    p_result := match(p_chargeReportValue, p_chargeReportValueExpected);
                 } else {
                     p_result := false;
                 }
@@ -170,7 +170,7 @@ module LibEfc_Common_Functions language "TTCN-3:2010 Advanced Parameterization" 
         } // End of function a_pco_recv_iso17575_3Adu_chargeReport
         
         altstep a_pco_recv_iso17575_3Adu(
-                                         template Iso17575_3Adu p_iso17575_3AduValueExpected,
+                                         template (present) Iso17575_3Adu p_iso17575_3AduValueExpected,
                                          out template (value) Iso17575_3Adu p_iso17575_3AduValue,
                                          out template (value) boolean p_result
         ) runs on EutComp {
@@ -182,7 +182,7 @@ module LibEfc_Common_Functions language "TTCN-3:2010 Advanced Parameterization" 
             }
             [PICS_SECURED_MODE == true] pco.receive(Iso17575_3InformationContent:?) -> value v_iso17575_3InformationContent {
                 if (f_extract_Iso17575(v_iso17575_3InformationContent.authenticatedIso1575_3Adu, p_iso17575_3AduValue) == true) {
-                    p_result := match(p_iso17575_3AduValueExpected, p_iso17575_3AduValue);
+                    p_result := match(p_iso17575_3AduValue, p_iso17575_3AduValueExpected);
                 } else {
                     p_result := false;
                 }

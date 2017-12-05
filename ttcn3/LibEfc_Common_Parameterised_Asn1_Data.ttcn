@@ -360,6 +360,7 @@ module LibEfc_Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Para
         DSRCApplicationEntityID dsrcApplicationEntityId,
         Dsrc_EID dsrc_Ase_Id,
         AttributeIdList attrIdList,
+	AttributeList<EfcContainer> attrList ,
         BroadcastPool broadcastPool,
         Directory directory,
         File file,
@@ -441,25 +442,13 @@ module LibEfc_Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Para
     
     type EfcContainer ApplicationContextMark; 
     
-//    ApplicationList ::= SEQUENCE (SIZE (0..127,...)) OF SEQUENCE {
-//        aid DSRCApplicationEntityID,
-//        eid Dsrc-EID OPTIONAL,
-//        parameter ApplicationContextMark OPTIONAL
-//    }
-   type record length (0 .. 127, ?) of record {
+   type record ApplicationList_ {
         DSRCApplicationEntityID aid,
         Dsrc_EID                eid optional,
         ApplicationContextMark  parameter optional
-   } ApplicationList; 
+   }
     
-//TODO consider optimised coding for better addressing capapbility
-//   type record ApplicationList_ {
-//       DSRCApplicationEntityID aid,
-//       Dsrc_EID                eid optional,
-//       ApplicationContextMark  parameter optional
-//   }
-//    
-//   type record length (0 .. 127, ?) of ApplicationList_ ApplicationList;
+   type record length (0 .. 127, ?) of ApplicationList_ ApplicationList;
     
 // Parametrisations of module BST
     type record BST {
@@ -483,12 +472,12 @@ module LibEfc_Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Para
     type VST Initialisation_Response;
     
 // Parametrisations of module EfcDsrcApplication
-
-//    TODO consider addressing optimisation also here   
-   type record length (0 .. 127, ?) of record {
+   type record GetInstanceRs_<Container> {
      integer attributeId (0 .. 127, ?),
      Container attributeValues
-   } GetInstanceRs<Container>; 
+   }  
+    
+   type record length (0 .. 127, ?) of GetInstanceRs_<Container> GetInstanceRs<Container>;
     
     
     type record GetStampedRs <in type Container> {
@@ -527,13 +516,6 @@ module LibEfc_Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Para
         boolean                             noUsage optional,
         octetstring                         additionalUsageInformation optional
     }
-    
-//    type union UsageStatement_ {  
-//        UsageStatement              usageStatement,
-//        AuthenticatedUsageStatement authenticatedUsageStatement
-//    }
-//    
-//    type set of UsageStatement_ UsageStatementList; // Need to use a dummy type for the declaration
     
     /**
      * @desc 
