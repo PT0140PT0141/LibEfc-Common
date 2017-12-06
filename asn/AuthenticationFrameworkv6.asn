@@ -1,0 +1,12 @@
+--The following are abridged "dummy" definitions. The real security functionality to be implemented by the TTCN3 Test Adapter
+AuthenticationFrameworkv6 {joint-iso-itu-t ds(5) module(1) authenticationFramework(7) 6}
+
+DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+Certificate::=        			INTEGER(0..255)
+AlgorithmIdentifier::=        	INTEGER(0..255)
+SupportedAlgorithms::=        	INTEGER(0..255) -- This is IMPORTed but never actually used in the other ASN.1 files
+CertificateSerialNumber::=      INTEGER(0..255)
+Name::=        					INTEGER(0..255)
+
+END

@@ -16,18 +16,16 @@ FROM EfcAutonomousContextData {iso(1) standard(0) 17575 part3(3) version2(2)}
 VehicleAxlesHistory, CommunicationStatus, GnssStatus, DistanceRecordingStatus, ActiveContexts, OBEStatusHistory 
 
 FROM EfcCcc {iso(1) standard(0) 12813 version2(2)}
-;
---Certificate, AlgorithmIdentifier, SupportedAlgorithms, CertificateSerialNumber, Name
 
---FROM AuthenticationFramework {joint-iso-itu-t ds(5) module(1) authenticationFramework(7) 6}
+Certificate, AlgorithmIdentifier, SupportedAlgorithms, CertificateSerialNumber, Name
+FROM AuthenticationFrameworkv6 {joint-iso-itu-t ds(5) module(1) authenticationFramework(7) 6}
 
---SigningCertificateV2
-
---FROM ExtendedSecurityServices-2006 {iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-9(9) smime(16) modules(0) id-mod-ess-2006(30)};
+SigningCertificateV2
+FROM ExtendedSecurityServices-2006 {iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-9(9) smime(16) modules(0) id-mod-ess-2006(30)};
 -- RFC 5035 Enhanced Security Services
 
 ----------------------------------
--- Top Level Data Strucutres
+-- Top Level Data Structures
 ----------------------------------
 
 AuthenticatedChargeReport ::= SEQUENCE {
@@ -223,7 +221,7 @@ ListOfRawUsageData ::= SEQUENCE {
 -- Modify by PT0141
 -- See EN_ISO_16410-2
 MacMessageAuthenticator ::= SEQUENCE {
---	algorithmIdentifier			AlgorithmIdentifier,
+	algorithmIdentifier			AlgorithmIdentifier,
 	masterKeyRef			INTEGER,
 	keyDerivationID			OCTET STRING,
 	authenticator			BIT STRING
@@ -246,14 +244,14 @@ MessageAuthenticator ::= CHOICE {
 -- See EN_ISO_16410-2
 MessageAuthenticatorEfc ::= SEQUENCE {
 	tbsMessageAuthenticatorEfc		TbsMessageAuthenticatorEfc,
---	signatureAlgorithm			AlgorithmIdentifier OPTIONAL,
+	signatureAlgorithm			AlgorithmIdentifier OPTIONAL,
 	signatureValue      			BIT STRING
 	}
 
 -- Modify by PT0141
 -- See EN_ISO_16410-2
 MessageContentDigest ::= SEQUENCE {
---	hashAlgorithm			AlgorithmIdentifier,
+	hashAlgorithm			AlgorithmIdentifier,
 	hashedMessageContent		OCTET STRING
 	}
 
@@ -320,13 +318,13 @@ TariffClassDescription ::= SEQUENCE {
 -- See EN_ISO_16410-2
 TbsMessageAuthenticatorEfc ::= SEQUENCE {
 	version				INTEGER DEFAULT 1,
---	signatureAlgorithm			AlgorithmIdentifier,
---	issuer				Name,
---	serialNumber			CertificateSerialNumber,
+	signatureAlgorithm			AlgorithmIdentifier,
+	issuer				Name,
+	serialNumber			CertificateSerialNumber,
 	messageContentDigest		MessageContentDigest,
-	signatureDate			GeneralizedTime--,
---	certificates			SEQUENCE OF Certificate OPTIONAL,
---	signingCertificate			SigningCertificateV2 OPTIONAL
+	signatureDate			GeneralizedTime,
+	certificates			SEQUENCE OF Certificate OPTIONAL,
+	signingCertificate			SigningCertificateV2 OPTIONAL
 	}
 -- Modify by PT0141
 -- See EN_ISO_16410-2

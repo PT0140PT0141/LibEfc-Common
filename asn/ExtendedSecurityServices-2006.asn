@@ -1,0 +1,8 @@
+--The following are abridged "dummy" definitions. The real security functionality to be implemented by the TTCN3 Test Adapter
+ExtendedSecurityServices-2006 {iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-9(9) smime(16) modules(0) id-mod-ess-2006(30)}
+
+DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+SigningCertificateV2::=        INTEGER(0..255) 
+
+END
