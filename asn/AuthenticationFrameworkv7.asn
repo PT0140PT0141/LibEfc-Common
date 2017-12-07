@@ -1,0 +1,11 @@
+--The following are abridged "dummy" definitions. The real security functionality to be implemented by the TTCN3 Test Adapter
+AuthenticationFrameworkv7 {joint-iso-itu-t ds(5) module(1) authenticationFramework(7) 7}
+
+DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+Certificate::=        			INTEGER(0..255)
+AlgorithmIdentifier::=        	INTEGER(0..255)
+CertificateSerialNumber::=      INTEGER(0..255)
+Name::=        					INTEGER(0..255)
+
+END
