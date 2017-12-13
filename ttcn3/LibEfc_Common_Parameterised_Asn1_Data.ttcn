@@ -550,7 +550,7 @@ module LibEfc_Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Para
     }
     
     type record Action_Response <in type Container> {
-        bitstring       fill, // BIT STRING (SIZE(1))
+        bitstring       fill length(1), 
         Dsrc_EID        eid,
         Dsrc_EID        iidoptional,
         Container       responseParameter optional,
@@ -574,7 +574,7 @@ module LibEfc_Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Para
     }
     
     type record Get_Response <in type Container> {
-        bitstring                   fill, // BIT STRING (SIZE(1)),
+        bitstring                   fill length(1),
         Dsrc_EID                    eid,
         Dsrc_EID                    iid optional,
         AttributeList<Container>    attrList,
@@ -582,7 +582,7 @@ module LibEfc_Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Para
     }
     
     type record Set_Request <in type Container> {
-        bitstring                   fill, // BIT STRING (SIZE(1)),
+        bitstring                   fill length(1),
         boolean                     mode_,
         Dsrc_EID                    eid,
         octetstring                 accessCredentials optional, // OCTET STRING (SIZE(0..127,...))
