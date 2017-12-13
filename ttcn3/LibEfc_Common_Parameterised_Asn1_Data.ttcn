@@ -18,7 +18,7 @@ module LibEfc_Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Para
     import from AVIAEINumberingAndDataStructures language "ASN.1:1997" all;
     
     import from LibEfc_Common_TypesAndValues all;
-
+    
     /**
      * @desc Mapping ASN.1 type NULL to one value only
      * @see ETSI ES 201 873-7 Note 13
@@ -606,8 +606,6 @@ module LibEfc_Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Para
     // Parametrisations of module T_APDUs
     type T_APDUs_Generic<EfcContainer> T_APDUs; 
     
-    type record length(0..255) of integer EfcContainer_vector_;
-
 // Parametrisations of module EfcContainer
     //EfcContainer ::= CHOICE{
     //-- The alternative for container and its value is determined
@@ -725,7 +723,7 @@ module LibEfc_Common_Parameterised_Asn1_Data language "TTCN-3:2010 Advanced Para
         DSRCApplicationEntityID dsrcApplicationEntityId,
         Dsrc_EID dsrc_Ase_Id,
         AttributeIdList attrIdList,
-	    AttributeList<EfcContainer> attrList ,
+        AttributeList<EfcContainer> attrList ,
         BroadcastPool broadcastPool,
         Directory directory,
         File file,
